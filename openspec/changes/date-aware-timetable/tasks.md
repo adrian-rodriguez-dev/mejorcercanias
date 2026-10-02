@@ -5,4 +5,4 @@
 ## 2. Consulta de horarios
 - [x] 2.1 Añadir vista secundaria con fecha, tabla y filtro salir/llegar, conservando próximas salidas por defecto; probar filtros, reinicio y estados de datos/carga/error.
 ## 3. Entrega
-- [ ] 3.1 Verificar caso real Barakaldo a Bilbao mañana antes de las 09:00 en móvil y escritorio; ejecutar build, pruebas y validación OpenSpec; actualizar README y subir commits con CI correcta.
+- [x] 3.1 Verificar caso real Barakaldo a Bilbao mañana antes de las 09:00 en móvil y escritorio; ejecutar build, pruebas y validación OpenSpec; actualizar README y subir commits con CI correcta.
