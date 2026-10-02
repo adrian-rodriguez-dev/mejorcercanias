@@ -22,3 +22,7 @@ La ingestión inicial de GTFS y el horario completo se han implementado en `date
 ## Instalación solicitada (2026-10-02)
 
 Propuesta [pwa-install-prompt](../openspec/changes/pwa-install-prompt/proposal.md) preparada: instalación opcional, aviso discreto y ayuda iOS. Pendiente de implementar. Offline de horarios se mantiene separado.
+
+## Renovación solicitada (2026-10-02)
+
+[automatic-gtfs-refresh](../openspec/changes/automatic-gtfs-refresh/proposal.md) concreta refresh-gtfs-in-actions: comprobación central horaria, renovación al superar 24 horas y JSON ligeros para el móvil. Spec preparada, implementación pendiente.
