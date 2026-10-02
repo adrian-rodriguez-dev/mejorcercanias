@@ -32,26 +32,23 @@ The system SHALL mostrar el destino opcional únicamente en la cabecera, una bar
 - **WHEN** se activa un botón de línea o el resumen de filtros horarios con teclado
 - **THEN** se puede seleccionar la línea directamente, acceder a controles horarios etiquetados y cerrar estos recuperando el foco en el resumen
 
-### Requirement: Barra de líneas de selección única
-The system SHALL mostrar Todas, C1, C2 y C3 en ese orden, en una sola fila sin desplegable ni desplazamiento horizontal a 360 px, en ambas vistas. SHALL aplicar el filtro inmediatamente y marcar exactamente una opción activa; Todas elimina solo el filtro de línea.
-#### Scenario: Seleccionar y limpiar
-- **WHEN** se pulsa C2 y después Todas
-- **THEN** primero aparecen salidas filtradas por C2 y después por todas las líneas, manteniendo destino y criterios horarios compatibles.
-#### Scenario: Línea activa repetida
-- **WHEN** se pulsa la línea ya seleccionada
-- **THEN** se mantiene seleccionada; Todas es la acción explícita para retirar el filtro.
-#### Scenario: Línea no disponible
-- **WHEN** el catálogo de la estación no incluye una de las tres líneas
-- **THEN** su botón sigue visible pero deshabilitado con explicación accesible; no se oculta la barra ni se inventan salidas.
-#### Scenario: Fecha sin servicios
-- **WHEN** una línea de esa estación carece de salidas para la fecha o filtros actuales
-- **THEN** sigue siendo seleccionable y se muestra ausencia de coincidencias, conservando la selección.
-
 ### Requirement: Identidad cromática oficial y accesible
-The system SHALL representar C1 en rojo, C2 en verde y C3 en azul claro conforme al plano oficial de Renfe Bilbao, con los mismos colores identificativos en botones y etiquetas de trenes. SHALL distinguir selección por marca o borde y estado accesible, además del color, manteniendo contraste legible y foco visible.
+The system SHALL colorear el recuadro completo de C1 rojo, C2 verde y C3 azul claro, usando un tono oscuro desmarcado y el tono luminoso de referencia al activarlo. SHALL conservar texto legible, foco y marca/estado accesible además del color; no habrá chip interior ni botón Todas.
 #### Scenario: Reconocimiento de línea
-- **WHEN** se selecciona una línea y se muestran sus trenes
-- **THEN** botón y etiquetas comparten identidad cromática y código textual; las opciones no activas conservan identificación de color.
+- **WHEN** se pulsa una línea desmarcada y se vuelve a pulsar
+- **THEN** su fondo pasa de oscuro a luminoso y de nuevo a oscuro, con aria-pressed y marca visual coherentes.
 #### Scenario: Teclado y pantalla pequeña
-- **WHEN** se navega por la barra con teclado o se toca desde un móvil
-- **THEN** los botones tienen etiqueta, estado de selección anunciado, foco visible y superficie de al menos 44 por 44 px.
+- **WHEN** se usan botones en móvil de 360 px o teclado
+- **THEN** los tres caben en una fila, tienen al menos 44 por 44 px, foco visible y descripción accesible de que ninguna selección equivale a todas.
+
+### Requirement: Barra de líneas con selección múltiple
+The system SHALL mostrar solo C1, C2 y C3; cada botón alterna su selección independientemente y el filtro acepta trenes de cualquiera de las líneas marcadas. Sin líneas marcadas SHALL mostrar todas, manteniendo destino y criterios horarios compatibles. El estado SHALL conservarse entre vistas e intercambio de estaciones.
+#### Scenario: Combinación
+- **WHEN** se marcan C1 y C2
+- **THEN** se muestran trenes de C1 o C2 que cumplen el resto de filtros.
+#### Scenario: Vaciar selección
+- **WHEN** se desmarca la última línea activa
+- **THEN** todos los botones quedan desmarcados y se muestran todas las líneas sin perder destino ni hora.
+#### Scenario: Disponibilidad
+- **WHEN** una línea no pasa por la estación
+- **THEN** no se puede activar, pero si estaba seleccionada antes de un intercambio se permite desmarcarla; la falta de servicios en una fecha no deshabilita por sí sola una línea de la estación.

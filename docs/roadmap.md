@@ -35,5 +35,5 @@ Spec [line-button-bar](../openspec/changes/archive/2026-10-02-line-button-bar/pr
 
 [compact-service-alerts](../openspec/changes/compact-service-alerts/proposal.md): indicador en la barra del título solo con avisos relevantes, detalle a un toque y cero espacio reservado sin incidencias. Prioridades: espacio útil y facilidad de uso. Spec preparada, implementación pendiente.
 
-La barra evoluciona a [multiselección](../openspec/changes/multi-line-toggle-bar/proposal.md): sin Todas, ninguna selección muestra todas; recuadros de color completo oscuros/inactivos y luminosos/activos.
+La barra evoluciona a [multiselección](../openspec/changes/archive/2026-10-02-multi-line-toggle-bar/proposal.md): sin Todas, ninguna selección muestra todas; recuadros de color completo oscuros/inactivos y luminosos/activos.
 
