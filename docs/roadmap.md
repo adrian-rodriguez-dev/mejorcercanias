@@ -18,3 +18,7 @@ Dependencias principales: ingestión → panel real → horario completo; datos 
 ## Actualización: horario por fecha (2026-10-02)
 
 La ingestión inicial de GTFS y el horario completo se han implementado en `date-aware-timetable`: 44 estaciones, fechas efectivas, filtros de salida/llegada y JSON compacto por estación. Las filas anteriores describen el backlog original; `ingest-renfe-static-gtfs`, `scheduled-departure-board` y `full-day-timetable` ya tienen una primera implementación. Próxima prioridad: refresco automático antes de que caduque el snapshot, luego PWA y tiempo real en propuestas independientes.
+
+## Instalación solicitada (2026-10-02)
+
+Propuesta [pwa-install-prompt](../openspec/changes/pwa-install-prompt/proposal.md) preparada: instalación opcional, aviso discreto y ayuda iOS. Pendiente de implementar. Offline de horarios se mantiene separado.
