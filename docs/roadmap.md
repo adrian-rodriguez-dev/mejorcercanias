@@ -21,11 +21,11 @@ La ingestión inicial de GTFS y el horario completo se han implementado en `date
 
 ## Instalación solicitada (2026-10-02)
 
-Propuesta [pwa-install-prompt](../openspec/changes/pwa-install-prompt/proposal.md) preparada: instalación opcional, aviso discreto y ayuda iOS. Pendiente de implementar. Offline de horarios se mantiene separado.
+Propuesta [pwa-install-prompt](../openspec/changes/archive/2026-10-02-pwa-install-prompt/proposal.md) preparada: instalación opcional, aviso discreto y ayuda iOS. Pendiente de implementar. Offline de horarios se mantiene separado.
 
 ## Renovación solicitada (2026-10-02)
 
-[automatic-gtfs-refresh](../openspec/changes/automatic-gtfs-refresh/proposal.md) concreta refresh-gtfs-in-actions: comprobación central horaria, renovación al finalizar la vigencia oficial del snapshot y JSON ligeros para el móvil. Spec preparada, implementación pendiente.
+[automatic-gtfs-refresh](../openspec/changes/archive/2026-10-03-automatic-gtfs-refresh/proposal.md) concreta refresh-gtfs-in-actions: comprobación central horaria, renovación al finalizar la vigencia oficial del snapshot y JSON ligeros para el móvil. Spec preparada, implementación pendiente.
 
 ## Barra de líneas (2026-10-02)
 
@@ -37,3 +37,6 @@ Spec [line-button-bar](../openspec/changes/archive/2026-10-02-line-button-bar/pr
 
 La barra evoluciona a [multiselección](../openspec/changes/archive/2026-10-02-multi-line-toggle-bar/proposal.md): sin Todas, ninguna selección muestra todas; recuadros de color completo oscuros/inactivos y luminosos/activos.
 
+
+## Estado 2026-10-03
+Instalación y renovación por caducidad implementadas, publicadas y archivadas. Incidencias: UI, adapter y pasarela preparados; tareas de integración en vivo pendientes de desplegar la pasarela por CORS de Renfe. Ver [evidencia y despliegue](service-alerts.md).
