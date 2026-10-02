@@ -4,7 +4,7 @@ test("mañana a Bilbao antes de las nueve y cambio de fecha", async ({
 }, testInfo) => {
   await page.clock.install({ time: new Date("2026-10-02T18:00:00+02:00") });
   await page.goto("/");
-  await page.getByRole("combobox").selectOption("13400");
+  await page.getByLabel("¿Desde dónde sales?").selectOption("13400");
   await expect(page.getByRole("listitem")).toHaveCount(8);
   await page
     .getByRole("button", { name: "Horario completo", exact: true })

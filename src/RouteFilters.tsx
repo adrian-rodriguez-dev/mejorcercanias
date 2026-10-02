@@ -15,6 +15,7 @@ export function RouteFilters({
   extraSummary,
   children,
   disabled = false,
+  showDestination = true,
 }: {
   rows: Departure[];
   value: RouteFilter;
@@ -23,6 +24,7 @@ export function RouteFilters({
   extraSummary?: string;
   children?: ReactNode;
   disabled?: boolean;
+  showDestination?: boolean;
 }) {
   const details = useRef<HTMLDetailsElement>(null);
   const summary = useRef<HTMLElement>(null);
@@ -31,7 +33,11 @@ export function RouteFilters({
   const destinations = stations.filter((station) => ids.includes(station.id));
   const text = [
     value.line || "Todas las líneas",
-    value.destination ? stationName(value.destination) : "Todos los destinos",
+    showDestination
+      ? value.destination
+        ? stationName(value.destination)
+        : "Todos los destinos"
+      : undefined,
     extraSummary,
   ]
     .filter(Boolean)
@@ -79,28 +85,30 @@ export function RouteFilters({
               ))}
             </select>
           </label>
-          <label>
-            Destino directo
-            <select
-              value={value.destination}
-              disabled={disabled}
-              onChange={(e) =>
-                onChange({ ...value, destination: e.target.value })
-              }
-            >
-              <option value="">Todos los destinos</option>
-              {value.destination && !ids.includes(value.destination) && (
-                <option value={value.destination}>
-                  {stationName(value.destination)}
-                </option>
-              )}
-              {destinations.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </label>
+          {showDestination && (
+            <label>
+              Destino directo
+              <select
+                value={value.destination}
+                disabled={disabled}
+                onChange={(e) =>
+                  onChange({ ...value, destination: e.target.value })
+                }
+              >
+                <option value="">Todos los destinos</option>
+                {value.destination && !ids.includes(value.destination) && (
+                  <option value={value.destination}>
+                    {stationName(value.destination)}
+                  </option>
+                )}
+                {destinations.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
         </div>
         {children}
         <div className="route-filter-actions">

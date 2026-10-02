@@ -27,6 +27,9 @@ export function Timetable({
   const { destination, line } = selected;
   const [mode, setMode] = useState<TimeMode>("all");
   const [time, setTime] = useState("09:00");
+  useEffect(() => {
+    if (!destination) setMode("all");
+  }, [destination]);
   const [retry, setRetry] = useState(0);
   const [loaded, setLoaded] = useState<{
     key: string;
@@ -116,6 +119,7 @@ export function Timetable({
         operador ya aplicados.
       </p>
       <RouteFilters
+        showDestination={!onRouteFilterChange}
         rows={current?.data?.departures ?? []}
         value={selected}
         onChange={(filter) => {

@@ -9,7 +9,7 @@
 - **Próximos trenes** es la pantalla inicial: estación favorita, línea, destino, hora y cuenta atrás.
 - **Horario completo** muestra toda la tabla de un día, sin ocultar las salidas anteriores a la hora actual.
 - **Hoy / Mañana / fecha / anterior / siguiente** para cambiar de día fácilmente.
-- **Línea y destino directo** en ambas vistas, dentro de una barra desplegable compacta. La selección se conserva al cambiar de vista durante la visita y se reinicia al cambiar de estación. Incluye paradas intermedias del mismo tren.
+- **Origen y destino opcional** en la cabecera del panel oscuro. El propio nombre es el selector; el botón ⇅ invierte el trayecto al instante, conservando vista, fecha, hora y línea. La línea y los filtros horarios permanecen en una barra desplegable compacta. La selección se conserva al cambiar de vista durante la visita y se reinicia al cambiar de estación. Incluye paradas intermedias del mismo tren.
 - **Destino directo**, **Salir a partir de** o **Llegar antes de**, con hora de salida y llegada del mismo tren.
 - Atajo **Mañana a Bilbao antes de las 09:00**: configura fecha, destino y hora; destaca la última salida compatible y conserva todas las alternativas anteriores.
 - **Ver todo el día** elimina los filtros. Volver a Próximos trenes recupera el panel inmediato.
@@ -66,7 +66,7 @@ Configurado con **OpenSpec 1.14.0**, `openspec init --tools=codex`, esquema ofic
 
 La [primera vertical](openspec/changes/archive/2026-10-02-bootstrap-app-and-station-board/proposal.md) está archivada y consolidada en `openspec/specs/station-board/spec.md`. Su [exploración](openspec/changes/archive/2026-10-02-bootstrap-app-and-station-board/exploration.md) conserva las decisiones iniciales.
 
-El cambio [date-aware-timetable](openspec/changes/archive/2026-10-02-date-aware-timetable/proposal.md) añade calendario oficial, horario diario y llegada antes de una hora. Tiene propuesta, diseño, deltas de especificación y tareas. Está archivado y sus requisitos consolidados en las specs. El cambio [compact-line-destination-filters](openspec/changes/compact-line-destination-filters/proposal.md) documenta los filtros móviles compartidos; su propuesta se creó antes de implementar.
+El cambio [date-aware-timetable](openspec/changes/archive/2026-10-02-date-aware-timetable/proposal.md) añade calendario oficial, horario diario y llegada antes de una hora. Tiene propuesta, diseño, deltas de especificación y tareas. Está archivado y sus requisitos consolidados en las specs. El cambio [compact-line-destination-filters](openspec/changes/archive/2026-10-02-compact-line-destination-filters/proposal.md) documenta los filtros móviles compartidos; su propuesta se creó antes de implementar.
 
 Para una nueva feature en Codex:
 
@@ -94,3 +94,4 @@ Seguir el orden de dependencias que devuelve OpenSpec y obtener `instructions` p
 
 Pendientes: refresco periódico de GTFS, PWA/offline y adaptador de tiempo real. Ver [roadmap](docs/roadmap.md) y [estudio de CORS](docs/renfe-data.md).
 
+Cambio de UX: [cabecera compacta e intercambio](openspec/changes/compact-station-header/proposal.md).

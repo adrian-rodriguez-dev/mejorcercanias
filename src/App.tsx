@@ -90,79 +90,84 @@ export function App({
         </span>
       </header>
       <main>
-        <section className="intro">
-          <p className="eyebrow">TU TRAYECTO DE CADA DÍA</p>
-          <h1>
-            Tu estación.
-            <br />
-            <span>De un vistazo.</span>
-          </h1>
-          <p>Elige una vez. La próxima, tus trenes estarán aquí.</p>
-        </section>
         <div className="workspace">
-          <aside className="station-card">
-            <p className="eyebrow">01 / TU PUNTO DE PARTIDA</p>
-            <label htmlFor="station">¿Desde dónde sales?</label>
-            <select
-              id="station"
-              value={stationId}
-              onChange={(e) => choose(e.target.value)}
-            >
-              <option value="" disabled>
-                Elige tu estación
-              </option>
-              {stations.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-            <div className="preference" role="status">
-              {station ? (
-                saved ? (
-                  <>✓ Recordaremos esta estación en este dispositivo.</>
-                ) : (
-                  <>
-                    No podemos guardar tu estación. Se mantendrá durante esta
-                    visita.
-                  </>
-                )
-              ) : (
-                <>Sin registro. Solo tu estación habitual.</>
-              )}
-            </div>
-            <div className="route-art" aria-hidden="true">
-              <span>C1</span>
-              <i />
-              <span>C2</span>
-              <i />
-              <span>C3</span>
-            </div>
-            <h2>Abre. Mira. Y en marcha.</h2>
-            <p className="aside-copy">
-              Tu próximo tren, sin volver a rellenar el mismo formulario.
-            </p>
-            <div className="network-note">
-              BILBAO / BIZKAIA
-              <span>{stations.length} estaciones · C1, C2 y C3</span>
-            </div>
-          </aside>
-          <section className="board" aria-labelledby="board-title">
-            <div className="board-top">
-              <div>
-                <p className="eyebrow">
-                  02 /{" "}
-                  {view === "next" ? "PRÓXIMAS SALIDAS" : "HORARIO COMPLETO"}
-                </p>
-                <h2 id="board-title">
-                  {station?.name ?? "Tu próximo tren empieza aquí"}
-                </h2>
-              </div>
+          <section className="board" aria-label="Panel de trenes">
+            <div className="board-top compact-top">
+              <span className="eyebrow">
+                {view === "next" ? "PRÓXIMAS SALIDAS" : "HORARIO COMPLETO"}
+              </span>
               <div className="clock">
                 <strong>{clockTime(now)}</strong>
                 <span>Hora de Bilbao</span>
               </div>
             </div>
+            <div className="journey-header">
+              <label className="origin-field" htmlFor="station">
+                <span>Origen</span>
+                <select
+                  id="station"
+                  aria-label="¿Desde dónde sales?"
+                  value={stationId}
+                  onChange={(e) => choose(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Elige tu estación
+                  </option>
+                  {stations.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                className="swap-stations"
+                type="button"
+                aria-label="Intercambiar origen y destino"
+                title="Intercambiar origen y destino"
+                disabled={!stationId || !routeFilter.destination}
+                onClick={() => {
+                  const nextOrigin = routeFilter.destination;
+                  if (!nextOrigin || nextOrigin === stationId) return;
+                  setRouteFilter({ ...routeFilter, destination: stationId });
+                  setStationId(nextOrigin);
+                  setSaved(saveStation(nextOrigin));
+                  setNow(clock());
+                }}
+              >
+                ⇅
+              </button>
+              <label className="destination-field" htmlFor="destination">
+                <span>Destino · opcional</span>
+                <select
+                  id="destination"
+                  aria-label="Destino directo"
+                  value={routeFilter.destination}
+                  disabled={!stationId}
+                  onChange={(e) =>
+                    setRouteFilter({
+                      ...routeFilter,
+                      destination: e.target.value,
+                    })
+                  }
+                >
+                  <option value="">Todos los destinos</option>
+                  {stations
+                    .filter((s) => s.id !== stationId)
+                    .map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.name}
+                      </option>
+                    ))}
+                </select>
+              </label>
+            </div>
+            {!saved && (
+              <p className="storage-warning" role="status">
+                No podemos guardar tu estación. Se mantendrá durante esta
+                visita.
+              </p>
+            )}
             {station && (
               <nav className="board-tabs" aria-label="Vista de horarios">
                 <button
@@ -192,6 +197,7 @@ export function App({
             {station && view === "next" && (
               <div className="next-route-filters">
                 <RouteFilters
+                  showDestination={false}
                   rows={current?.schedule?.departures ?? []}
                   value={routeFilter}
                   onChange={setRouteFilter}
@@ -216,7 +222,6 @@ export function App({
               </div>
             ) : view === "day" ? (
               <Timetable
-                key={stationId}
                 stationId={stationId}
                 now={now}
                 routeFilter={routeFilter}

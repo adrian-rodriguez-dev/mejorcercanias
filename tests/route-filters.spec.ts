@@ -33,7 +33,7 @@ test("filtros compactos compartidos, destino intermedio y uso móvil", async ({
   }
   await page.getByRole("button", { name: "Ver trenes", exact: true }).click();
   await expect(summary).toBeFocused();
-  await expect(summary).toContainText("C2 · Bilbao-Abando");
+  await expect(summary).toContainText("C2");
   expect(await page.locator(".departures .line").allTextContents()).toEqual(
     Array(8).fill("C2"),
   );
@@ -47,9 +47,7 @@ test("filtros compactos compartidos, destino intermedio y uso móvil", async ({
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();
   await expect(page.getByRole("table")).toBeVisible();
-  await expect(page.locator(".route-filter-summary")).toContainText(
-    "C2 · Bilbao-Abando",
-  );
+  await expect(page.locator(".route-filter-summary")).toContainText("C2");
   await page.locator(".route-filters summary").click();
   await expect(
     page.getByRole("combobox", { name: "Línea", exact: true }),
@@ -86,7 +84,7 @@ test("filtros compactos compartidos, destino intermedio y uso móvil", async ({
   await expect(page.getByLabel("Destino directo")).toHaveValue("");
   await page.getByLabel("¿Desde dónde sales?").selectOption("13101");
   await expect(page.locator(".route-filter-summary")).toHaveText(
-    "Todas las líneas · Todos los destinos",
+    "Todas las líneas",
   );
   const sizes = await page.evaluate(() => [
     document.documentElement.scrollWidth,
