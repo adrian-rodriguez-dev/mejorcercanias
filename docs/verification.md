@@ -35,3 +35,5 @@ Cabecera compacta: 23 pruebas TypeScript y 10 pruebas de navegador correctas; bu
 GitHub Pages: despliegue 37061542140 correcto, commit 68e0e69. Comprobación pública en móvil: sin tarjeta externa, intercambio a origen Bilbao (13200) y destino Santurtzi (13405), ocho trenes cargados.
 
 Barra de líneas: 23 pruebas unitarias y 10 de navegador correctas, build y OpenSpec válidos. Comprobados teclado, aria-pressed, una fila a 360 px, botones de 44 px, primer tren visible, colores compartidos con etiquetas, Todas conserva destino/hora y disponibilidad basada en catálogo incluso en fechas sin datos.
+
+Barra publicada y verificada en HTTPS a 360 px: cuatro botones y ocho próximas salidas C2 tras seleccionarla. GitHub Actions 37063313340 correcto (81278ec).

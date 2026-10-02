@@ -29,4 +29,5 @@ Propuesta [pwa-install-prompt](../openspec/changes/pwa-install-prompt/proposal.m
 
 ## Barra de líneas (2026-10-02)
 
-Spec [line-button-bar](../openspec/changes/line-button-bar/proposal.md): Todas, C1, C2 y C3 como botones visibles, identidad cromática oficial y selección accesible. Pendiente de implementar.
+Spec [line-button-bar](../openspec/changes/line-button-bar/proposal.md): Todas, C1, C2 y C3 como botones visibles, identidad cromática oficial y selección accesible. Implementada y publicada.
+
