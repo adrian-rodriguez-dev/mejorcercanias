@@ -41,3 +41,5 @@ Barra publicada y verificada en HTTPS a 360 px: cuatro botones y ocho próximas 
 Multiselección: 24 pruebas unitarias y 10 de navegador correctas; build y OpenSpec válidos. Unión C1/C2, vacío equivale a todas, destino/hora conservados, estados de fondo distintos, intercambio con línea no disponible desmarcable, primer tren visible y controles de 44 px a 360 px.
 
 Publicación multiselección: Actions 37066108985 correcto (9f9d988). Web pública verificada a 360 px: tres botones y dos líneas activas simultáneas.
+
+Cabecera redundante eliminada: 24 pruebas unitarias, 10 de navegador, build y OpenSpec correctos. Actions 37066807286 correcto; web pública a 360 px comprobada sin .board-top ni .clock, manteniendo selector de origen.
