@@ -1,10 +1,10 @@
 # Design
 ## Context
-App tiene una barra .board-top.compact-top con título de vista y reloj. No existe proveedor de alertas. El GTFS estático no contiene estado de incidencias; docs/renfe-data.md solo verificó CORS de trip_updates, no de alerts.
+La fila redundante de título de vista y reloj se elimina en remove-redundant-board-header. La cabecera ahora empieza en origen/destino. No existe proveedor de alertas. El GTFS estático no contiene estado de incidencias; docs/renfe-data.md solo verificó CORS de trip_updates, no de alerts.
 ## Goals / Non-Goals
 Información relevante con consumo mínimo de pantalla. No convertir la cabecera en un tablón ni abrir avisos automáticamente.
 ## Decisions
-- Botón compacto integrado en la misma fila del título; con incidencia se prioriza el botón y se puede ocultar la etiqueta secundaria «Hora de Bilbao». Grid flexible: título abreviado e indicador, sin añadir fila en móvil. Texto corto (p.ej. «C1 · Corte» o «2 incidencias»), nunca ticker ni animación. Nombre accesible contiene resumen completo. El color refuerza pero no sustituye icono y texto.
+- Botón compacto integrado junto al origen en la cabecera de trayecto; no recrear la fila eliminada de título/reloj ni reservar hueco sin incidencia. Grid flexible y controles legibles, sin añadir fila permanente en móvil. Texto corto (p.ej. «C1 · Corte» o «2 incidencias»), nunca ticker ni animación. Nombre accesible contiene resumen completo. El color refuerza pero no sustituye icono y texto.
 - Detalle mediante diálogo accesible móvil con título, cierre, Escape, gestión de foco y desplazamiento interno. No abrirlo por polling. Si desaparecen los avisos mientras está abierto, informar y permitir cerrar devolviendo foco al título cuando ya no exista el botón.
 - Fuente candidata oficial confirmada en catálogo: Incidencias y avisos, recurso alerts.json; anuncia actualización cada 20 segundos. Verificar URL efectiva, esquema, IDs de Bilbao, timestamp y CORS desde el origen publicado antes de conectar. No asumir que las restricciones observadas para trip_updates se aplican igual.
 - Adapter con estados loading/available/unavailable y avisos normalizados: id, texto, entidades oficiales, períodos, impacto, sourceTimestamp. Consultar cada 60 s mientras visible y al reanudar con límite de frecuencia. Considerar no verificable una observación con más de 5 minutos; hacer configurable este umbral del feed, independiente del validTo del GTFS estático. Interpretar feed completo/diferencial y retiradas según contrato real, sin asumir que un delta vacío elimina avisos.
