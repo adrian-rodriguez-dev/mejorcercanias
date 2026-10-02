@@ -101,3 +101,5 @@ Las líneas se marcan de forma independiente: el recuadro completo se ilumina al
 El panel empieza directamente en origen y destino: no incluye rótulo de vista ni reloj redundantes. Se conservan las pestañas y las cuentas atrás de cada tren.
 
 La barra de líneas muestra solo las que pasan por origen y destino; con cero o una opción se oculta por completo. Sin destino se usa el origen. Cambiar estaciones elimina selecciones incompatibles; la disponibilidad no depende de los próximos ocho trenes ni de una fecha sin servicio.
+
+Se recuerdan origen, destino y líneas en localStorage (`mejorcercanias.journey.v1`), incluidas selecciones vacías. Al abrir se valida el catálogo y se migra la antigua preferencia de estación. Si no se puede guardar, la selección funciona durante la visita.

@@ -11,7 +11,12 @@ import {
 import { stations } from "./data/stations";
 import { clockTime, dayLabel, localDay, upcoming } from "./data/time";
 import type { ScheduleProvider, StationSchedule } from "./data/types";
-import { readStation, saveStation } from "./preference";
+import {
+  readJourney,
+  saveJourney,
+  linesForStations,
+  normalizeJourney,
+} from "./preference";
 
 type LoadState = {
   stationId: string;
@@ -27,30 +32,26 @@ export function App({
   provider?: ScheduleProvider;
   clock?: () => number;
 }) {
-  const [stationId, setStationId] = useState(readStation);
+  const [initialJourney] = useState(readJourney);
+  const [stationId, setStationId] = useState(initialJourney.stationId);
   const [saved, setSaved] = useState(true);
   const [now, setNow] = useState(clock);
   const [retry, setRetry] = useState(0);
   const [view, setView] = useState<"next" | "day">("next");
-  const [routeFilter, storeRouteFilter] = useState(emptyRouteFilter);
-  const linesForStations = (origin: string, destination: string) => {
-    const originLines = stations.find((s) => s.id === origin)?.lines ?? [];
-    const destinationLines =
-      stations.find((s) => s.id === destination)?.lines ?? [];
-    return originLines.filter(
-      (line) => !destination || destinationLines.includes(line),
-    );
-  };
+  const [routeFilter, storeRouteFilter] = useState<RouteFilter>(() => ({
+    destination: initialJourney.destination,
+    lines: initialJourney.lines,
+  }));
   const setRouteFilter = (filter: RouteFilter, origin = stationId) => {
-    const available = linesForStations(origin, filter.destination);
-    storeRouteFilter({
+    const { destination, lines } = normalizeJourney({
+      stationId: origin,
       ...filter,
-      lines:
-        available.length < 2
-          ? []
-          : filter.lines.filter((line) => available.includes(line)),
     });
+    storeRouteFilter({ destination, lines });
   };
+  useEffect(() => {
+    if (stationId) setSaved(saveJourney({ stationId, ...routeFilter }));
+  }, [stationId, routeFilter]);
   const availableLines = linesForStations(stationId, routeFilter.destination);
   const [load, setLoad] = useState<LoadState>({
     stationId: "",
@@ -94,7 +95,6 @@ export function App({
       : [];
   const choose = (id: string) => {
     setRouteFilter(emptyRouteFilter);
-    setSaved(saveStation(id));
     setStationId(id);
     setNow(clock());
   };
@@ -149,7 +149,6 @@ export function App({
                     nextOrigin,
                   );
                   setStationId(nextOrigin);
-                  setSaved(saveStation(nextOrigin));
                   setNow(clock());
                 }}
               >
@@ -182,7 +181,7 @@ export function App({
             </div>
             {!saved && (
               <p className="storage-warning" role="status">
-                No podemos guardar tu estación. Se mantendrá durante esta
+                No podemos guardar tu selección. Se mantendrá durante esta
                 visita.
               </p>
             )}
@@ -364,8 +363,8 @@ export function App({
         </div>
         <div className="below-board">
           <span>
-            Tu estación se guarda solo en este navegador. Datos: Renfe Operadora
-            · CC BY 4.0.
+            Tu trayecto y líneas se guardan solo en este navegador. Datos: Renfe
+            Operadora · CC BY 4.0.
           </span>
           <a
             href="https://www.renfe.com/es/es/cercanias"

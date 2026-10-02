@@ -67,5 +67,5 @@ test("cabecera única e intercambio conserva día, hora y preferencia", async ({
   ).toBeVisible();
   await page.reload();
   await expect(origin).toHaveValue("13405");
-  await expect(destination).toHaveValue("");
+  await expect(destination).toHaveValue("13101");
 });
