@@ -94,4 +94,4 @@ Seguir el orden de dependencias que devuelve OpenSpec y obtener `instructions` p
 
 Pendientes: refresco periódico de GTFS, PWA/offline y adaptador de tiempo real. Ver [roadmap](docs/roadmap.md) y [estudio de CORS](docs/renfe-data.md).
 
-Cambio de UX: [cabecera compacta e intercambio](openspec/changes/compact-station-header/proposal.md).
+Cambio de UX: [cabecera compacta e intercambio](openspec/changes/archive/2026-10-02-compact-station-header/proposal.md).

@@ -26,3 +26,7 @@ Propuesta [pwa-install-prompt](../openspec/changes/pwa-install-prompt/proposal.m
 ## Renovación solicitada (2026-10-02)
 
 [automatic-gtfs-refresh](../openspec/changes/automatic-gtfs-refresh/proposal.md) concreta refresh-gtfs-in-actions: comprobación central horaria, renovación al superar 24 horas y JSON ligeros para el móvil. Spec preparada, implementación pendiente.
+
+## Barra de líneas (2026-10-02)
+
+Spec [line-button-bar](../openspec/changes/line-button-bar/proposal.md): Todas, C1, C2 y C3 como botones visibles, identidad cromática oficial y selección accesible. Pendiente de implementar.
