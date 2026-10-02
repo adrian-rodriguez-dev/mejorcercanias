@@ -1,10 +1,6 @@
 import { useRef, type ReactNode } from "react";
 import { stations, stationName } from "./data/stations";
-import {
-  changeLine,
-  routeDestinations,
-  type RouteFilter,
-} from "./data/route-filters";
+import { routeDestinations, type RouteFilter } from "./data/route-filters";
 import type { Departure } from "./data/types";
 
 export function RouteFilters({
@@ -28,17 +24,15 @@ export function RouteFilters({
 }) {
   const details = useRef<HTMLDetailsElement>(null);
   const summary = useRef<HTMLElement>(null);
-  const lines = [...new Set(rows.map((row) => row.line))].sort();
   const ids = routeDestinations(rows, value.line);
   const destinations = stations.filter((station) => ids.includes(station.id));
   const text = [
-    value.line || "Todas las líneas",
     showDestination
       ? value.destination
         ? stationName(value.destination)
         : "Todos los destinos"
       : undefined,
-    extraSummary,
+    extraSummary || "Todo el día",
   ]
     .filter(Boolean)
     .join(" · ");
@@ -65,26 +59,6 @@ export function RouteFilters({
       </summary>
       <div className="route-filter-body">
         <div className="route-selectors">
-          <label>
-            Línea
-            <select
-              value={value.line}
-              disabled={disabled}
-              onChange={(e) =>
-                onChange(changeLine(rows, value, e.target.value))
-              }
-            >
-              <option value="">Todas las líneas</option>
-              {value.line && !lines.includes(value.line) && (
-                <option value={value.line}>{value.line}</option>
-              )}
-              {lines.map((line) => (
-                <option key={line} value={line}>
-                  {line}
-                </option>
-              ))}
-            </select>
-          </label>
           {showDestination && (
             <label>
               Destino directo

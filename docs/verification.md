@@ -33,3 +33,5 @@ Publicación GitHub Pages: ejecución 37059728144 correcta (724ece3). URL HTTPS 
 Cabecera compacta: 23 pruebas TypeScript y 10 pruebas de navegador correctas; build y OpenSpec estrictos válidos. Verificados panel único, intercambio Santurtzi/Bilbao con teclado, conservación de fecha y hora, persistencia del origen invertido, destino vacío y ruta sin servicio directo. Móvil 360 px sin desbordamiento y primer tren visible. Capturas inspeccionadas.
 
 GitHub Pages: despliegue 37061542140 correcto, commit 68e0e69. Comprobación pública en móvil: sin tarjeta externa, intercambio a origen Bilbao (13200) y destino Santurtzi (13405), ocho trenes cargados.
+
+Barra de líneas: 23 pruebas unitarias y 10 de navegador correctas, build y OpenSpec válidos. Comprobados teclado, aria-pressed, una fila a 360 px, botones de 44 px, primer tren visible, colores compartidos con etiquetas, Todas conserva destino/hora y disponibilidad basada en catálogo incluso en fechas sin datos.

@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { renfeProvider, manifest } from "./data/renfe";
 import { Timetable } from "./Timetable";
-import { RouteFilters } from "./RouteFilters";
-import { emptyRouteFilter, filterRoutes } from "./data/route-filters";
+import { LineBar } from "./LineBar";
+import {
+  changeLine,
+  emptyRouteFilter,
+  filterRoutes,
+} from "./data/route-filters";
 import { stations } from "./data/stations";
 import { clockTime, dayLabel, localDay, upcoming } from "./data/time";
 import type { ScheduleProvider, StationSchedule } from "./data/types";
@@ -184,6 +188,24 @@ export function App({
                 </button>
               </nav>
             )}
+            {station && (
+              <LineBar
+                value={routeFilter.line}
+                available={station.lines}
+                onChange={(line) => {
+                  if (line === routeFilter.line) return;
+                  setRouteFilter(
+                    !line || current?.status !== "ready"
+                      ? { ...routeFilter, line }
+                      : changeLine(
+                          current.schedule!.departures,
+                          routeFilter,
+                          line,
+                        ),
+                  );
+                }}
+              />
+            )}
             <div className="demo-notice">
               <span className="demo-tag">
                 {current?.schedule?.source === "demo" ? "DEMO" : "RENFE"}
@@ -194,18 +216,6 @@ export function App({
                   : "Horario programado · Sin información de retrasos en tiempo real"}
               </span>
             </div>
-            {station && view === "next" && (
-              <div className="next-route-filters">
-                <RouteFilters
-                  showDestination={false}
-                  rows={current?.schedule?.departures ?? []}
-                  value={routeFilter}
-                  onChange={setRouteFilter}
-                  onClear={() => setRouteFilter(emptyRouteFilter)}
-                  disabled={current?.status !== "ready"}
-                />
-              </div>
-            )}
             {!station ? (
               <div className="empty">
                 <span className="empty-icon" aria-hidden="true">

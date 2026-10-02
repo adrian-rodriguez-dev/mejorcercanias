@@ -1087,3 +1087,68 @@ time {
     padding-bottom: 14px;
   }
 }
+
+/* RGB conversions sampled from the official Bilbao PDF. See docs/line-colors.md. */
+.board {
+  --bilbao-c1: #e5232c;
+  --bilbao-c2: #0f9d4b;
+  --bilbao-c3: #5aafe4;
+}
+.line-c1 {
+  background: var(--bilbao-c1);
+  color: #000;
+}
+.line-c2 {
+  background: var(--bilbao-c2);
+  color: #000;
+}
+.line-c3 {
+  background: var(--bilbao-c3);
+  color: #000;
+}
+.line-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
+  gap: 6px;
+  margin: 0 20px 16px;
+}
+.line-bar button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background: #18352f;
+  border: 2px solid #587668;
+  border-radius: 8px;
+  color: #f4f6ee;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.line-bar button[aria-pressed="true"] {
+  border-color: #def387;
+  background: #2c493b;
+}
+.line-bar button:focus-visible {
+  outline: 3px solid #def387;
+  outline-offset: 3px;
+}
+.line-bar button:disabled {
+  cursor: not-allowed;
+  border-style: dashed;
+}
+.line-bar button:disabled .line {
+  filter: saturate(0.65);
+}
+.line-bar .line {
+  min-width: 30px;
+  width: 30px;
+}
+.line-selected {
+  width: 9px;
+  font-size: 12px;
+  font-weight: 800;
+}
