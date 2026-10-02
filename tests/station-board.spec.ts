@@ -8,6 +8,8 @@ test("elegir estación, recordar y cambiar sin formularios adicionales", async (
   await page.clock.install({ time: new Date("2026-10-02T10:00:00+02:00") });
   await page.goto("/");
   await expect(page.getByLabel("¿Desde dónde sales?")).toHaveValue("");
+  await expect(page.locator(".board .demo-notice")).toHaveCount(0);
+  await expect(page.locator(".board .schedule-provenance")).toHaveCount(0);
   await expect(
     page.getByText(
       "Horario programado · Sin información de retrasos en tiempo real",

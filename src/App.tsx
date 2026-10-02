@@ -262,16 +262,7 @@ export function App({
                 onChange={(lines) => setRouteFilter({ ...routeFilter, lines })}
               />
             )}
-            <div className="demo-notice">
-              <span className="demo-tag">
-                {current?.schedule?.source === "demo" ? "DEMO" : "RENFE"}
-              </span>
-              <span>
-                {current?.schedule?.source === "demo"
-                  ? "Horarios ficticios. No los uses para viajar."
-                  : "Horario programado · Sin información de retrasos en tiempo real"}
-              </span>
-            </div>
+
             {station &&
               routeFilter.destination &&
               !stations.some((s) => s.id === routeFilter.destination) && (
@@ -452,6 +443,11 @@ export function App({
           ready={Boolean(station && current?.status === "ready")}
         />
         <div className="below-board">
+          <span className="schedule-provenance">
+            {current?.schedule?.source === "demo"
+              ? "Horarios ficticios. No los uses para viajar."
+              : "Horario programado · Sin información de retrasos en tiempo real"}
+          </span>
           <span>
             Tu trayecto y líneas se guardan solo en este navegador. Datos: Renfe
             Operadora · CC BY 4.0.
