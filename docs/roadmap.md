@@ -1,0 +1,16 @@
+# Propuestas futuras
+
+Esto es un backlog, no ocho especificaciones aprobadas. Crear cada propuesta con OpenSpec cuando llegue su turno.
+
+| Área / propuesta sugerida           | Resultado y límite                                                                                                                                            |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `refine-station-shell`              | Evolucionar el shell inicial, accesibilidad y legibilidad con uso real; evitar convertirlo en buscador de rutas.                                              |
+| `expand-favorite-station-selection` | Sustituir las cinco estaciones demo por catálogo real, búsqueda y gestión de favorita; persistencia simple ya existe.                                         |
+| `ingest-renfe-static-gtfs`          | Descargar GTFS oficial, validar calendario y excepciones, generar catálogo y JSON compacto por estación/núcleo con vigencia y atribución. Primera prioridad.  |
+| `scheduled-departure-board`         | Conectar horarios oficiales al panel, identificar dirección, gestionar agotamiento/vigencia y eliminar semántica demo. No afirmar puntualidad.                |
+| `full-day-timetable`                | Consultar todo el día conservando la estación favorita, con agrupación por dirección y días de servicio correctos.                                            |
+| `pwa-basic-offline`                 | Instalación y último horario válido en caché; indicar offline y antigüedad, sin prometer tiempo real.                                                         |
+| `refresh-gtfs-in-actions`           | Automatizar la ingestión validada, publicar de forma atómica y conservar el último dataset correcto ante fallos. La CI actual solo verifica código.           |
+| `renfe-realtime-adapter`            | Verificar correspondencia de trip_id/stop_id, CORS desde el origen final, cancelaciones, caducidad y fallback al horario. Worker mínimo solo si es necesario. |
+
+Dependencias principales: ingestión → panel real → horario completo; datos vigentes → offline; ingestión validada → refresco automático; panel real e IDs comprobados → tiempo real. No se crea backend tradicional por anticipado.

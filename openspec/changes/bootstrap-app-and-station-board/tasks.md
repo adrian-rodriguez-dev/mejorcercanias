@@ -8,5 +8,5 @@
 - [x] 2.2 Implementar selector persistente, panel responsive, reloj y estados de carga/error/vacío; pasar pruebas de componentes y documentar uso.
 
 ## 3. Verificación y entrega
-- [ ] 3.1 Verificar integración con persistencia, flujo móvil y cambios de estación en navegador; pasar build y validación estricta.
-- [ ] 3.2 Documentar desarrollo, OpenSpec, futuras propuestas y estudio de Renfe/CORS; dejar commits revisables.
+- [x] 3.1 Verificar integración con persistencia, flujo móvil y cambios de estación en navegador; pasar build y validación estricta.
+- [x] 3.2 Documentar desarrollo, OpenSpec, futuras propuestas y estudio de Renfe/CORS; dejar commits revisables.

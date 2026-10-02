@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "spec": "openspec",
-    "check": "npm test && npm run build && openspec validate --all --strict"
+    "check": "npm test && npm run build && openspec validate --all --strict",
+    "format": "prettier --write src tests docs *.json *.ts README.md .github/workflows/*.yml"
   },
   "dependencies": {
     "luxon": "^3.7.2",
@@ -32,6 +33,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "jsdom": "^28.1.0",
+    "prettier": "3.9.9",
     "typescript": "^7.0.2",
     "vite": "^8.3.2",
     "vitest": "^5.0.3"
