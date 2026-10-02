@@ -45,3 +45,5 @@ Publicación multiselección: Actions 37066108985 correcto (9f9d988). Web públi
 Cabecera redundante eliminada: 24 pruebas unitarias, 10 de navegador, build y OpenSpec correctos. Actions 37066807286 correcto; web pública a 360 px comprobada sin .board-top ni .clock, manteniendo selector de origen.
 
 Llegadas al destino: 27 pruebas unitarias y 12 de navegador correctas; build y OpenSpec estrictos válidos. Verificados destino intermedio, cambio e inversión, eliminación, llegadas inválidas, medianoche (+1 día), cambio horario y cuenta atrás asociada a salida. Captura inspeccionada a 360 px: sin nueva columna ni desbordamiento, primer tren visible. La llegada diaria comparte la misma validación de datos.
+
+Llegadas publicadas: Actions 37067822308 con comprobación y despliegue correctos (804e951). Verificación HTTPS a 360 px con datos oficiales Barakaldo–Abando: ocho trenes, llegada visible y sin desbordamiento.
