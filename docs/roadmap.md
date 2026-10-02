@@ -29,9 +29,11 @@ Propuesta [pwa-install-prompt](../openspec/changes/pwa-install-prompt/proposal.m
 
 ## Barra de líneas (2026-10-02)
 
-Spec [line-button-bar](../openspec/changes/line-button-bar/proposal.md): Todas, C1, C2 y C3 como botones visibles, identidad cromática oficial y selección accesible. Implementada y publicada.
-
+Spec [line-button-bar](../openspec/changes/archive/2026-10-02-line-button-bar/proposal.md): Todas, C1, C2 y C3 como botones visibles, identidad cromática oficial y selección accesible. Implementada y publicada.
 
 ## Incidencias compactas (2026-10-02)
 
 [compact-service-alerts](../openspec/changes/compact-service-alerts/proposal.md): indicador en la barra del título solo con avisos relevantes, detalle a un toque y cero espacio reservado sin incidencias. Prioridades: espacio útil y facilidad de uso. Spec preparada, implementación pendiente.
+
+La barra evoluciona a [multiselección](../openspec/changes/multi-line-toggle-bar/proposal.md): sin Todas, ninguna selección muestra todas; recuadros de color completo oscuros/inactivos y luminosos/activos.
+

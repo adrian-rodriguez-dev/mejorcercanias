@@ -8,14 +8,14 @@ export interface TimetableFilter {
   destination: string;
   mode: TimeMode;
   time: string;
-  line?: string;
+  lines?: string[];
 }
 export function filterTimetable(rows: Departure[], filter: TimetableFilter) {
   const limit = DateTime.fromISO(`${filter.date}T${filter.time || "00:00"}`, {
     zone: ZONE,
   }).toMillis();
   return filterRoutes(rows, {
-    line: filter.line ?? "",
+    lines: filter.lines ?? [],
     destination: filter.destination,
   })
     .flatMap((row) => {

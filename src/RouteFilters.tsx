@@ -24,7 +24,7 @@ export function RouteFilters({
 }) {
   const details = useRef<HTMLDetailsElement>(null);
   const summary = useRef<HTMLElement>(null);
-  const ids = routeDestinations(rows, value.line);
+  const ids = routeDestinations(rows, value.lines);
   const destinations = stations.filter((station) => ids.includes(station.id));
   const text = [
     showDestination
@@ -36,7 +36,9 @@ export function RouteFilters({
   ]
     .filter(Boolean)
     .join(" · ");
-  const active = Boolean(value.line || value.destination || extraSummary);
+  const active = Boolean(
+    value.lines.length || value.destination || extraSummary,
+  );
   const close = () => {
     if (details.current) details.current.open = false;
     summary.current?.focus();

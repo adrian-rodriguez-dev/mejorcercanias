@@ -18,9 +18,10 @@ The system SHALL mostrar solo C1, C2 y C3; cada botón alterna su selección ind
 ## MODIFIED Requirements
 ### Requirement: Identidad cromática oficial y accesible
 The system SHALL colorear el recuadro completo de C1 rojo, C2 verde y C3 azul claro, usando un tono oscuro desmarcado y el tono luminoso de referencia al activarlo. SHALL conservar texto legible, foco y marca/estado accesible además del color; no habrá chip interior ni botón Todas.
-#### Scenario: Alternancia visual
+#### Scenario: Reconocimiento de línea
 - **WHEN** se pulsa una línea desmarcada y se vuelve a pulsar
 - **THEN** su fondo pasa de oscuro a luminoso y de nuevo a oscuro, con aria-pressed y marca visual coherentes.
-#### Scenario: Móvil y teclado
+#### Scenario: Teclado y pantalla pequeña
 - **WHEN** se usan botones en móvil de 360 px o teclado
 - **THEN** los tres caben en una fila, tienen al menos 44 por 44 px, foco visible y descripción accesible de que ninguna selección equivale a todas.
+

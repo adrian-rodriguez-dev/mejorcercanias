@@ -3,7 +3,7 @@ import { renfeProvider, manifest } from "./data/renfe";
 import { Timetable } from "./Timetable";
 import { LineBar } from "./LineBar";
 import {
-  changeLine,
+  changeLines,
   emptyRouteFilter,
   filterRoutes,
 } from "./data/route-filters";
@@ -190,20 +190,17 @@ export function App({
             )}
             {station && (
               <LineBar
-                value={routeFilter.line}
+                value={routeFilter.lines}
                 available={station.lines}
-                onChange={(line) => {
-                  if (line === routeFilter.line) return;
+                onChange={(lines) =>
                   setRouteFilter(
-                    !line || current?.status !== "ready"
-                      ? { ...routeFilter, line }
-                      : changeLine(
-                          current.schedule!.departures,
-                          routeFilter,
-                          line,
-                        ),
-                  );
-                }}
+                    changeLines(
+                      current?.schedule?.departures ?? [],
+                      routeFilter,
+                      lines,
+                    ),
+                  )
+                }
               />
             )}
             <div className="demo-notice">
@@ -267,11 +264,11 @@ export function App({
               <div className="empty" role="status">
                 <h3>No hay próximas salidas.</h3>
                 <p>
-                  {routeFilter.line || routeFilter.destination
+                  {routeFilter.lines.length > 0 || routeFilter.destination
                     ? "No hay trenes que coincidan con estos filtros. Prueba otra línea o destino."
                     : "No hay más trenes en el horario disponible."}
                 </p>
-                {(routeFilter.line || routeFilter.destination) && (
+                {(routeFilter.lines.length > 0 || routeFilter.destination) && (
                   <button
                     className="light-button"
                     onClick={() => setRouteFilter(emptyRouteFilter)}

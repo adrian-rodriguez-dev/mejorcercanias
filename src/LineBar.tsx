@@ -3,37 +3,43 @@ export function LineBar({
   available,
   onChange,
 }: {
-  value: string;
+  value: string[];
   available: string[];
-  onChange: (line: string) => void;
+  onChange: (lines: string[]) => void;
 }) {
   return (
-    <div className="line-bar" role="group" aria-label="Filtrar por línea">
-      {["", "C1", "C2", "C3"].map((line) => {
-        const unavailable = Boolean(line && !available.includes(line));
+    <div
+      className="line-bar"
+      role="group"
+      aria-label="Filtrar por líneas. Ninguna marcada muestra todas."
+    >
+      {["C1", "C2", "C3"].map((line) => {
+        const active = value.includes(line),
+          unavailable = !available.includes(line);
         return (
           <button
             key={line}
+            className={`toggle-${line.toLowerCase()}`}
             type="button"
-            aria-pressed={value === line}
-            disabled={unavailable}
+            aria-pressed={active}
+            disabled={unavailable && !active}
             title={
-              unavailable ? `${line}: no pasa por esta estación` : undefined
-            }
-            aria-label={
               unavailable
                 ? `${line}: no pasa por esta estación`
-                : line || "Todas"
+                : "Marca una o varias líneas. Ninguna marcada muestra todas."
             }
-            onClick={() => onChange(line)}
+            aria-label={
+              unavailable ? `${line}: no pasa por esta estación` : line
+            }
+            onClick={() =>
+              onChange(
+                active ? value.filter((l) => l !== line) : [...value, line],
+              )
+            }
           >
-            <span
-              className={line ? `line line-${line.toLowerCase()}` : "all-lines"}
-            >
-              {line || "Todas"}
-            </span>
+            {line}
             <span className="line-selected" aria-hidden="true">
-              {value === line ? "✓" : ""}
+              {active ? "✓" : ""}
             </span>
           </button>
         );

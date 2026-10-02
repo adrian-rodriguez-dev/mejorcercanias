@@ -9,7 +9,7 @@
 - **Próximos trenes** es la pantalla inicial: estación favorita, línea, destino, hora y cuenta atrás.
 - **Horario completo** muestra toda la tabla de un día, sin ocultar las salidas anteriores a la hora actual.
 - **Hoy / Mañana / fecha / anterior / siguiente** para cambiar de día fácilmente.
-- **Origen y destino opcional** en la cabecera del panel oscuro. El propio nombre es el selector; el botón ⇅ invierte el trayecto al instante, conservando vista, fecha, hora y línea. La línea se elige en la barra visible **Todas · C1 · C2 · C3**, con [colores oficiales](docs/line-colors.md); solo los filtros horarios permanecen plegados. La selección se conserva al cambiar de vista durante la visita y se reinicia al cambiar de estación. Incluye paradas intermedias del mismo tren.
+- **Origen y destino opcional** en la cabecera del panel oscuro. El propio nombre es el selector; el botón ⇅ invierte el trayecto al instante, conservando vista, fecha, hora y línea. La línea se elige en la barra visible **C1 · C2 · C3** (selección múltiple; ninguna marcada muestra todas), con [colores oficiales](docs/line-colors.md); solo los filtros horarios permanecen plegados. La selección se conserva al cambiar de vista durante la visita y se reinicia al cambiar de estación. Incluye paradas intermedias del mismo tren.
 - **Destino directo**, **Salir a partir de** o **Llegar antes de**, con hora de salida y llegada del mismo tren.
 - Atajo **Mañana a Bilbao antes de las 09:00**: configura fecha, destino y hora; destaca la última salida compatible y conserva todas las alternativas anteriores.
 - **Ver todo el día** elimina los filtros. Volver a Próximos trenes recupera el panel inmediato.
@@ -95,3 +95,5 @@ Seguir el orden de dependencias que devuelve OpenSpec y obtener `instructions` p
 Pendientes: refresco periódico de GTFS, PWA/offline y adaptador de tiempo real. Ver [roadmap](docs/roadmap.md) y [estudio de CORS](docs/renfe-data.md).
 
 Cambio de UX: [cabecera compacta e intercambio](openspec/changes/archive/2026-10-02-compact-station-header/proposal.md).
+
+Las líneas se marcan de forma independiente: el recuadro completo se ilumina al activarlas y queda oscuro al desmarcarlas.

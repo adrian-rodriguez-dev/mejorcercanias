@@ -1,35 +1,38 @@
 import type { Departure } from "./types";
 export interface RouteFilter {
-  line: string;
+  lines: string[];
   destination: string;
 }
-export const emptyRouteFilter: RouteFilter = { line: "", destination: "" };
+export const emptyRouteFilter: RouteFilter = { lines: [], destination: "" };
 export function filterRoutes(rows: Departure[], filter: RouteFilter) {
   return rows.filter(
     (row) =>
-      (!filter.line || row.line === filter.line) &&
+      (!filter.lines.length || filter.lines.includes(row.line)) &&
       (!filter.destination ||
         row.arrivals?.some((a) => a.stationId === filter.destination)),
   );
 }
-export function routeDestinations(rows: Departure[], line: string) {
+export function routeDestinations(rows: Departure[], lines: string[]) {
   return [
     ...new Set(
       rows
-        .filter((row) => !line || row.line === line)
+        .filter((row) => !lines.length || lines.includes(row.line))
         .flatMap((row) => row.arrivals?.map((a) => a.stationId) ?? []),
     ),
   ];
 }
-export function changeLine(
+export function changeLines(
   rows: Departure[],
   filter: RouteFilter,
-  line: string,
+  lines: string[],
 ): RouteFilter {
   return {
-    line,
-    destination: routeDestinations(rows, line).includes(filter.destination)
-      ? filter.destination
-      : "",
+    lines,
+    destination:
+      !lines.length ||
+      !rows.length ||
+      routeDestinations(rows, lines).includes(filter.destination)
+        ? filter.destination
+        : "",
   };
 }

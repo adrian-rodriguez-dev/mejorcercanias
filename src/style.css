@@ -1106,31 +1106,43 @@ time {
   background: var(--bilbao-c3);
   color: #000;
 }
+
 .line-bar {
   display: grid;
-  grid-template-columns: repeat(4, minmax(44px, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(3, minmax(44px, 1fr));
+  gap: 8px;
   margin: 0 20px 16px;
+}
+.line-bar .toggle-c1 {
+  --line-color: var(--bilbao-c1);
+}
+.line-bar .toggle-c2 {
+  --line-color: var(--bilbao-c2);
+}
+.line-bar .toggle-c3 {
+  --line-color: var(--bilbao-c3);
 }
 .line-bar button {
   min-height: 44px;
   min-width: 44px;
-  padding: 5px;
+  padding: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  background: #18352f;
-  border: 2px solid #587668;
+  gap: 8px;
+  background: color-mix(in srgb, var(--line-color) 32%, #10201c);
+  color: #fff;
+  border: 2px solid color-mix(in srgb, var(--line-color) 65%, #10201c);
   border-radius: 8px;
-  color: #f4f6ee;
   font: inherit;
-  font-size: 12px;
+  font-size: 15px;
+  font-weight: 750;
   cursor: pointer;
 }
 .line-bar button[aria-pressed="true"] {
-  border-color: #def387;
-  background: #2c493b;
+  background: var(--line-color);
+  color: #000;
+  border-color: #eaf4d7;
 }
 .line-bar button:focus-visible {
   outline: 3px solid #def387;
@@ -1140,15 +1152,7 @@ time {
   cursor: not-allowed;
   border-style: dashed;
 }
-.line-bar button:disabled .line {
-  filter: saturate(0.65);
-}
-.line-bar .line {
-  min-width: 30px;
-  width: 30px;
-}
 .line-selected {
-  width: 9px;
-  font-size: 12px;
-  font-weight: 800;
+  width: 12px;
+  font-size: 14px;
 }

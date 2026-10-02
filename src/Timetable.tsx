@@ -24,7 +24,7 @@ export function Timetable({
   const [localFilter, setLocalFilter] = useState(emptyRouteFilter);
   const selected = routeFilter ?? localFilter;
   const setFilter = onRouteFilterChange ?? setLocalFilter;
-  const { destination, line } = selected;
+  const { destination, lines } = selected;
   const [mode, setMode] = useState<TimeMode>("all");
   const [time, setTime] = useState("09:00");
   useEffect(() => {
@@ -55,7 +55,7 @@ export function Timetable({
     destination,
     mode,
     time,
-    line,
+    lines,
   });
   const recommended = mode === "arrive" ? rows.at(-1) : undefined;
   const reset = () => {
@@ -65,7 +65,7 @@ export function Timetable({
   };
   const shortcut = () => {
     setDate(addDays(today, 1));
-    setFilter({ line: "", destination: "13200" });
+    setFilter({ lines: [], destination: "13200" });
     setMode("arrive");
     setTime("09:00");
   };

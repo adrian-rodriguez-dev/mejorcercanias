@@ -37,3 +37,5 @@ GitHub Pages: despliegue 37061542140 correcto, commit 68e0e69. Comprobación pú
 Barra de líneas: 23 pruebas unitarias y 10 de navegador correctas, build y OpenSpec válidos. Comprobados teclado, aria-pressed, una fila a 360 px, botones de 44 px, primer tren visible, colores compartidos con etiquetas, Todas conserva destino/hora y disponibilidad basada en catálogo incluso en fechas sin datos.
 
 Barra publicada y verificada en HTTPS a 360 px: cuatro botones y ocho próximas salidas C2 tras seleccionarla. GitHub Actions 37063313340 correcto (81278ec).
+
+Multiselección: 24 pruebas unitarias y 10 de navegador correctas; build y OpenSpec válidos. Unión C1/C2, vacío equivale a todas, destino/hora conservados, estados de fondo distintos, intercambio con línea no disponible desmarcable, primer tren visible y controles de 44 px a 360 px.
