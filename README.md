@@ -2,6 +2,8 @@
 
 **Abrir → mirar → saber cuándo pasa el tren.** SPA estática para Cercanías Bilbao, React + TypeScript + Vite.
 
+**Web pública:** https://adrian-rodriguez-dev.github.io/mejorcercanias/
+
 ## Qué puedes consultar
 
 - **Próximos trenes** es la pantalla inicial: estación favorita, línea, destino, hora y cuenta atrás.
@@ -38,7 +40,7 @@ python -m unittest discover -s scripts -p 'test_*.py'
 npm run format
 ```
 
-Python 3.12+ solo se necesita para regenerar/probar el importador, no para ejecutar la aplicación. `dist/` contiene archivos estáticos y admite hosting en subcarpeta. GitHub Actions comprueba pruebas, build y OpenSpec; no despliega ni renueva los datos automáticamente. El dominio público no está configurado.
+Python 3.12+ solo se necesita para regenerar/probar el importador, no para ejecutar la aplicación. `dist/` contiene archivos estáticos y admite hosting en subcarpeta. GitHub Actions comprueba pruebas, build y OpenSpec y publica `dist/` en GitHub Pages tras cada push válido a `main`. Los pull requests solo validan. Pages utiliza GitHub Actions como origen y el entorno `github-pages`. El dominio propio mejorcercanias.es y la renovación automática de datos siguen pendientes.
 
 ## Arquitectura
 
@@ -91,3 +93,4 @@ Seguir el orden de dependencias que devuelve OpenSpec y obtener `instructions` p
 [Datos oficiales de Renfe](https://data.renfe.com/dataset/horarios-cercanias), **Renfe Operadora · CC BY 4.0**. Se han filtrado y transformado para esta aplicación independiente, sin afiliación con Renfe.
 
 Pendientes: refresco periódico de GTFS, PWA/offline y adaptador de tiempo real. Ver [roadmap](docs/roadmap.md) y [estudio de CORS](docs/renfe-data.md).
+
