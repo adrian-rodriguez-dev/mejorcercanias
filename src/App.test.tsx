@@ -40,13 +40,18 @@ describe("panel de estación", () => {
     const user = userEvent.setup();
     const view = render(<App provider={provider} clock={clock} />);
     expect(screen.getByLabelText("¿Desde dónde sales?")).toHaveValue("");
-    await user.selectOptions(screen.getByRole("combobox"), "13400");
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
+      "13400",
+    );
     expect(await screen.findByText("Destino de prueba")).toBeVisible();
     expect(localStorage.getItem(STORAGE_KEY)).toBe("13400");
     view.unmount();
     render(<App provider={provider} clock={clock} />);
     expect(await screen.findByText("Destino de prueba")).toBeVisible();
-    expect(screen.getByRole("combobox")).toHaveValue("13400");
+    expect(
+      screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
+    ).toHaveValue("13400");
     expect(
       screen.getByText("Horarios ficticios. No los uses para viajar."),
     ).toBeVisible();
@@ -58,8 +63,13 @@ describe("panel de estación", () => {
       throw new Error("blocked");
     });
     render(<App provider={provider} clock={clock} />);
-    expect(screen.getByRole("combobox")).toHaveValue("");
-    await user.selectOptions(screen.getByRole("combobox"), "13400");
+    expect(
+      screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
+    ).toHaveValue("");
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
+      "13400",
+    );
     expect(await screen.findByText("Destino de prueba")).toBeVisible();
     expect(screen.getByText(/No podemos guardar/)).toBeVisible();
   });
@@ -68,7 +78,9 @@ describe("panel de estación", () => {
       throw new Error("blocked");
     });
     render(<App provider={provider} clock={clock} />);
-    expect(screen.getByRole("combobox")).toHaveValue("");
+    expect(
+      screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
+    ).toHaveValue("");
   });
   it("muestra error, permite reintentar y muestra vacío", async () => {
     localStorage.setItem(STORAGE_KEY, "13400");
@@ -97,13 +109,19 @@ describe("panel de estación", () => {
         : Promise.resolve(schedule(id, "Nuevo destino")),
     );
     render(<App provider={{ load }} clock={clock} />);
-    fireEvent.change(screen.getByRole("combobox"), {
-      target: { value: "13400" },
-    });
+    fireEvent.change(
+      screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
+      {
+        target: { value: "13400" },
+      },
+    );
     expect(screen.getByText("Preparando tu panel…")).toBeVisible();
-    fireEvent.change(screen.getByRole("combobox"), {
-      target: { value: "13200" },
-    });
+    fireEvent.change(
+      screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
+      {
+        target: { value: "13200" },
+      },
+    );
     expect(await screen.findByText("Nuevo destino")).toBeVisible();
     await act(async () => resolveOld(schedule("13400", "Destino antiguo")));
     expect(screen.queryByText("Destino antiguo")).not.toBeInTheDocument();

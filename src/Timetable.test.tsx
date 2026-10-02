@@ -50,9 +50,7 @@ describe("consulta por fecha", () => {
         : Promise.resolve(schedule(day)),
     );
     render(<Timetable stationId="13400" now={now} loader={loader} />);
-    fireEvent.click(
-      screen.getByRole("button", { name: "Mañana" }),
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Mañana" }));
     await screen.findByText("08:35");
     await act(async () =>
       finish({ ...schedule("2026-10-02"), departures: [] }),

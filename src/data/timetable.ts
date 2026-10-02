@@ -1,18 +1,23 @@
 import { DateTime } from "luxon";
 import { ZONE } from "./time";
 import type { Departure } from "./types";
+import { filterRoutes } from "./route-filters";
 export type TimeMode = "all" | "depart" | "arrive";
 export interface TimetableFilter {
   date: string;
   destination: string;
   mode: TimeMode;
   time: string;
+  line?: string;
 }
 export function filterTimetable(rows: Departure[], filter: TimetableFilter) {
   const limit = DateTime.fromISO(`${filter.date}T${filter.time || "00:00"}`, {
     zone: ZONE,
   }).toMillis();
-  return rows
+  return filterRoutes(rows, {
+    line: filter.line ?? "",
+    destination: filter.destination,
+  })
     .flatMap((row) => {
       const arrival = row.arrivals?.find(
         (a) => a.stationId === filter.destination,

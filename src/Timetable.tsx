@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { addDays, dateTitle, loadDay, manifest } from "./data/renfe";
-import { stations, stationName } from "./data/stations";
+import { stationName } from "./data/stations";
+import { RouteFilters } from "./RouteFilters";
+import { emptyRouteFilter, type RouteFilter } from "./data/route-filters";
 import { clockTime, localDay } from "./data/time";
 import { filterTimetable, type TimeMode } from "./data/timetable";
 import type { StationSchedule } from "./data/types";
@@ -8,14 +10,21 @@ export function Timetable({
   stationId,
   now,
   loader = loadDay,
+  routeFilter,
+  onRouteFilterChange,
 }: {
   stationId: string;
   now: number;
   loader?: typeof loadDay;
+  routeFilter?: RouteFilter;
+  onRouteFilterChange?: (filter: RouteFilter) => void;
 }) {
   const today = localDay(now);
   const [date, setDate] = useState(today);
-  const [destination, setDestination] = useState("");
+  const [localFilter, setLocalFilter] = useState(emptyRouteFilter);
+  const selected = routeFilter ?? localFilter;
+  const setFilter = onRouteFilterChange ?? setLocalFilter;
+  const { destination, line } = selected;
   const [mode, setMode] = useState<TimeMode>("all");
   const [time, setTime] = useState("09:00");
   const [retry, setRetry] = useState(0);
@@ -43,19 +52,17 @@ export function Timetable({
     destination,
     mode,
     time,
+    line,
   });
   const recommended = mode === "arrive" ? rows.at(-1) : undefined;
-  const destinations = stations.filter((s) =>
-    current?.data?.destinations?.includes(s.id),
-  );
   const reset = () => {
-    setDestination("");
+    setFilter(emptyRouteFilter);
     setMode("all");
     setTime("09:00");
   };
   const shortcut = () => {
     setDate(addDays(today, 1));
-    setDestination("13200");
+    setFilter({ line: "", destination: "13200" });
     setMode("arrive");
     setTime("09:00");
   };
@@ -108,53 +115,49 @@ export function Timetable({
         Servicios publicados para esta fecha. Fines de semana y excepciones del
         operador ya aplicados.
       </p>
-      <div className="schedule-filters">
-        <label>
-          Destino directo
-          <select
-            value={destination}
-            onChange={(e) => {
-              setDestination(e.target.value);
-              if (!e.target.value && mode === "arrive") setMode("all");
-            }}
-          >
-            <option value="">Todos los destinos</option>
-            {destination && !destinations.some((d) => d.id === destination) && (
-              <option value={destination}>{stationName(destination)}</option>
-            )}
-            {destinations.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Consultar
-          <select
-            value={mode}
-            onChange={(e) => setMode(e.target.value as TimeMode)}
-          >
-            <option value="all">Todo el día</option>
-            <option value="depart">Salir a partir de</option>
-            <option value="arrive" disabled={!destination}>
-              Llegar antes de
-            </option>
-          </select>
-        </label>
-        {mode !== "all" && (
+      <RouteFilters
+        rows={current?.data?.departures ?? []}
+        value={selected}
+        onChange={(filter) => {
+          setFilter(filter);
+          if (!filter.destination && mode === "arrive") setMode("all");
+        }}
+        onClear={reset}
+        disabled={!current?.data || current.data.availability === "unpublished"}
+        extraSummary={
+          mode === "all"
+            ? undefined
+            : `${mode === "arrive" ? "Llegar antes de" : "Salir desde"} ${time}`
+        }
+      >
+        <div className="schedule-filters">
           <label>
-            Hora
-            <input
-              type="time"
-              value={time}
-              onChange={(e) => {
-                if (e.target.value) setTime(e.target.value);
-              }}
-            />
+            Consultar
+            <select
+              value={mode}
+              onChange={(e) => setMode(e.target.value as TimeMode)}
+            >
+              <option value="all">Todo el día</option>
+              <option value="depart">Salir a partir de</option>
+              <option value="arrive" disabled={!destination}>
+                Llegar antes de
+              </option>
+            </select>
           </label>
-        )}
-      </div>
+          {mode !== "all" && (
+            <label>
+              Hora
+              <input
+                type="time"
+                value={time}
+                onChange={(e) => {
+                  if (e.target.value) setTime(e.target.value);
+                }}
+              />
+            </label>
+          )}
+        </div>
+      </RouteFilters>
       <div className="filter-summary">
         <span>{rows.length} trenes directos</span>
         <button onClick={reset}>Ver todo el día</button>

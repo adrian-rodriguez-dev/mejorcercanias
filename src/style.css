@@ -863,3 +863,127 @@ time {
     flex-wrap: wrap;
   }
 }
+/* Filters start compact on mobile; wider screens only expand the internal grid. */
+.next-route-filters {
+  margin: 12px 16px 0;
+}
+.route-filters {
+  border: 1px solid #536d60;
+  border-radius: 9px;
+  background: #18352f;
+  color: #f1f5e8;
+  min-width: 0;
+}
+.route-filters.is-active {
+  border-color: #acbf79;
+}
+.route-filters summary {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 10px 12px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 12px;
+}
+.route-filters summary::-webkit-details-marker {
+  display: none;
+}
+.route-filters summary:focus-visible {
+  outline: 3px solid #def387;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+.route-filter-summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+.filter-icon {
+  color: #dcee9f;
+  font-size: 18px;
+  line-height: 1;
+}
+.filter-chevron {
+  font-size: 18px;
+}
+.route-filters[open] .filter-chevron {
+  transform: rotate(180deg);
+}
+.route-filter-body {
+  padding: 4px 12px 12px;
+}
+.route-selectors {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+.route-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11px;
+  color: #d0dfcb;
+  min-width: 0;
+}
+.route-filters select,
+.route-filters input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  background: #f6f8f0;
+  border: 1px solid #bbc9a9;
+  color: #17372c;
+  padding: 10px;
+  border-radius: 7px;
+  font: inherit;
+  font-size: 13px;
+}
+.route-filters .schedule-filters {
+  margin-top: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.route-filters .schedule-filters label:first-child {
+  grid-column: auto;
+}
+.route-filter-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+.route-filter-actions button {
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid #708c76;
+  border-radius: 7px;
+  background: transparent;
+  color: #edf5dc;
+  font: inherit;
+  font-size: 12px;
+}
+.route-filter-actions .apply-route-filters {
+  background: #dcee9f;
+  color: #17392d;
+  border-color: #dcee9f;
+  font-weight: 700;
+}
+.timetable .date-actions button,
+.timetable .date-picker button,
+.timetable .filter-summary button {
+  min-height: 44px;
+}
+@media (min-width: 641px) {
+  .next-route-filters {
+    margin: 16px 28px 0;
+  }
+  .route-selectors {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  }
+  .route-filters .schedule-filters {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+}

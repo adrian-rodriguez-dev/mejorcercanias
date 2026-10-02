@@ -21,3 +21,7 @@ Casos nuevos: calendario de sábado/domingo; eliminación de servicio laborable 
 Verificación independiente leyendo el GTFS original: el sábado 2026-10-03 desde Desertu-Barakaldo (13400) a Abando (13200), la última opción antes o a las 09:00 sale 08:45 y llega 08:59 (trip_id 6074S29512C2). Las anteriores salen 08:30/08:15 y llegan 08:44/08:29. La aplicación coincide. Es programación, no garantía de puntualidad.
 
 Capturas inspeccionadas a 360 px y escritorio: tabla completa, filtros y recomendación legibles, sin desbordamiento horizontal. Datos reales de 1–30 de octubre; refresco programado, PWA y tiempo real aún pendientes. Las pruebas de navegador fijan su reloj dentro de este snapshot para ser reproducibles.
+
+## Verificación de filtros compactos · 2026-10-02
+
+23 pruebas TypeScript y 8 pruebas de navegador correctas. El importador conserva sus 4 pruebas. Filtro de línea y parada intermedia aplicado antes del límite de ocho salidas; combinación con hora de llegada; conservación entre vistas; limpieza de destino incompatible y cambio de origen. En escritorio y 360 px se comprueba apertura con teclado, devolución del foco al cerrar, controles de al menos 44 px, primer tren visible y ausencia de desbordamiento horizontal. Capturas inspeccionadas: filtros abiertos y cerrados. Los filtros no se guardan en almacenamiento persistente.

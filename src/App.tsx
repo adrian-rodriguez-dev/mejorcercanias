@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { renfeProvider, manifest } from "./data/renfe";
 import { Timetable } from "./Timetable";
+import { RouteFilters } from "./RouteFilters";
+import { emptyRouteFilter, filterRoutes } from "./data/route-filters";
 import { stations } from "./data/stations";
 import { clockTime, dayLabel, localDay, upcoming } from "./data/time";
 import type { ScheduleProvider, StationSchedule } from "./data/types";
@@ -25,6 +27,7 @@ export function App({
   const [now, setNow] = useState(clock);
   const [retry, setRetry] = useState(0);
   const [view, setView] = useState<"next" | "day">("next");
+  const [routeFilter, setRouteFilter] = useState(emptyRouteFilter);
   const [load, setLoad] = useState<LoadState>({
     stationId: "",
     status: "loading",
@@ -63,9 +66,10 @@ export function App({
   const current = load.stationId === stationId ? load : undefined;
   const rows =
     current?.status === "ready"
-      ? upcoming(current.schedule!.departures, now)
+      ? upcoming(filterRoutes(current.schedule!.departures, routeFilter), now)
       : [];
   const choose = (id: string) => {
+    setRouteFilter(emptyRouteFilter);
     setSaved(saveStation(id));
     setStationId(id);
     setNow(clock());
@@ -185,6 +189,17 @@ export function App({
                   : "Horario programado · Sin información de retrasos en tiempo real"}
               </span>
             </div>
+            {station && view === "next" && (
+              <div className="next-route-filters">
+                <RouteFilters
+                  rows={current?.schedule?.departures ?? []}
+                  value={routeFilter}
+                  onChange={setRouteFilter}
+                  onClear={() => setRouteFilter(emptyRouteFilter)}
+                  disabled={current?.status !== "ready"}
+                />
+              </div>
+            )}
             {!station ? (
               <div className="empty">
                 <span className="empty-icon" aria-hidden="true">
@@ -200,7 +215,13 @@ export function App({
                 </button>
               </div>
             ) : view === "day" ? (
-              <Timetable key={stationId} stationId={stationId} now={now} />
+              <Timetable
+                key={stationId}
+                stationId={stationId}
+                now={now}
+                routeFilter={routeFilter}
+                onRouteFilterChange={setRouteFilter}
+              />
             ) : !current || current.status === "loading" ? (
               <div className="empty" role="status">
                 <h3>Preparando tu panel…</h3>
@@ -230,7 +251,19 @@ export function App({
             ) : rows.length === 0 ? (
               <div className="empty" role="status">
                 <h3>No hay próximas salidas.</h3>
-                <p>No hay más trenes en el horario disponible.</p>
+                <p>
+                  {routeFilter.line || routeFilter.destination
+                    ? "No hay trenes que coincidan con estos filtros. Prueba otra línea o destino."
+                    : "No hay más trenes en el horario disponible."}
+                </p>
+                {(routeFilter.line || routeFilter.destination) && (
+                  <button
+                    className="light-button"
+                    onClick={() => setRouteFilter(emptyRouteFilter)}
+                  >
+                    Mostrar todos los trenes
+                  </button>
+                )}
               </div>
             ) : (
               <>
