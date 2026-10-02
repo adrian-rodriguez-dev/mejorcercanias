@@ -132,3 +132,9 @@ The system SHALL mostrar una campana en la barra superior fuera del panel de est
 #### Scenario: Avisos verificados
 - **WHEN** hay incidencias relevantes
 - **THEN** la campana se marca y abre el detalle existente, con Escape y retorno del foco.
+
+### Requirement: Horarios sin franja informativa superior
+The system SHALL eliminar la franja Renfe/horario programado encima de los horarios. SHALL conservar atribución y limitación de información de tiempo real fuera del panel, en el pie, sin sustituir la franja por otra.
+#### Scenario: Consulta de trenes
+- **WHEN** se muestran próximas salidas u horario completo
+- **THEN** los horarios siguen a los controles sin franja informativa intermedia.

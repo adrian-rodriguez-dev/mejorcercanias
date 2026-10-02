@@ -63,3 +63,5 @@ Incidencias: UI/adaptador y pasarela preparados, 37 pruebas unitarias locales, 2
 Horas bajo destino: 37 pruebas unitarias y 26 de navegador correctas, build/OpenSpec válidos. Inspección visual a 360 px con llegada +1 día; cuenta atrás a la derecha, sin columna central ni texto repetido. Web HTTPS verificada: Barakaldo–Abando muestra Salida 10:15 y Llegada 10:29 dentro del destino, sin desbordamiento. Publicación del commit 8701598 (Actions 37072543640).
 
 Campana superior: 37 pruebas unitarias y 26 de navegador correctas; build/OpenSpec válidos. Actions 37073053130 correcto (2a7694c). Web pública 360 px: campana en masthead, sin aviso visible de indisponibilidad, separación exacta de 8 px y sin desbordamiento. Avisos activos probados con fixtures; conexión real sigue pendiente.
+
+Franja Renfe retirada completamente del panel: Actions 37073555578 correcto (22ec923), web pública verificada a 360 px sin demo-notice y con procedencia en el pie exterior.
