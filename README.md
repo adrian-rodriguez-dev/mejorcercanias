@@ -110,3 +110,5 @@ Manifiesto e iconos permiten instalación en navegadores compatibles. La invitac
 Validación: eventos nativos simulados, guía iOS, rechazo, teclado, modo instalado y recursos en HTTPS. No hay dispositivo Android/iOS físico conectado: instalación real y relanzamiento en esos sistemas no verificados.
 
 Renovación automática por caducidad: [contrato, pruebas y recuperación](docs/data-freshness.md). El móvil consulta metadatos de versión y JSON compactos; no descarga el GTFS bruto.
+
+Incidencias: indicador compacto y detalle accesible implementados. La fuente directa de Renfe bloquea CORS; la activación en vivo requiere desplegar [la pasarela de avisos](docs/service-alerts.md). Hasta entonces se indica «Avisos no disponibles», sin afirmar ausencia de incidencias.

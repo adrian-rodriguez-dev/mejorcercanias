@@ -7,19 +7,24 @@ import { RouteFilters } from "./RouteFilters";
 import { emptyRouteFilter, type RouteFilter } from "./data/route-filters";
 import { clockTime, localDay } from "./data/time";
 import { filterTimetable, type TimeMode } from "./data/timetable";
-import type { StationSchedule } from "./data/types";
+import type { Departure, StationSchedule } from "./data/types";
 export function Timetable({
   stationId,
   now,
   loader = loadDay,
   routeFilter,
   onRouteFilterChange,
+  onScheduleChange,
 }: {
   stationId: string;
   now: number;
   loader?: typeof loadDay;
   routeFilter?: RouteFilter;
   onRouteFilterChange?: (filter: RouteFilter) => void;
+  onScheduleChange?: (context: {
+    date: string;
+    departures: Departure[];
+  }) => void;
 }) {
   useSyncExternalStore(subscribeSnapshot, snapshotRevision);
   const version = manifest.version;
@@ -54,6 +59,9 @@ export function Timetable({
       });
     return () => controller.abort();
   }, [stationId, date, key, retry, loader]);
+  useEffect(() => {
+    onScheduleChange?.({ date, departures: current?.data?.departures ?? [] });
+  }, [date, current?.data, onScheduleChange]);
   const rows = filterTimetable(current?.data?.departures ?? [], {
     date,
     destination,

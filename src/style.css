@@ -1212,5 +1212,71 @@ time {
   border: 1px solid #859a78;
   border-radius: 12px;
 }
-.install-area button { min-height: 44px; }
-.data-status {padding:8px 20px;font-size:12px}.data-status summary {cursor:pointer;min-height:44px;display:flex;align-items:center}.data-status p{max-width:70ch}
+.install-area button {
+  min-height: 44px;
+}
+.data-status {
+  padding: 8px 20px;
+  font-size: 12px;
+}
+.data-status summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.data-status p {
+  max-width: 70ch;
+}
+
+.journey-header.has-alerts {
+  grid-template-columns: minmax(0, 1fr) 78px;
+}
+.has-alerts .swap-stations {
+  grid-row: 2;
+  justify-self: center;
+}
+.alert-indicator {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px;
+  border: 1px solid #ead277;
+  border-radius: 9px;
+  background: #f4da88;
+  color: #102c29;
+  font-size: 11px;
+  white-space: nowrap;
+  cursor: pointer;
+  align-self: end;
+}
+.alerts-dialog {
+  max-width: min(600px, calc(100vw - 24px));
+  max-height: 80dvh;
+  border: 0;
+  border-radius: 16px;
+  background: #f4f5ed;
+  color: #102c29;
+  padding: 18px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+.alerts-dialog::backdrop {
+  background: #0008;
+}
+.alerts-dialog header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.alerts-dialog h2 {
+  font-size: 19px;
+}
+.alerts-dialog article + article {
+  border-top: 1px solid #99aa99;
+}
+.alert-source-status {
+  font: inherit;
+}

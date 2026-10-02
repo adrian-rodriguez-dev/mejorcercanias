@@ -1,3 +1,5 @@
+import { useAlerts, AlertIndicator } from "./Alerts";
+import { relevantAlerts, alertPriority } from "./data/alerts";
 import {
   checkSnapshot,
   subscribeSnapshot,
@@ -17,7 +19,11 @@ import {
 } from "./data/route-filters";
 import { stations } from "./data/stations";
 import { clockTime, dayLabel, localDay, upcoming } from "./data/time";
-import type { ScheduleProvider, StationSchedule } from "./data/types";
+import type {
+  Departure,
+  ScheduleProvider,
+  StationSchedule,
+} from "./data/types";
 import {
   readJourney,
   saveJourney,
@@ -47,6 +53,11 @@ export function App({
   const [saved, setSaved] = useState(true);
   const [now, setNow] = useState(clock);
   const [retry, setRetry] = useState(0);
+  const alertState = useAlerts();
+  const [dayContext, setDayContext] = useState<{
+    date: string;
+    departures: Departure[];
+  }>({ date: localDay(clock()), departures: [] });
   const [view, setView] = useState<"next" | "day">("next");
   const [routeFilter, storeRouteFilter] = useState<RouteFilter>(() => ({
     destination: initialJourney.destination,
@@ -118,6 +129,16 @@ export function App({
     current?.status === "ready"
       ? upcoming(filterRoutes(current.schedule!.departures, routeFilter), now)
       : [];
+  const alerts = relevantAlerts(
+    alertState.alerts,
+    stationId,
+    routeFilter,
+    view === "day" ? dayContext.date : day,
+    view === "day"
+      ? dayContext.departures
+      : (current?.schedule?.departures ?? []),
+    now,
+  );
   const choose = (id: string) => {
     setRouteFilter(emptyRouteFilter);
     setStationId(id);
@@ -141,7 +162,14 @@ export function App({
       <main>
         <div className="workspace">
           <section className="board" aria-label="Panel de trenes">
-            <div className="journey-header">
+            <div
+              className={`journey-header${alerts.length ? " has-alerts" : ""}`}
+            >
+              <AlertIndicator
+                alerts={[...alerts].sort(
+                  (a, b) => alertPriority(a) - alertPriority(b),
+                )}
+              />
               <label className="origin-field" htmlFor="station">
                 <span>Origen</span>
                 <select
@@ -241,6 +269,12 @@ export function App({
                 {current?.schedule?.source === "demo"
                   ? "Horarios ficticios. No los uses para viajar."
                   : "Horario programado · Sin información de retrasos en tiempo real"}
+                {alertState.status === "unavailable" && (
+                  <small className="alert-source-status">
+                    {" "}
+                    · Avisos no disponibles
+                  </small>
+                )}
               </span>
             </div>
             {station &&
@@ -280,6 +314,7 @@ export function App({
                 now={now}
                 routeFilter={routeFilter}
                 onRouteFilterChange={setRouteFilter}
+                onScheduleChange={setDayContext}
               />
             ) : !current || current.status === "loading" ? (
               <div className="empty" role="status">
