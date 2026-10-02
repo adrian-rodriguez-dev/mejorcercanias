@@ -96,15 +96,6 @@ export function App({
       <main>
         <div className="workspace">
           <section className="board" aria-label="Panel de trenes">
-            <div className="board-top compact-top">
-              <span className="eyebrow">
-                {view === "next" ? "PRÓXIMAS SALIDAS" : "HORARIO COMPLETO"}
-              </span>
-              <div className="clock">
-                <strong>{clockTime(now)}</strong>
-                <span>Hora de Bilbao</span>
-              </div>
-            </div>
             <div className="journey-header">
               <label className="origin-field" htmlFor="station">
                 <span>Origen</span>

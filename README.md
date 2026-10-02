@@ -97,3 +97,5 @@ Pendientes: refresco periódico de GTFS, PWA/offline y adaptador de tiempo real.
 Cambio de UX: [cabecera compacta e intercambio](openspec/changes/archive/2026-10-02-compact-station-header/proposal.md).
 
 Las líneas se marcan de forma independiente: el recuadro completo se ilumina al activarlas y queda oscuro al desmarcarlas.
+
+El panel empieza directamente en origen y destino: no incluye rótulo de vista ni reloj redundantes. Se conservan las pestañas y las cuentas atrás de cada tren.

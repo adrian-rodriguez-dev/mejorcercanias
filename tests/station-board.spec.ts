@@ -16,7 +16,7 @@ test("elegir estación, recordar y cambiar sin formularios adicionales", async (
   await page.getByLabel("¿Desde dónde sales?").selectOption("13400");
   await expect(page.getByLabel("¿Desde dónde sales?")).toBeVisible();
   await expect(page.getByRole("listitem")).toHaveCount(8);
-  await expect(page.locator(".clock strong")).toHaveText("10:00");
+  await expect(page.locator(".board-top, .clock")).toHaveCount(0);
   await page.reload();
   await expect(page.getByLabel("¿Desde dónde sales?")).toHaveValue("13400");
   await expect(page.getByRole("listitem")).toHaveCount(8);
