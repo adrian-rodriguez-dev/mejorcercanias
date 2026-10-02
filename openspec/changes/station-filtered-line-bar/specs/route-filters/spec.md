@@ -28,7 +28,7 @@ The system SHALL mostrar únicamente las líneas C1, C2 y C3 que pasan por el or
 #### Scenario: Vaciar selección
 - **WHEN** se desmarca la última línea activa
 - **THEN** todos los botones quedan desmarcados y se muestran todas las líneas sin perder destino ni hora.
-#### Scenario: Disponibilidad por estaciones
+#### Scenario: Disponibilidad
 - **WHEN** se elige Barakaldo sin destino
 - **THEN** se muestran C1 y C2; una fecha sin servicio no altera estas opciones.
 #### Scenario: Una sola línea
@@ -40,3 +40,4 @@ The system SHALL mostrar únicamente las líneas C1, C2 y C3 que pasan por el or
 #### Scenario: Recuperar opciones
 - **WHEN** se elimina un destino que limitaba Barakaldo a C1
 - **THEN** reaparecen C1 y C2 sin selección explícita.
+

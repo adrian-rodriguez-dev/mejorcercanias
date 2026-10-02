@@ -99,3 +99,5 @@ Cambio de UX: [cabecera compacta e intercambio](openspec/changes/archive/2026-10
 Las líneas se marcan de forma independiente: el recuadro completo se ilumina al activarlas y queda oscuro al desmarcarlas.
 
 El panel empieza directamente en origen y destino: no incluye rótulo de vista ni reloj redundantes. Se conservan las pestañas y las cuentas atrás de cada tren.
+
+La barra de líneas muestra solo las que pasan por origen y destino; con cero o una opción se oculta por completo. Sin destino se usa el origen. Cambiar estaciones elimina selecciones incompatibles; la disponibilidad no depende de los próximos ocho trenes ni de una fecha sin servicio.

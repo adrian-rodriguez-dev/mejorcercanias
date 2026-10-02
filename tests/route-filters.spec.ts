@@ -8,10 +8,10 @@ test("multiselección, botón completo y ninguna equivale a todas", async ({
   await expect(page.getByRole("listitem")).toHaveCount(8);
   const bar = page.getByRole("group", { name: /Filtrar por líneas/ });
   const b = (name: string) => bar.getByRole("button", { name, exact: true });
-  await expect(bar.getByRole("button")).toHaveCount(3);
+  await expect(bar.getByRole("button")).toHaveCount(2);
   await expect(bar.getByRole("button", { name: "Todas" })).toHaveCount(0);
   await expect(bar.locator('[aria-pressed="true"]')).toHaveCount(0);
-  await expect(bar.getByRole("button", { name: /C3/ })).toBeDisabled();
+  await expect(bar.getByRole("button", { name: /C3/ })).toHaveCount(0);
   const bg = () => b("C2").evaluate((e) => getComputedStyle(e).backgroundColor);
   const dark = await bg();
   await b("C2").focus();
@@ -75,11 +75,8 @@ test("multiselección, botón completo y ninguna equivale a todas", async ({
   await page
     .getByRole("button", { name: "Intercambiar origen y destino" })
     .click();
-  const selectedUnavailable = bar.getByRole("button", { name: /C2/ });
-  await expect(selectedUnavailable).toHaveAttribute("aria-pressed", "true");
-  await selectedUnavailable.click();
-  await expect(selectedUnavailable).toHaveAttribute("aria-pressed", "false");
-  await expect(selectedUnavailable).toBeDisabled();
+  await expect(bar).toHaveCount(0);
+  await expect(page.getByRole("listitem")).toHaveCount(8);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

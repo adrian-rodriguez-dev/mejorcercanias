@@ -4,9 +4,9 @@ import { renfeProvider, manifest } from "./data/renfe";
 import { Timetable } from "./Timetable";
 import { LineBar } from "./LineBar";
 import {
-  changeLines,
   emptyRouteFilter,
   filterRoutes,
+  type RouteFilter,
 } from "./data/route-filters";
 import { stations } from "./data/stations";
 import { clockTime, dayLabel, localDay, upcoming } from "./data/time";
@@ -32,7 +32,26 @@ export function App({
   const [now, setNow] = useState(clock);
   const [retry, setRetry] = useState(0);
   const [view, setView] = useState<"next" | "day">("next");
-  const [routeFilter, setRouteFilter] = useState(emptyRouteFilter);
+  const [routeFilter, storeRouteFilter] = useState(emptyRouteFilter);
+  const linesForStations = (origin: string, destination: string) => {
+    const originLines = stations.find((s) => s.id === origin)?.lines ?? [];
+    const destinationLines =
+      stations.find((s) => s.id === destination)?.lines ?? [];
+    return originLines.filter(
+      (line) => !destination || destinationLines.includes(line),
+    );
+  };
+  const setRouteFilter = (filter: RouteFilter, origin = stationId) => {
+    const available = linesForStations(origin, filter.destination);
+    storeRouteFilter({
+      ...filter,
+      lines:
+        available.length < 2
+          ? []
+          : filter.lines.filter((line) => available.includes(line)),
+    });
+  };
+  const availableLines = linesForStations(stationId, routeFilter.destination);
   const [load, setLoad] = useState<LoadState>({
     stationId: "",
     status: "loading",
@@ -125,7 +144,10 @@ export function App({
                 onClick={() => {
                   const nextOrigin = routeFilter.destination;
                   if (!nextOrigin || nextOrigin === stationId) return;
-                  setRouteFilter({ ...routeFilter, destination: stationId });
+                  setRouteFilter(
+                    { ...routeFilter, destination: stationId },
+                    nextOrigin,
+                  );
                   setStationId(nextOrigin);
                   setSaved(saveStation(nextOrigin));
                   setNow(clock());
@@ -183,16 +205,8 @@ export function App({
             {station && (
               <LineBar
                 value={routeFilter.lines}
-                available={station.lines}
-                onChange={(lines) =>
-                  setRouteFilter(
-                    changeLines(
-                      current?.schedule?.departures ?? [],
-                      routeFilter,
-                      lines,
-                    ),
-                  )
-                }
+                available={availableLines}
+                onChange={(lines) => setRouteFilter({ ...routeFilter, lines })}
               />
             )}
             <div className="demo-notice">
