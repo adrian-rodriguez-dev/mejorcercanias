@@ -6,7 +6,7 @@ Proyecto vacío salvo OpenSpec. Ver proposal.md y exploration.md. El diseño afe
 
 ## Goals / Non-Goals
 
-**Goals:** separar proveedor, cálculo temporal y presentación para sustituir fixtures sin rehacer el panel; no añadir dependencias de ejecución salvo React.
+**Goals:** separar proveedor, cálculo temporal y presentación para sustituir fixtures sin rehacer el panel; limitar dependencias de ejecución a React y Luxon para aritmética temporal segura.
 
 **Non-Goals:** parser GTFS, horarios reales, SSR, enrutamiento multipágina, autenticación y caché offline. Véase propuesta para límites funcionales.
 
