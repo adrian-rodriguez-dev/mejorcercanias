@@ -3,10 +3,10 @@
 Hacer visibles las incidencias que afectan a la consulta sin ocupar espacio permanente ni dificultar el acceso a los próximos trenes.
 ## ADDED Requirements
 ### Requirement: Indicador condicional en título
-The system SHALL mostrar un único indicador compacto en la barra del título del panel oscuro solo cuando haya incidencias oficiales relevantes y vigentes. Sin incidencias SHALL eliminar el indicador y todo espacio reservado; SHALL NOT mostrar una franja «Sin incidencias».
+The system SHALL mostrar un único indicador compacto en la barra superior de la aplicación solo cuando haya incidencias oficiales relevantes y vigentes. Sin incidencias SHALL mantener la campana neutra y deshabilitada; SHALL NOT mostrar una franja «Sin incidencias».
 #### Scenario: Ausencia de avisos
 - **WHEN** una consulta válida devuelve cero incidencias relevantes
-- **THEN** el título conserva su distribución habitual, sin icono, fila adicional ni separador vacío.
+- **THEN** la campana está neutra y el contenido no añade filas ni mensajes.
 #### Scenario: Una o varias incidencias
 - **WHEN** existe al menos una incidencia relevante
 - **THEN** aparece un botón con icono, resumen de una línea y contador si hay varias, priorizando el impacto de servicio conocido.
@@ -33,7 +33,9 @@ The system SHALL abrir el detalle solo por interacción del usuario, mostrar tex
 The system SHALL distinguir cero avisos de fuente no disponible, no mostrar incidencias caducadas como activas ni afirmar ausencia de incidencias tras fallo de red. La descarga de alertas SHALL NOT bloquear los horarios.
 #### Scenario: Red fallida o feed antiguo
 - **WHEN** no se pueden verificar avisos recientes
-- **THEN** no se crea una incidencia ficticia en el título ni una franja de error; el estado de disponibilidad se indica discretamente junto a la información de fuente existente.
+- **THEN** no se crea una incidencia ficticia en el título ni una franja de error; el estado de disponibilidad se conserva en la etiqueta accesible de la campana, sin aviso visible de error mientras la integración esté pendiente.
 #### Scenario: Aviso retirado
 - **WHEN** una actualización completa y válida retira un aviso o termina su vigencia
 - **THEN** desaparece del indicador y, si era el último, la barra recupera su espacio normal.
+
+Ajuste solicitado 2026-10-03: campana en masthead, neutra/deshabilitada sin avisos verificables; marcada y con contador al haberlos. Se retira el texto visible de error de fuente. Sustituye la ubicación en origen y cualquier referencia anterior a ocultar la campana.

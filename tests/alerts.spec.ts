@@ -19,7 +19,7 @@ test("indicador condicional, detalle accesible, retirada y fallo", async ({
   await page.goto("/");
   await page.getByLabel("¿Desde dónde sales?").selectOption("13400");
   await page.getByRole("listitem").first().waitFor();
-  await expect(page.locator(".alert-indicator")).toHaveCount(0);
+  await expect(page.locator(".masthead .alert-indicator")).toBeDisabled();
   entities = [
     {
       id: "test",
@@ -42,6 +42,9 @@ test("indicador condicional, detalle accesible, retirada y fallo", async ({
   });
   await expect(button).toBeVisible();
   expect((await button.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  const headerBox = (await page.locator(".masthead").boundingBox())!;
+  const panelBox = (await page.locator(".board").boundingBox())!;
+  expect(Math.round(panelBox.y - headerBox.y - headerBox.height)).toBe(8);
   const first = (await page.getByRole("listitem").first().boundingBox())!;
   expect(first.y + first.height).toBeLessThan(page.viewportSize()!.height);
   await page.screenshot({
@@ -58,10 +61,13 @@ test("indicador condicional, detalle accesible, retirada y fallo", async ({
   await expect(page.getByText(/Los avisos ya no están activos/)).toBeVisible();
   await page.getByRole("button", { name: "Cerrar", exact: true }).click();
   await expect(page.getByLabel("¿Desde dónde sales?")).toBeFocused();
-  await expect(page.locator(".alert-indicator")).toHaveCount(0);
+  await expect(page.locator(".masthead .alert-indicator")).toBeDisabled();
   fail = true;
   await page.clock.fastForward(60000);
-  await expect(page.getByText("· Avisos no disponibles")).toBeVisible();
+  await expect(page.getByText("· Avisos no disponibles")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Incidencias: consulta no disponible" }),
+  ).toBeDisabled();
   await expect(page.getByRole("listitem")).toHaveCount(8);
   expect(
     await page.evaluate(

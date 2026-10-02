@@ -114,3 +114,5 @@ Renovación automática por caducidad: [contrato, pruebas y recuperación](docs/
 Incidencias: indicador compacto y detalle accesible implementados. La fuente directa de Renfe bloquea CORS; la activación en vivo requiere desplegar [la pasarela de avisos](docs/service-alerts.md). Hasta entonces se indica «Avisos no disponibles», sin afirmar ausencia de incidencias.
 
 En próximas salidas, las horas de salida y llegada aparecen bajo el nombre del destino; solo se indica el día cuando es distinto de hoy o la llegada cruza medianoche.
+
+La campana de incidencias está en la barra superior: neutra sin avisos verificables y marcada con contador al haberlos. Se oculta el texto de error de fuente mientras la integración está pendiente. El panel queda a 8 px de la cabecera.

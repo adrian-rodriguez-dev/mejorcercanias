@@ -53,33 +53,62 @@ export function useAlerts() {
   }, []);
   return state;
 }
-export function AlertIndicator({ alerts }: { alerts: Alert[] }) {
+export function AlertIndicator({
+  alerts,
+  status,
+}: {
+  alerts: Alert[];
+  status: "loading" | "available" | "unavailable";
+}) {
   const dialog = useRef<HTMLDialogElement>(null),
     button = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const close = () => {
     dialog.current?.close();
     setOpen(false);
-    (button.current ?? document.getElementById("station"))?.focus();
+    (button.current && !button.current.disabled
+      ? button.current
+      : document.getElementById("station")
+    )?.focus();
   };
   useEffect(() => {
     if (open && dialog.current && !dialog.current.open)
       dialog.current.showModal();
   }, [open]);
-  if (!alerts.length && !open) return null;
   return (
     <>
-      {alerts.length > 0 && (
-        <button
-          ref={button}
-          className="alert-indicator"
-          aria-label={`Incidencias: ${alerts.map((a) => a.text).join(". ")}`}
-          title={alerts[0].text}
-          onClick={() => setOpen(true)}
+      <button
+        ref={button}
+        className={`alert-indicator${alerts.length ? " has-incidents" : ""}`}
+        disabled={!alerts.length}
+        aria-label={
+          alerts.length
+            ? `Incidencias: ${alerts.map((a) => a.text).join(". ")}`
+            : status === "available"
+              ? "Sin avisos publicados para esta consulta"
+              : "Incidencias: consulta no disponible"
+        }
+        title={alerts[0]?.text}
+        onClick={() => setOpen(true)}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width="23"
+          height="23"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          aria-hidden="true"
         >
-          ⚠ {alerts.length === 1 ? "Aviso" : `${alerts.length} avisos`}
-        </button>
-      )}
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" />
+          <path d="M9 20a3 3 0 0 0 6 0" />
+        </svg>
+        {alerts.length > 0 && (
+          <span className="alert-count" aria-hidden="true">
+            {alerts.length > 99 ? "99+" : alerts.length}
+          </span>
+        )}
+      </button>
       <dialog
         ref={dialog}
         className="alerts-dialog"

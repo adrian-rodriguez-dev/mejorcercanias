@@ -155,21 +155,22 @@ export function App({
             <small>MENOS BUSCAR. MÁS LLEGAR.</small>
           </span>
         </a>
-        <span className="region">
-          <span className="dot" /> Cercanías Bilbao
-        </span>
+        <div className="masthead-actions">
+          <span className="region">
+            <span className="dot" /> Cercanías Bilbao
+          </span>
+          <AlertIndicator
+            alerts={[...alerts].sort(
+              (a, b) => alertPriority(a) - alertPriority(b),
+            )}
+            status={alertState.status}
+          />
+        </div>
       </header>
       <main>
         <div className="workspace">
           <section className="board" aria-label="Panel de trenes">
-            <div
-              className={`journey-header${alerts.length ? " has-alerts" : ""}`}
-            >
-              <AlertIndicator
-                alerts={[...alerts].sort(
-                  (a, b) => alertPriority(a) - alertPriority(b),
-                )}
-              />
+            <div className="journey-header">
               <label className="origin-field" htmlFor="station">
                 <span>Origen</span>
                 <select
@@ -269,12 +270,6 @@ export function App({
                 {current?.schedule?.source === "demo"
                   ? "Horarios ficticios. No los uses para viajar."
                   : "Horario programado · Sin información de retrasos en tiempo real"}
-                {alertState.status === "unavailable" && (
-                  <small className="alert-source-status">
-                    {" "}
-                    · Avisos no disponibles
-                  </small>
-                )}
               </span>
             </div>
             {station &&
