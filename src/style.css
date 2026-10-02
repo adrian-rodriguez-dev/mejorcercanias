@@ -261,9 +261,10 @@ select {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 80px;
   gap: 10px;
-  padding: 22px 28px 12px;
-  font-size: 8px;
-  letter-spacing: 1.5px;
+  padding: 8px 28px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
   color: #a3b5aa;
 }
 .table-heading span:last-child {
@@ -459,7 +460,7 @@ time {
   }
   .table-heading {
     grid-template-columns: minmax(0, 1fr) 64px;
-    padding: 20px 22px 10px;
+    padding: 8px 22px 6px;
   }
   .departures {
     padding: 0 10px;
@@ -590,7 +591,7 @@ time {
     min-height: 76px;
   }
   .table-heading {
-    font-size: 7px;
+    font-size: 10px;
     letter-spacing: 1px;
   }
   .countdown strong {
@@ -642,7 +643,7 @@ time {
 .board-tabs {
   display: flex;
   gap: 8px;
-  padding: 0 24px 18px;
+  padding: 0 24px 10px;
 }
 .board-tabs button,
 .timetable button {
@@ -820,7 +821,7 @@ time {
 }
 @media (max-width: 640px) {
   .board-tabs {
-    padding: 0 18px 16px;
+    padding: 0 18px 10px;
   }
   .board-tabs button {
     flex: 1;
@@ -1112,7 +1113,7 @@ time {
   grid-auto-flow: column;
   grid-auto-columns: minmax(44px, 1fr);
   gap: 8px;
-  margin: 0 20px 16px;
+  margin: 0 20px 4px;
 }
 .line-bar .toggle-c1 {
   --line-color: var(--bilbao-c1);
