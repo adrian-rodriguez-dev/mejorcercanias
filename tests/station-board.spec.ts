@@ -9,23 +9,25 @@ test("elegir estación, recordar y cambiar sin formularios adicionales", async (
   await page.goto("/");
   await expect(page.getByRole("combobox")).toHaveValue("");
   await expect(
-    page.getByText("Horarios ficticios. No los uses para viajar."),
+    page.getByText(
+      "Horario programado · Sin información de retrasos en tiempo real",
+    ),
   ).toBeVisible();
-  await page.getByRole("combobox").selectOption("demo-barakaldo");
+  await page.getByRole("combobox").selectOption("13400");
   await expect(
-    page.getByRole("heading", { name: "Barakaldo", exact: true }),
+    page.getByRole("heading", { name: "Desertu-Barakaldo", exact: true }),
   ).toBeVisible();
   await expect(page.getByRole("listitem")).toHaveCount(8);
   await expect(page.locator(".clock strong")).toHaveText("10:00");
   await page.reload();
-  await expect(page.getByRole("combobox")).toHaveValue("demo-barakaldo");
+  await expect(page.getByRole("combobox")).toHaveValue("13400");
   await expect(page.getByRole("listitem")).toHaveCount(8);
-  await page.getByRole("combobox").selectOption("demo-amurrio");
+  await page.getByRole("combobox").selectOption("13101");
   await expect(
     page.getByRole("heading", { name: "Amurrio", exact: true }),
   ).toBeVisible();
   await expect(page.locator(".departures .line").first()).toHaveText("C3");
-  await page.getByRole("combobox").selectOption("demo-barakaldo");
+  await page.getByRole("combobox").selectOption("13400");
   await expect(page.getByRole("listitem")).toHaveCount(8);
   const sizes = await page.evaluate(() => ({
     scroll: document.documentElement.scrollWidth,
@@ -44,13 +46,12 @@ test("elegir estación, recordar y cambiar sin formularios adicionales", async (
 });
 
 test("error de red y reintento en el navegador", async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-02T10:00:00+02:00') });
   await page.goto("/");
-  await page.route("**/data/demo/demo-barakaldo.json", (route) =>
-    route.abort(),
-  );
-  await page.getByRole("combobox").selectOption("demo-barakaldo");
+  await page.route("**/data/renfe/*/13400.json", (route) => route.abort());
+  await page.getByRole("combobox").selectOption("13400");
   await expect(page.getByRole("button", { name: "Reintentar" })).toBeVisible();
-  await page.unroute("**/data/demo/demo-barakaldo.json");
+  await page.unroute("**/data/renfe/*/13400.json");
   await page.getByRole("button", { name: "Reintentar" }).click();
   await expect(page.getByRole("listitem")).toHaveCount(8);
 });

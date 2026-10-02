@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { stations } from "./stations";
+import { demoStations as stations } from "./stations";
 import { ZONE } from "./time";
 import type { DemoPattern, ScheduleProvider, StationSchedule } from "./types";
 

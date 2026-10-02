@@ -14,3 +14,7 @@ Esto es un backlog, no ocho especificaciones aprobadas. Crear cada propuesta con
 | `renfe-realtime-adapter`            | Verificar correspondencia de trip_id/stop_id, CORS desde el origen final, cancelaciones, caducidad y fallback al horario. Worker mínimo solo si es necesario. |
 
 Dependencias principales: ingestión → panel real → horario completo; datos vigentes → offline; ingestión validada → refresco automático; panel real e IDs comprobados → tiempo real. No se crea backend tradicional por anticipado.
+
+## Actualización: horario por fecha (2026-10-02)
+
+La ingestión inicial de GTFS y el horario completo se han implementado en `date-aware-timetable`: 44 estaciones, fechas efectivas, filtros de salida/llegada y JSON compacto por estación. Las filas anteriores describen el backlog original; `ingest-renfe-static-gtfs`, `scheduled-departure-board` y `full-day-timetable` ya tienen una primera implementación. Próxima prioridad: refresco automático antes de que caduque el snapshot, luego PWA y tiempo real en propuestas independientes.

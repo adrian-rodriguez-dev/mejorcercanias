@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { demoProvider } from "./data/demo";
+import { renfeProvider, manifest } from "./data/renfe";
+import { Timetable } from "./Timetable";
 import { stations } from "./data/stations";
 import { clockTime, dayLabel, localDay, upcoming } from "./data/time";
 import type { ScheduleProvider, StationSchedule } from "./data/types";
@@ -13,7 +14,7 @@ type LoadState = {
 const systemClock = () => Date.now();
 
 export function App({
-  provider = demoProvider,
+  provider = renfeProvider,
   clock = systemClock,
 }: {
   provider?: ScheduleProvider;
@@ -23,6 +24,7 @@ export function App({
   const [saved, setSaved] = useState(true);
   const [now, setNow] = useState(clock);
   const [retry, setRetry] = useState(0);
+  const [view, setView] = useState<"next" | "day">("next");
   const [load, setLoad] = useState<LoadState>({
     stationId: "",
     status: "loading",
@@ -138,13 +140,16 @@ export function App({
             </p>
             <div className="network-note">
               BILBAO / BIZKAIA
-              <span>Primera versión · 5 estaciones de muestra</span>
+              <span>{stations.length} estaciones · C1, C2 y C3</span>
             </div>
           </aside>
           <section className="board" aria-labelledby="board-title">
             <div className="board-top">
               <div>
-                <p className="eyebrow">02 / PRÓXIMAS SALIDAS</p>
+                <p className="eyebrow">
+                  02 /{" "}
+                  {view === "next" ? "PRÓXIMAS SALIDAS" : "HORARIO COMPLETO"}
+                </p>
                 <h2 id="board-title">
                   {station?.name ?? "Tu próximo tren empieza aquí"}
                 </h2>
@@ -154,9 +159,31 @@ export function App({
                 <span>Hora de Bilbao</span>
               </div>
             </div>
+            {station && (
+              <nav className="board-tabs" aria-label="Vista de horarios">
+                <button
+                  aria-pressed={view === "next"}
+                  onClick={() => setView("next")}
+                >
+                  Próximos trenes
+                </button>
+                <button
+                  aria-pressed={view === "day"}
+                  onClick={() => setView("day")}
+                >
+                  Horario completo
+                </button>
+              </nav>
+            )}
             <div className="demo-notice">
-              <span className="demo-tag">DEMO</span>
-              <span>Horarios ficticios. No los uses para viajar.</span>
+              <span className="demo-tag">
+                {current?.schedule?.source === "demo" ? "DEMO" : "RENFE"}
+              </span>
+              <span>
+                {current?.schedule?.source === "demo"
+                  ? "Horarios ficticios. No los uses para viajar."
+                  : "Horario programado · Sin información de retrasos en tiempo real"}
+              </span>
             </div>
             {!station ? (
               <div className="empty">
@@ -172,6 +199,8 @@ export function App({
                   Elegir mi estación <span aria-hidden="true">→</span>
                 </button>
               </div>
+            ) : view === "day" ? (
+              <Timetable key={stationId} stationId={stationId} now={now} />
             ) : !current || current.status === "loading" ? (
               <div className="empty" role="status">
                 <h3>Preparando tu panel…</h3>
@@ -189,6 +218,14 @@ export function App({
                 >
                   Reintentar
                 </button>
+              </div>
+            ) : current.schedule?.availability === "unpublished" ? (
+              <div className="empty" role="status">
+                <h3>Horario aún no publicado para hoy.</h3>
+                <p>
+                  Consulta las fechas disponibles en Horario completo. No
+                  reutilizamos horarios caducados.
+                </p>
               </div>
             ) : rows.length === 0 ? (
               <div className="empty" role="status">
@@ -213,8 +250,10 @@ export function App({
                           <strong>{d.destination}</strong>
                           <span>
                             {index === 0 ? "Próximo tren · " : ""}
-                            {dayLabel(Date.parse(d.scheduledAt), now)} · Horario
-                            de ejemplo
+                            {dayLabel(Date.parse(d.scheduledAt), now)} ·{" "}
+                            {current.schedule?.source === "demo"
+                              ? "Horario de ejemplo"
+                              : "Programado"}
                           </span>
                         </div>
                       </div>
@@ -232,14 +271,24 @@ export function App({
             )}
             <div className="board-footer">
               <span>
-                <span className="dot" /> Cuenta atrás automática
+                <span className="dot" />{" "}
+                {view === "next"
+                  ? "Cuenta atrás automática"
+                  : "Servicios según fecha"}
               </span>
-              <span>Datos de demostración</span>
+              <span>
+                {current?.schedule?.source === "demo"
+                  ? "Datos de demostración"
+                  : `Datos: ${manifest.validFrom} → ${manifest.validTo}`}
+              </span>
             </div>
           </section>
         </div>
         <div className="below-board">
-          <span>Tu estación se guarda solo en este navegador.</span>
+          <span>
+            Tu estación se guarda solo en este navegador. Datos: Renfe Operadora
+            · CC BY 4.0.
+          </span>
           <a
             href="https://www.renfe.com/es/es/cercanias"
             target="_blank"

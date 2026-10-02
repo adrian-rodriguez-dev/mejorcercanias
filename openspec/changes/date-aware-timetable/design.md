@@ -9,7 +9,7 @@ La vertical inicial usa cinco estaciones y patrones diarios ficticios. El GTFS d
 - Agrupar viajes con mismas paradas/horas/línea y unir fechas efectivas. JSON por estación con patrones de salida y llegadas posteriores; calendarios deduplicados en manifiesto. No descargar los 224 MB de stop_times al navegador.
 - Incluir versión de dataset basada en SHA256 y archivos bajo directorio versionado. Manifiesto importado por build; no mezclar archivos de versiones. Generar en staging y publicar solo tras validación.
 - Interpretar el día GTFS desde mediodía local menos 12 horas y sumar segundos, conforme a GTFS; no interpretar 25:10 como un reloj civil. La tabla agrupa por día civil de salida y consulta también el servicio anterior cuando alcanza el día siguiente.
-- Hora de llegada límite significa estar en la estación de destino antes o a esa hora. Se listan solo trenes directos que permiten bajarse allí. El destino por defecto al abrir la tabla será Bilbao-Abando cuando sea alcanzable; un acceso Ver todo el día elimina filtros.
+- Hora de llegada límite significa estar en la estación de destino antes o a esa hora. Se listan solo trenes directos que permiten bajarse allí. La tabla comienza sin filtros; el acceso Mañana a Bilbao antes de las 09:00 configura fecha, destino y hora en una sola acción. Ver todo el día elimina filtros.
 - Mantener proveedor demo para pruebas, pero cambiar el proveedor por defecto y migrar IDs favoritos. El panel no conserva filtros de la tabla al regresar a próximas salidas.
 - No llamar festivo a una fecha solo por su frecuencia. Mostrar día de semana y explicar que las excepciones del operador ya se aplican. Fechas fuera de cobertura muestran datos no publicados, nunca un día similar.
 ## Risks / Trade-offs

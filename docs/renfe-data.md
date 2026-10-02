@@ -1,6 +1,6 @@
 # Renfe: datos estáticos y tiempo real
 
-Comprobado el 2026-10-02. Estos datos **no están integrados** en la demo.
+Comprobado el 2026-10-02. El GTFS estático ya está integrado mediante el preprocesador descrito en [gtfs-import.md](gtfs-import.md). El tiempo real sigue pendiente.
 
 ## Fuentes oficiales
 

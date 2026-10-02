@@ -9,11 +9,14 @@ export interface Departure {
   line: string;
   destination: string;
   scheduledAt: string;
+  arrivals?: { stationId: string; at: string }[];
 }
 export interface StationSchedule {
   stationId: string;
   source: "demo" | "renfe-gtfs";
   departures: Departure[];
+  availability?: "available" | "unpublished";
+  destinations?: string[];
 }
 export interface ScheduleProvider {
   load(

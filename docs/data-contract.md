@@ -1,9 +1,13 @@
-# Contrato del panel
+# Contrato de datos
 
-`ScheduleProvider.load(stationId, now, signal)` devuelve una promesa de `StationSchedule`: id de estación, procedencia y salidas con id, línea, destino e instante ISO con offset. `now` es milisegundos Unix; `signal` permite cancelar una selección anterior. La UI también descarta resultados cancelados. No se mezclan estaciones mientras carga.
+El panel consume `ScheduleProvider.load(stationId, now, signal)`: id de estación, instante Unix y señal de cancelación. Devuelve `StationSchedule`, con procedencia, salidas y disponibilidad. El proveedor oficial reúne hoy y mañana; no afirma que un tren vaya puntual.
 
-El proveedor demo lee un JSON pequeño para la estación seleccionada. Cada patrón ficticio tiene `line`, `destination`, `offset` en minutos desde las 06:00 y `every` en minutos. Genera hoy y mañana hasta las 23:00 en Europe/Madrid usando Luxon; son horarios inventados, no frecuencias verificadas de Renfe. Los ids `demo-*` nunca deben cruzarse con GTFS-RT.
+`loadDay(stationId, date, signal)` devuelve todo el día civil elegido. `availability=unpublished` significa sin cobertura; `available` con cero salidas significa que no hay servicios publicados para esa estación y día. La interfaz de horario descarta resultados anteriores al cambiar fecha o estación.
 
-La siguiente propuesta de datos implementará otro proveedor. Debe conservar ids oficiales como cadenas, incluir versión del esquema, fuente, fecha de generación y vigencia, y preprocesar los calendarios antes de entregar instantes al panel. No descargar el ZIP GTFS desde cada navegador.
+Cada `Departure` tiene id estable del patrón y día de servicio, línea, terminal, salida ISO con offset y `arrivals` con estaciones posteriores donde se permite bajar. No es un trip_id de GTFS-RT: para tiempo real hará falta preservar y enlazar IDs originales mediante otra propuesta. Los filtros no pueden inventar destinos o transbordos.
 
-Tiempo real añadirá por separado estimación, cancelación y timestamp de observación; no debe sobrescribir silenciosamente `scheduledAt`. La variante `renfe-gtfs` reserva la procedencia; esta UI aún es una demo y requiere una propuesta para presentar datos reales y sus estados de vigencia.
+Los JSON de estación usan tuplas compactas: `[patternId, line, terminalStopId, departureSeconds, calendarIndex, [[downstreamStopId, arrivalSeconds], ...]]`. El índice de calendario referencia fechas efectivas ya resueltas por el importador. Se comprueban versión y estación contra el manifiesto compilado. Archivos versionados evitan mezclar snapshots.
+
+Para días civiles se consideran también días de servicio anteriores, con horas GTFS entre 00:00 y 47:59:59. Europe/Madrid y la definición GTFS de mediodía menos doce horas determinan el instante, evitando sumas incorrectas de días en cambios DST.
+
+El mock original sigue en `demo.ts` y `public/data/demo/`, sin ser proveedor de producción. Sus patrones son ficticios y no deben reutilizarse como horarios oficiales. La persistencia migra los cinco IDs `demo-*` conocidos a IDs Renfe.

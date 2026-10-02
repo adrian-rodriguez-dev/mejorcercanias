@@ -1,77 +1,78 @@
 # mejorcercanías
 
-**Abrir → mirar → saber cuándo pasa el tren.** Primera vertical de `mejorcercanias.es`, centrada en Cercanías Bilbao.
+**Abrir → mirar → saber cuándo pasa el tren.** SPA estática para Cercanías Bilbao, React + TypeScript + Vite.
 
-> **Demo funcional con horarios ficticios. No sirve para planificar un viaje.** La ingestión oficial de Renfe es la siguiente propuesta; esta entrega no contiene horarios GTFS reales ni información en tiempo real.
+## Qué puedes consultar
 
-## Qué funciona
+- **Próximos trenes** es la pantalla inicial: estación favorita, línea, destino, hora y cuenta atrás.
+- **Horario completo** muestra toda la tabla de un día, sin ocultar las salidas anteriores a la hora actual.
+- **Hoy / Mañana / fecha / anterior / siguiente** para cambiar de día fácilmente.
+- **Destino directo**, **Salir a partir de** o **Llegar antes de**, con hora de salida y llegada del mismo tren.
+- Atajo **Mañana a Bilbao antes de las 09:00**: configura fecha, destino y hora; destaca la última salida compatible y conserva todas las alternativas anteriores.
+- **Ver todo el día** elimina los filtros. Volver a Próximos trenes recupera el panel inmediato.
 
-- React 19 + TypeScript estricto + Vite, SPA estática sin backend, base de datos ni .NET.
-- Elegir entre cinco estaciones de muestra: Barakaldo, Bilbao-Abando, Portugalete, Santurtzi y Amurrio.
-- Recordar la estación en este navegador y abrir directamente su panel al volver.
-- Ver hasta ocho salidas con línea, destino, hora de Bilbao y cuenta atrás automática cada 15 segundos.
-- Estados de carga, ausencia de salidas, error y reintento; persistencia degradada a memoria si el navegador bloquea almacenamiento.
-- Diseño móvil, selector nativo accesible, foco visible y horarios independientes del huso del dispositivo.
+Se utilizan **horarios programados oficiales de Renfe**, no tiempo real. Fines de semana y excepciones se resuelven con los calendarios publicados por el operador; no se asume que festivo equivale a domingo. No se buscan transbordos ni se incluyen Euskotren o metro. Deja margen si tienes una cita: las llegadas programadas no garantizan puntualidad.
 
-No incluye todavía horario completo, PWA, GTFS real, refresco de GTFS ni tiempo real. La demo genera hoy y mañana entre 06:00 y 23:00; los trenes de mañana se identifican como tales.
+El snapshot inicial cubre **1–30 de octubre de 2026**, 44 estaciones de Bilbao C1/C2/C3. Fuera del horizonte la app indica que no hay datos publicados, sin repetir un horario de otro día. **El refresco aún es manual**; consulta [regeneración de datos](docs/gtfs-import.md) antes de que caduque. Los fixtures demo permanecen solo como soporte de desarrollo.
 
-## Desarrollo local
+## Desarrollo
 
-Usa **Node 24 LTS** (ver `.nvmrc`). El Node 22.12 incluido en algunos equipos es anterior al mínimo de ciertas dependencias de OpenSpec. No es necesario instalar OpenSpec globalmente.
+Node **24 LTS** (ver `.nvmrc`):
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Abre la dirección que imprime Vite, normalmente `http://127.0.0.1:5173`. Elige una estación y recarga para comprobar que la recuerda. Para cambiarla, usa el mismo selector. No se guardan viajes, identidad ni ubicación.
+Abre la URL de Vite (normalmente `http://127.0.0.1:5173`). No requiere base de datos, backend, cuentas, API keys ni .NET. La estación se guarda solo en este navegador. Las cinco favoritas de la demo se migran a IDs oficiales.
 
 ```sh
-npm test                 # lógica temporal y componentes
-npm run build            # TypeScript y salida estática dist/
-npm run preview          # servir dist localmente
-npm run check            # pruebas + build + validación OpenSpec
+npm test
+npm run build
+npm run preview
+npm run check
 npx playwright install chromium
-npm run test:e2e          # escritorio y móvil a 360 px
+npm run test:e2e
+python -m unittest discover -s scripts -p 'test_*.py'
+npm run format
 ```
 
-`dist/` se puede alojar como archivos estáticos. La base relativa permite servir la aplicación en una subcarpeta. No hay rutas que requieran un servidor de aplicación. El dominio y el despliegue público no están configurados. CI verifica las pruebas y la compilación; no publica automáticamente.
+Python 3.12+ solo se necesita para regenerar/probar el importador, no para ejecutar la aplicación. `dist/` contiene archivos estáticos y admite hosting en subcarpeta. GitHub Actions comprueba pruebas, build y OpenSpec; no despliega ni renueva los datos automáticamente. El dominio público no está configurado.
 
 ## Arquitectura
 
 ```text
-JSON demo por estación -> ScheduleProvider -> salidas con instante absoluto
-                                                 |
-localStorage -> estación seleccionada -> panel React + reloj
-
-Futuro: GTFS Renfe -> preprocesado build/CI -> JSON por núcleo/estación
+GTFS Renfe ZIP -> preprocesador Python -> manifiesto + JSON versionado por estación
+                                                      |
+preferencia local -> estación -> proveedor -> próximas salidas / horario por fecha
 ```
 
-- `src/data/`: contrato, catálogo, proveedor y cálculo temporal; ver [contrato](docs/data-contract.md).
-- `public/data/demo/`: patrones ficticios pequeños. El navegador solo solicita el de la estación elegida.
-- `src/App.tsx`: estados del panel, descarte de cargas anteriores y refresco de reloj.
-- `src/preference.ts`: preferencia versionada y manejo de almacenamiento bloqueado.
-- `src/style.css`: diseño responsive sin fuentes, imágenes ni frameworks externos.
-- `tests/`: pruebas de navegador y captura de escritorio/móvil.
+- `scripts/import_gtfs.py`: calendarios semanales y excepciones, selección explícita de Bilbao, tiempos y paradas. CSV en streaming; no se envía el GTFS bruto al navegador.
+- `src/data/renfe-manifest.json`: fuente, hash del ZIP, vigencia, catálogo y fechas efectivas.
+- `public/data/renfe/<versión>/`: JSON compacto por estación, aproximadamente 1,3 MB en total para este snapshot.
+- `src/data/renfe.ts`: materializa horarios del día civil en Europe/Madrid, también desde servicios anteriores con horas >24.
+- `src/data/timetable.ts`: filtros de salida y llegada para viajes directos.
+- `src/App.tsx`: panel inmediato, preferencia y cambio de vista.
+- `src/Timetable.tsx`: tabla por fecha y consulta de llegada.
 
-Luxon realiza la aritmética de días en Europe/Madrid para respetar el cambio de hora. Los tiempos del contrato son ISO con offset; ordenar y descontar se hace por instante absoluto. No se calcula GTFS en el navegador.
+Los tiempos GTFS se calculan desde mediodía local menos doce horas, respetando DST. Cargas antiguas no pueden reemplazar una nueva fecha/estación. Ver [contrato](docs/data-contract.md), [importador](docs/gtfs-import.md) y [comprobaciones](docs/verification.md).
 
-## OpenSpec: antes de las features
+## OpenSpec antes de desarrollar
 
-Se verificó la [documentación oficial](https://openspec.dev/docs/cli) y se inicializó **OpenSpec 1.14.0** mediante `openspec init --tools=codex`, con el esquema oficial `spec-driven`. La integración generada está en `.agents/skills/`. El flujo sigue las [instrucciones oficiales](https://github.com/Fission-AI/OpenSpec/blob/main/docs/getting-started.md).
+Configurado con **OpenSpec 1.14.0**, `openspec init --tools=codex`, esquema oficial `spec-driven`. Skills generadas en `.agents/skills/`. Se siguió la [documentación oficial](https://openspec.dev/docs/cli).
 
-La primera propuesta es [bootstrap-app-and-station-board](openspec/changes/bootstrap-app-and-station-board/proposal.md). Contiene [exploración](openspec/changes/bootstrap-app-and-station-board/exploration.md), `proposal.md`, `design.md`, `specs/station-board/spec.md` y `tasks.md`. La exploración es un registro adicional pedido para este proyecto: **no existe un comando CLI `openspec explore`**.
+La [primera vertical](openspec/changes/archive/2026-10-02-bootstrap-app-and-station-board/proposal.md) está archivada y consolidada en `openspec/specs/station-board/spec.md`. Su [exploración](openspec/changes/archive/2026-10-02-bootstrap-app-and-station-board/exploration.md) conserva las decisiones iniciales.
 
-En Codex, selecciona la skill correspondiente o usa:
+El cambio [date-aware-timetable](openspec/changes/date-aware-timetable/proposal.md) añade calendario oficial, horario diario y llegada antes de una hora. Tiene propuesta, diseño, deltas de especificación y tareas. Se mantiene abierto para revisión; no confundir tareas completas con cambio archivado.
 
-1. `$openspec-explore`: explorar objetivos, restricciones y alternativas.
-2. `$openspec-propose nombre-del-cambio`: crear propuesta, specs, diseño cuando proceda y tareas, siguiendo las dependencias oficiales.
-3. Revisar los artefactos y pedir `$openspec-apply-change nombre-del-cambio` para implementar.
-4. Ejecutar las pruebas y validación; usar `$openspec-sync-specs` y `$openspec-archive-change` al cerrar el cambio.
+Para una nueva feature en Codex:
 
-Las skills instaladas separan planificación de implementación. En esta entrega el usuario pidió expresamente ambas fases en una misma sesión; se mantuvo el orden y se hizo un commit de las specs antes del código. Para nuevas propuestas conviene revisar los artefactos antes de aplicar.
+1. `$openspec-explore` para investigar alcance y alternativas.
+2. `$openspec-propose nombre-del-cambio` para preparar propuesta, specs, diseño y tareas.
+3. Revisar los artefactos y pedir `$openspec-apply-change nombre-del-cambio`.
+4. Probar, validar, sincronizar specs y cerrar con `$openspec-archive-change`.
 
-Comandos **de terminal** para inspeccionar o crear el esqueleto oficial:
+Estos son nombres de skills, no comandos de terminal. La autorización expresa del usuario para implementar se conserva durante la sesión; no se vuelve a pedir por cada paso.
 
 ```sh
 npm run spec -- list --json
@@ -82,12 +83,10 @@ npm run spec -- instructions proposal --change nombre-del-cambio --json
 npm run spec -- validate --all --strict
 ```
 
-Después de `new change`, seguir `status` y `instructions` para cada artefacto en el orden que devuelve la herramienta. No crear carpetas de cambios manualmente ni escribir una spec gigantesca. Los nombres de invocación de skills y comandos CLI son distintos.
+Seguir el orden de dependencias que devuelve OpenSpec y obtener `instructions` para cada artefacto; no crear carpetas de cambios manualmente. Explore no es un comando CLI. No especificar el backlog entero por adelantado.
 
-El cambio inicial se mantiene abierto para revisión; `openspec/specs/` todavía no contiene la especificación consolidada. Al archivarlo, OpenSpec sincroniza sus deltas. No confundir tareas terminadas con un cambio ya archivado.
+## Fuente y siguientes pasos
 
-## Datos oficiales y siguientes pasos
+[Datos oficiales de Renfe](https://data.renfe.com/dataset/horarios-cercanias), **Renfe Operadora · CC BY 4.0**. Se han filtrado y transformado para esta aplicación independiente, sin afiliación con Renfe.
 
-La fuente objetivo es el [GTFS estático oficial de Renfe](https://data.renfe.com/dataset/horarios-cercanias), publicado con CC BY 4.0. El [estudio de datos y CORS](docs/renfe-data.md) registra fuentes, comprobaciones y límites. Los fixtures de esta demo son propios y no derivan de horarios oficiales.
-
-El [roadmap](docs/roadmap.md) identifica ocho áreas independientes sin especificarlas por adelantado. Prioridad siguiente: `ingest-renfe-static-gtfs`, incluyendo calendarios, vigencia, excepciones y pruebas de días de servicio. Solo después se podrá presentar el producto como consulta de horarios reales.
+Pendientes: refresco periódico de GTFS, PWA/offline y adaptador de tiempo real. Ver [roadmap](docs/roadmap.md) y [estudio de CORS](docs/renfe-data.md).

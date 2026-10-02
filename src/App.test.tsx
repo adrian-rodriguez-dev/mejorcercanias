@@ -40,13 +40,13 @@ describe("panel de estación", () => {
     const user = userEvent.setup();
     const view = render(<App provider={provider} clock={clock} />);
     expect(screen.getByLabelText("¿Desde dónde sales?")).toHaveValue("");
-    await user.selectOptions(screen.getByRole("combobox"), "demo-barakaldo");
+    await user.selectOptions(screen.getByRole("combobox"), "13400");
     expect(await screen.findByText("Destino de prueba")).toBeVisible();
-    expect(localStorage.getItem(STORAGE_KEY)).toBe("demo-barakaldo");
+    expect(localStorage.getItem(STORAGE_KEY)).toBe("13400");
     view.unmount();
     render(<App provider={provider} clock={clock} />);
     expect(await screen.findByText("Destino de prueba")).toBeVisible();
-    expect(screen.getByRole("combobox")).toHaveValue("demo-barakaldo");
+    expect(screen.getByRole("combobox")).toHaveValue("13400");
     expect(
       screen.getByText("Horarios ficticios. No los uses para viajar."),
     ).toBeVisible();
@@ -59,7 +59,7 @@ describe("panel de estación", () => {
     });
     render(<App provider={provider} clock={clock} />);
     expect(screen.getByRole("combobox")).toHaveValue("");
-    await user.selectOptions(screen.getByRole("combobox"), "demo-barakaldo");
+    await user.selectOptions(screen.getByRole("combobox"), "13400");
     expect(await screen.findByText("Destino de prueba")).toBeVisible();
     expect(screen.getByText(/No podemos guardar/)).toBeVisible();
   });
@@ -71,12 +71,12 @@ describe("panel de estación", () => {
     expect(screen.getByRole("combobox")).toHaveValue("");
   });
   it("muestra error, permite reintentar y muestra vacío", async () => {
-    localStorage.setItem(STORAGE_KEY, "demo-barakaldo");
+    localStorage.setItem(STORAGE_KEY, "13400");
     const load = vi
       .fn()
       .mockRejectedValueOnce(new Error("offline"))
       .mockResolvedValueOnce({
-        stationId: "demo-barakaldo",
+        stationId: "13400",
         source: "demo",
         departures: [],
       });
@@ -90,7 +90,7 @@ describe("panel de estación", () => {
   it("descarta respuestas de una selección anterior", async () => {
     let resolveOld!: (s: StationSchedule) => void;
     const load = vi.fn((id: string) =>
-      id === "demo-barakaldo"
+      id === "13400"
         ? new Promise<StationSchedule>((resolve) => {
             resolveOld = resolve;
           })
@@ -98,22 +98,20 @@ describe("panel de estación", () => {
     );
     render(<App provider={{ load }} clock={clock} />);
     fireEvent.change(screen.getByRole("combobox"), {
-      target: { value: "demo-barakaldo" },
+      target: { value: "13400" },
     });
     expect(screen.getByText("Preparando tu panel…")).toBeVisible();
     fireEvent.change(screen.getByRole("combobox"), {
-      target: { value: "demo-abando" },
+      target: { value: "13200" },
     });
     expect(await screen.findByText("Nuevo destino")).toBeVisible();
-    await act(async () =>
-      resolveOld(schedule("demo-barakaldo", "Destino antiguo")),
-    );
+    await act(async () => resolveOld(schedule("13400", "Destino antiguo")));
     expect(screen.queryByText("Destino antiguo")).not.toBeInTheDocument();
   });
   it("actualiza la cuenta atrás y elimina salidas al volver a la pestaña", async () => {
     let current = now;
     const mutableClock = () => current;
-    localStorage.setItem(STORAGE_KEY, "demo-barakaldo");
+    localStorage.setItem(STORAGE_KEY, "13400");
     render(<App provider={provider} clock={mutableClock} />);
     await screen.findByText("Destino de prueba");
     current += 6 * 60000;
