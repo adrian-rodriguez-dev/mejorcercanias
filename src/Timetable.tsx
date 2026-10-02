@@ -1,3 +1,4 @@
+import { arrivalDayLabel } from "./data/arrival";
 import { useEffect, useState } from "react";
 import { addDays, dateTitle, loadDay, manifest } from "./data/renfe";
 import { stationName } from "./data/stations";
@@ -251,8 +252,12 @@ export function Timetable({
                       <time dateTime={row.arrivalAt}>
                         {clockTime(Date.parse(row.arrivalAt!))}
                       </time>
-                      {localDay(Date.parse(row.arrivalAt!)) !== date && (
-                        <small>+1 día</small>
+                      {Boolean(
+                        arrivalDayLabel(row.scheduledAt, row.arrivalAt!),
+                      ) && (
+                        <small>
+                          {arrivalDayLabel(row.scheduledAt, row.arrivalAt!)}
+                        </small>
                       )}
                     </td>
                   )}

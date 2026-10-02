@@ -1,3 +1,4 @@
+import { arrivalAt } from "./arrival";
 import { DateTime } from "luxon";
 import { ZONE } from "./time";
 import type { Departure } from "./types";
@@ -19,18 +20,13 @@ export function filterTimetable(rows: Departure[], filter: TimetableFilter) {
     destination: filter.destination,
   })
     .flatMap((row) => {
-      const arrival = row.arrivals?.find(
-        (a) => a.stationId === filter.destination,
-      );
+      const arrival = arrivalAt(row, filter.destination);
       if (filter.destination && !arrival) return [];
       if (filter.mode === "depart" && Date.parse(row.scheduledAt) < limit)
         return [];
-      if (
-        filter.mode === "arrive" &&
-        (!arrival || Date.parse(arrival.at) > limit)
-      )
+      if (filter.mode === "arrive" && (!arrival || Date.parse(arrival) > limit))
         return [];
-      return [{ ...row, arrivalAt: arrival?.at }];
+      return [{ ...row, arrivalAt: arrival }];
     })
     .sort((a, b) => Date.parse(a.scheduledAt) - Date.parse(b.scheduledAt));
 }

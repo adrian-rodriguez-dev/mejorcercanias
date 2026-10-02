@@ -6,7 +6,7 @@
 
 ## Qué puedes consultar
 
-- **Próximos trenes** es la pantalla inicial: estación favorita, línea, destino, hora y cuenta atrás.
+- **Próximos trenes** es la pantalla inicial: estación favorita, línea, destino, hora y cuenta atrás. Al elegir destino muestra salida y llegada a esa parada (aunque no sea la terminal); sin destino la llegada desaparece. La cuenta atrás siempre indica cuánto falta para salir y las llegadas al día siguiente muestran +1 día.
 - **Horario completo** muestra toda la tabla de un día, sin ocultar las salidas anteriores a la hora actual.
 - **Hoy / Mañana / fecha / anterior / siguiente** para cambiar de día fácilmente.
 - **Origen y destino opcional** en la cabecera del panel oscuro. El propio nombre es el selector; el botón ⇅ invierte el trayecto al instante, conservando vista, fecha, hora y línea. La línea se elige en la barra visible **C1 · C2 · C3** (selección múltiple; ninguna marcada muestra todas), con [colores oficiales](docs/line-colors.md); solo los filtros horarios permanecen plegados. La selección se conserva al cambiar de vista durante la visita y se reinicia al cambiar de estación. Incluye paradas intermedias del mismo tren.

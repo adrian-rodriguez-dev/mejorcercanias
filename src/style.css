@@ -1156,3 +1156,27 @@ time {
   width: 12px;
   font-size: 14px;
 }
+
+.train-times {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-variant-numeric: tabular-nums;
+}
+.train-times small {
+  display: block;
+  font-size: 9px;
+  line-height: 1.3;
+  color: #bacabb;
+}
+.train-arrival {
+  margin-top: 5px;
+}
+.train-arrival time {
+  color: #e4f2c8;
+}
+.train-times .arrival-day {
+  font-size: 9px;
+  color: #e4f2c8;
+  white-space: nowrap;
+}

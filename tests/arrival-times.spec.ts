@@ -1,0 +1,98 @@
+import { test, expect } from "@playwright/test";
+import manifest from "../src/data/renfe-manifest.json" with { type: "json" };
+test("llegada intermedia, medianoche, cambio, inversión y eliminación", async ({
+  page,
+}, info) => {
+  await page.clock.install({ time: new Date("2026-10-02T23:50:00+02:00") });
+  const calendar = manifest.calendars.findIndex((days) =>
+    days.includes("2026-10-02"),
+  );
+  await page.route("**/data/renfe/*/13400.json", (route) =>
+    route.fulfill({
+      json: {
+        version: manifest.version,
+        stationId: "13400",
+        patterns: [
+          [
+            "night",
+            "C1",
+            "13405",
+            86280,
+            calendar,
+            [
+              ["13403", 86880],
+              ["13405", 87300],
+            ],
+          ],
+        ],
+      },
+    }),
+  );
+  await page.route("**/data/renfe/*/13405.json", (route) =>
+    route.fulfill({
+      json: {
+        version: manifest.version,
+        stationId: "13405",
+        patterns: [
+          [
+            "return",
+            "C1",
+            "13200",
+            86280,
+            calendar,
+            [
+              ["13400", 87600],
+              ["13200", 88500],
+            ],
+          ],
+        ],
+      },
+    }),
+  );
+  await page.goto("/");
+  const origin = page.getByLabel("¿Desde dónde sales?");
+  const destination = page.getByLabel("Destino directo");
+  await origin.selectOption("13400");
+  await expect(page.getByRole("listitem").first()).toBeVisible();
+  await expect(page.locator(".train-arrival")).toHaveCount(0);
+  await destination.selectOption("13403");
+  const first = page.getByRole("listitem").first();
+  await expect(first.locator(".destination strong")).toHaveText("Santurtzi");
+  await expect(first.locator(".train-arrival time")).toHaveText("00:08");
+  await expect(first.locator(".arrival-day")).toHaveText("+1 día");
+  await expect(first.locator(".train-times > time")).toHaveText("23:58");
+  await expect(first.locator(".countdown strong")).toHaveText("8");
+  await destination.selectOption("13405");
+  await expect(first.locator(".train-arrival time")).toHaveText("00:15");
+  const box = (await first.boundingBox())!;
+  expect(box.y + box.height).toBeLessThan(page.viewportSize()!.height);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({
+    path: `work/arrivals-${info.project.name}.png`,
+    fullPage: true,
+  });
+  await page
+    .getByRole("button", { name: "Horario completo", exact: true })
+    .click();
+  await expect(
+    page.locator("tbody tr").first().locator("td:last-child time"),
+  ).toHaveText("00:15");
+  await expect(page.locator("tbody tr").first()).toContainText("+1 día");
+  await page
+    .getByRole("button", { name: "Próximos trenes", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Intercambiar origen y destino" })
+    .click();
+  await expect(origin).toHaveValue("13405");
+  await expect(destination).toHaveValue("13400");
+  await expect(first.locator(".train-arrival time")).toHaveText("00:20");
+  await destination.selectOption("");
+  await expect(page.locator(".train-arrival")).toHaveCount(0);
+});
+
+

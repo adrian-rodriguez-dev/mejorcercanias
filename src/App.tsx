@@ -1,3 +1,4 @@
+import { arrivalAt, arrivalDayLabel } from "./data/arrival";
 import { useEffect, useState } from "react";
 import { renfeProvider, manifest } from "./data/renfe";
 import { Timetable } from "./Timetable";
@@ -272,36 +273,63 @@ export function App({
               <>
                 <div className="table-heading" aria-hidden="true">
                   <span>LÍNEA / DESTINO</span>
-                  <span>HORA</span>
+                  <span>{routeFilter.destination ? "HORARIO" : "SALIDA"}</span>
                   <span>SALE EN</span>
                 </div>
                 <ol className="departures" aria-label="Próximos trenes">
-                  {rows.map((d, index) => (
-                    <li key={d.id} className={index === 0 ? "next-train" : ""}>
-                      <div className="destination">
-                        <span className={`line line-${d.line.toLowerCase()}`}>
-                          {d.line}
-                        </span>
-                        <div>
-                          <strong>{d.destination}</strong>
-                          <span>
-                            {index === 0 ? "Próximo tren · " : ""}
-                            {dayLabel(Date.parse(d.scheduledAt), now)} ·{" "}
-                            {current.schedule?.source === "demo"
-                              ? "Horario de ejemplo"
-                              : "Programado"}
+                  {rows.map((d, index) => {
+                    const arrival = arrivalAt(d, routeFilter.destination);
+                    return (
+                      <li
+                        key={d.id}
+                        className={index === 0 ? "next-train" : ""}
+                      >
+                        <div className="destination">
+                          <span className={`line line-${d.line.toLowerCase()}`}>
+                            {d.line}
                           </span>
+                          <div>
+                            <strong>{d.destination}</strong>
+                            <span>
+                              {index === 0 ? "Próximo tren · " : ""}
+                              {dayLabel(Date.parse(d.scheduledAt), now)} ·{" "}
+                              {current.schedule?.source === "demo"
+                                ? "Horario de ejemplo"
+                                : "Programado"}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      <time dateTime={d.scheduledAt}>
-                        {clockTime(Date.parse(d.scheduledAt))}
-                      </time>
-                      <div className="countdown">
-                        <strong>{d.minutes === 0 ? "Ahora" : d.minutes}</strong>
-                        {d.minutes > 0 && <span> min</span>}
-                      </div>
-                    </li>
-                  ))}
+                        <div className="train-times">
+                          {arrival && <small>Salida</small>}
+                          <time dateTime={d.scheduledAt}>
+                            {clockTime(Date.parse(d.scheduledAt))}
+                          </time>
+                          {arrival && (
+                            <div
+                              className="train-arrival"
+                              aria-label={`Llegada a ${stations.find((s) => s.id === routeFilter.destination)?.name}`}
+                            >
+                              <small>Llegada</small>
+                              <time dateTime={arrival}>
+                                {clockTime(Date.parse(arrival))}
+                              </time>
+                              {arrivalDayLabel(d.scheduledAt, arrival) && (
+                                <small className="arrival-day">
+                                  {arrivalDayLabel(d.scheduledAt, arrival)}
+                                </small>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <div className="countdown">
+                          <strong>
+                            {d.minutes === 0 ? "Ahora" : d.minutes}
+                          </strong>
+                          {d.minutes > 0 && <span> min</span>}
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ol>
               </>
             )}

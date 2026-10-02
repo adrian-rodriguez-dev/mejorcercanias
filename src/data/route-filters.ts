@@ -1,3 +1,4 @@
+import { arrivalAt } from "./arrival";
 import type { Departure } from "./types";
 export interface RouteFilter {
   lines: string[];
@@ -8,8 +9,7 @@ export function filterRoutes(rows: Departure[], filter: RouteFilter) {
   return rows.filter(
     (row) =>
       (!filter.lines.length || filter.lines.includes(row.line)) &&
-      (!filter.destination ||
-        row.arrivals?.some((a) => a.stationId === filter.destination)),
+      (!filter.destination || Boolean(arrivalAt(row, filter.destination))),
   );
 }
 export function routeDestinations(rows: Departure[], lines: string[]) {

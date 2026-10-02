@@ -43,3 +43,5 @@ Multiselección: 24 pruebas unitarias y 10 de navegador correctas; build y OpenS
 Publicación multiselección: Actions 37066108985 correcto (9f9d988). Web pública verificada a 360 px: tres botones y dos líneas activas simultáneas.
 
 Cabecera redundante eliminada: 24 pruebas unitarias, 10 de navegador, build y OpenSpec correctos. Actions 37066807286 correcto; web pública a 360 px comprobada sin .board-top ni .clock, manteniendo selector de origen.
+
+Llegadas al destino: 27 pruebas unitarias y 12 de navegador correctas; build y OpenSpec estrictos válidos. Verificados destino intermedio, cambio e inversión, eliminación, llegadas inválidas, medianoche (+1 día), cambio horario y cuenta atrás asociada a salida. Captura inspeccionada a 360 px: sin nueva columna ni desbordamiento, primer tren visible. La llegada diaria comparte la misma validación de datos.
