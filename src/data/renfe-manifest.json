@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "coverageDates": [
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-03",
+    "2026-10-04",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08",
+    "2026-10-09",
+    "2026-10-10",
+    "2026-10-11",
+    "2026-10-12",
+    "2026-10-13",
+    "2026-10-14",
+    "2026-10-15",
+    "2026-10-16",
+    "2026-10-17",
+    "2026-10-18",
+    "2026-10-19",
+    "2026-10-20",
+    "2026-10-21",
+    "2026-10-22",
+    "2026-10-23",
+    "2026-10-24",
+    "2026-10-25",
+    "2026-10-26",
+    "2026-10-27",
+    "2026-10-28",
+    "2026-10-29",
+    "2026-10-30"
+  ],
+  "validFrom": "2026-10-01",
+  "validTo": "2026-10-30",
+  "calendars": [
+    [
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-10",
+      "2026-10-11",
+      "2026-10-12",
+      "2026-10-17",
+      "2026-10-18",
+      "2026-10-24",
+      "2026-10-25"
+    ],
+    [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21",
+      "2026-10-22",
+      "2026-10-23",
+      "2026-10-26",
+      "2026-10-27",
+      "2026-10-28",
+      "2026-10-29",
+      "2026-10-30"
+    ],
+    [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-10",
+      "2026-10-11",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-17",
+      "2026-10-18",
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21",
+      "2026-10-22",
+      "2026-10-23",
+      "2026-10-24",
+      "2026-10-25",
+      "2026-10-26",
+      "2026-10-27",
+      "2026-10-28",
+      "2026-10-29",
+      "2026-10-30"
+    ]
+  ],
+  "stations": [
+    {
+      "id": "13118",
+      "name": "Abaroa-San Miguel",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    {
+      "id": "13206",
+      "name": "Ametzola",
+      "network": "bilbao",
+      "lines": ["C1", "C2"]
+    },
+    { "id": "13101", "name": "Amurrio", "network": "bilbao", "lines": ["C3"] },
+    {
+      "id": "13121",
+      "name": "Amurrio Iparralde",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    { "id": "13117", "name": "Arakaldo", "network": "bilbao", "lines": ["C3"] },
+    { "id": "13108", "name": "Arbide", "network": "bilbao", "lines": ["C3"] },
+    { "id": "13107", "name": "Areta", "network": "bilbao", "lines": ["C3"] },
+    {
+      "id": "13109",
+      "name": "Arrankudiaga",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    {
+      "id": "13111",
+      "name": "Arrigorriaga",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    {
+      "id": "13207",
+      "name": "Autonomía",
+      "network": "bilbao",
+      "lines": ["C1", "C2"]
+    },
+    { "id": "13115", "name": "Bakiola", "network": "bilbao", "lines": ["C3"] },
+    { "id": "13112", "name": "Basauri", "network": "bilbao", "lines": ["C3"] },
+    {
+      "id": "13113",
+      "name": "Bidebieta-Basauri",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    {
+      "id": "13200",
+      "name": "Bilbao-Intermod. Abando Indalecio Prieto",
+      "network": "bilbao",
+      "lines": ["C1", "C2", "C3"]
+    },
+    {
+      "id": "13400",
+      "name": "Desertu-Barakaldo",
+      "network": "bilbao",
+      "lines": ["C1", "C2"]
+    },
+    { "id": "13501", "name": "Galindo", "network": "bilbao", "lines": ["C2"] },
+    { "id": "13508", "name": "Gallarta", "network": "bilbao", "lines": ["C2"] },
+    {
+      "id": "13116",
+      "name": "Iñarratxu",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    {
+      "id": "13402",
+      "name": "La Iberia",
+      "network": "bilbao",
+      "lines": ["C1"]
+    },
+    {
+      "id": "13119",
+      "name": "La Peña de Bilbao",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    { "id": "13106", "name": "Llodio", "network": "bilbao", "lines": ["C3"] },
+    { "id": "13103", "name": "Luiaondo", "network": "bilbao", "lines": ["C3"] },
+    {
+      "id": "13305",
+      "name": "Lutxana-Barakaldo",
+      "network": "bilbao",
+      "lines": ["C1", "C2"]
+    },
+    {
+      "id": "13120",
+      "name": "Miribilla",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    { "id": "13506", "name": "Muskiz", "network": "bilbao", "lines": ["C2"] },
+    {
+      "id": "13303",
+      "name": "Olabeaga",
+      "network": "bilbao",
+      "lines": ["C1", "C2"]
+    },
+    { "id": "13114", "name": "Ollargan", "network": "bilbao", "lines": ["C3"] },
+    { "id": "13100", "name": "Orduña", "network": "bilbao", "lines": ["C3"] },
+    { "id": "13504", "name": "Ortuella", "network": "bilbao", "lines": ["C2"] },
+    { "id": "13404", "name": "Peñota", "network": "bilbao", "lines": ["C1"] },
+    {
+      "id": "13403",
+      "name": "Portugalete",
+      "network": "bilbao",
+      "lines": ["C1"]
+    },
+    { "id": "13505", "name": "Putxeta", "network": "bilbao", "lines": ["C2"] },
+    {
+      "id": "13509",
+      "name": "Sagrada Familia",
+      "network": "bilbao",
+      "lines": ["C2"]
+    },
+    { "id": "13102", "name": "Salbio", "network": "bilbao", "lines": ["C3"] },
+    {
+      "id": "13208",
+      "name": "San Mamés",
+      "network": "bilbao",
+      "lines": ["C1", "C2"]
+    },
+    {
+      "id": "13104",
+      "name": "Santa Cruz de Llodio",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    {
+      "id": "13405",
+      "name": "Santurtzi",
+      "network": "bilbao",
+      "lines": ["C1"]
+    },
+    { "id": "13401", "name": "Sestao", "network": "bilbao", "lines": ["C1"] },
+    { "id": "13502", "name": "Trápaga", "network": "bilbao", "lines": ["C2"] },
+    {
+      "id": "13110",
+      "name": "Ugao-Miraballes",
+      "network": "bilbao",
+      "lines": ["C3"]
+    },
+    { "id": "13507", "name": "Urioste", "network": "bilbao", "lines": ["C2"] },
+    {
+      "id": "13503",
+      "name": "Valle de Trápaga/Trapagaran",
+      "network": "bilbao",
+      "lines": ["C2"]
+    },
+    {
+      "id": "13205",
+      "name": "Zabalburu",
+      "network": "bilbao",
+      "lines": ["C1", "C2"]
+    },
+    {
+      "id": "13304",
+      "name": "Zorrotza",
+      "network": "bilbao",
+      "lines": ["C1", "C2"]
+    }
+  ],
+  "version": "b7464457aea1acfa",
+  "sha256": "b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043",
+  "sourceUrl": "https://ssl.renfe.com/ftransit/Fichero_CER_FOMENTO/fomento_transit.zip",
+  "downloadedAt": "2026-10-02T19:39:22.233915+00:00",
+  "license": "CC BY 4.0",
+  "attribution": "Renfe Operadora"
+}
