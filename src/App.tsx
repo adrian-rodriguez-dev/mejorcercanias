@@ -1,3 +1,4 @@
+import { InstallPrompt } from "./InstallPrompt";
 import { arrivalAt, arrivalDayLabel } from "./data/arrival";
 import { useEffect, useState } from "react";
 import { renfeProvider, manifest } from "./data/renfe";
@@ -361,6 +362,9 @@ export function App({
             </div>
           </section>
         </div>
+        <InstallPrompt
+          ready={Boolean(station && current?.status === "ready")}
+        />
         <div className="below-board">
           <span>
             Tu trayecto y líneas se guardan solo en este navegador. Datos: Renfe

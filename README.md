@@ -103,3 +103,8 @@ El panel empieza directamente en origen y destino: no incluye rótulo de vista n
 La barra de líneas muestra solo las que pasan por origen y destino; con cero o una opción se oculta por completo. Sin destino se usa el origen. Cambiar estaciones elimina selecciones incompatibles; la disponibilidad no depende de los próximos ocho trenes ni de una fecha sin servicio.
 
 Se recuerdan origen, destino y líneas en localStorage (`mejorcercanias.journey.v1`), incluidas selecciones vacías. Al abrir se valida el catálogo y se migra la antigua preferencia de estación. Si no se puede guardar, la selección funciona durante la visita.
+
+## Instalación
+Manifiesto e iconos permiten instalación en navegadores compatibles. La invitación aparece bajo los trenes cuando hay mecanismo nativo o guía iOS. «Ahora no» y descartar el diálogo silencian 30 días; la ayuda del pie sigue accesible. Sin almacenamiento, el cierre dura la sesión. No se añade service worker ni se promete acceso offline. Referencia: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable
+
+Validación: eventos nativos simulados, guía iOS, rechazo, teclado, modo instalado y recursos en HTTPS. No hay dispositivo Android/iOS físico conectado: instalación real y relanzamiento en esos sistemas no verificados.

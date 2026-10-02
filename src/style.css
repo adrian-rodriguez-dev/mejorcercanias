@@ -1181,3 +1181,34 @@ time {
   color: #e4f2c8;
   white-space: nowrap;
 }
+
+.install-area {
+  margin: 16px 0;
+}
+.install-invitation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #859a78;
+  border-radius: 12px;
+}
+.install-invitation span {
+  flex: 1 1 180px;
+}
+.text-button {
+  min-height: 44px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  color: inherit;
+  cursor: pointer;
+}
+.install-help {
+  max-width: 600px;
+  padding: 12px;
+  border: 1px solid #859a78;
+  border-radius: 12px;
+}
