@@ -112,3 +112,5 @@ Validación: eventos nativos simulados, guía iOS, rechazo, teclado, modo instal
 Renovación automática por caducidad: [contrato, pruebas y recuperación](docs/data-freshness.md). El móvil consulta metadatos de versión y JSON compactos; no descarga el GTFS bruto.
 
 Incidencias: indicador compacto y detalle accesible implementados. La fuente directa de Renfe bloquea CORS; la activación en vivo requiere desplegar [la pasarela de avisos](docs/service-alerts.md). Hasta entonces se indica «Avisos no disponibles», sin afirmar ausencia de incidencias.
+
+En próximas salidas, las horas de salida y llegada aparecen bajo el nombre del destino; solo se indica el día cuando es distinto de hoy o la llegada cruza medianoche.

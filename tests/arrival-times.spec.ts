@@ -60,10 +60,15 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   await expect(first.locator(".destination strong")).toHaveText("Santurtzi");
   await expect(first.locator(".train-arrival time")).toHaveText("00:08");
   await expect(first.locator(".arrival-day")).toHaveText("+1 día");
-  await expect(first.locator(".train-times > time")).toHaveText("23:58");
+  await expect(first.locator(".train-departure time")).toHaveText("23:58");
   await expect(first.locator(".countdown strong")).toHaveText("8");
   await destination.selectOption("13405");
   await expect(first.locator(".train-arrival time")).toHaveText("00:15");
+  await expect(first).not.toContainText("Programado");
+  await expect(first.locator(".destination .train-times")).toHaveCount(1);
+  const nameBox = (await first.locator(".destination strong").boundingBox())!;
+  const timeBox = (await first.locator(".train-times").boundingBox())!;
+  expect(timeBox.y).toBeGreaterThanOrEqual(nameBox.y + nameBox.height);
   const box = (await first.boundingBox())!;
   expect(box.y + box.height).toBeLessThan(page.viewportSize()!.height);
   expect(
@@ -94,5 +99,3 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   await destination.selectOption("");
   await expect(page.locator(".train-arrival")).toHaveCount(0);
 });
-
-

@@ -363,7 +363,6 @@ export function App({
               <>
                 <div className="table-heading" aria-hidden="true">
                   <span>LÍNEA / DESTINO</span>
-                  <span>{routeFilter.destination ? "HORARIO" : "SALIDA"}</span>
                   <span>SALE EN</span>
                 </div>
                 <ol className="departures" aria-label="Próximos trenes">
@@ -380,36 +379,37 @@ export function App({
                           </span>
                           <div>
                             <strong>{d.destination}</strong>
-                            <span>
-                              {index === 0 ? "Próximo tren · " : ""}
-                              {dayLabel(Date.parse(d.scheduledAt), now)} ·{" "}
-                              {current.schedule?.source === "demo"
-                                ? "Horario de ejemplo"
-                                : "Programado"}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="train-times">
-                          {arrival && <small>Salida</small>}
-                          <time dateTime={d.scheduledAt}>
-                            {clockTime(Date.parse(d.scheduledAt))}
-                          </time>
-                          {arrival && (
-                            <div
-                              className="train-arrival"
-                              aria-label={`Llegada a ${stations.find((s) => s.id === routeFilter.destination)?.name}`}
-                            >
-                              <small>Llegada</small>
-                              <time dateTime={arrival}>
-                                {clockTime(Date.parse(arrival))}
-                              </time>
-                              {arrivalDayLabel(d.scheduledAt, arrival) && (
-                                <small className="arrival-day">
-                                  {arrivalDayLabel(d.scheduledAt, arrival)}
-                                </small>
+                            <div className="train-times">
+                              <div className="train-departure">
+                                <small>Salida</small>
+                                <time dateTime={d.scheduledAt}>
+                                  {clockTime(Date.parse(d.scheduledAt))}
+                                </time>
+                                {localDay(Date.parse(d.scheduledAt)) !==
+                                  day && (
+                                  <small className="departure-day">
+                                    {dayLabel(Date.parse(d.scheduledAt), now)}
+                                  </small>
+                                )}
+                              </div>
+                              {arrival && (
+                                <div
+                                  className="train-arrival"
+                                  aria-label={`Llegada a ${stations.find((s) => s.id === routeFilter.destination)?.name}`}
+                                >
+                                  <small>Llegada</small>
+                                  <time dateTime={arrival}>
+                                    {clockTime(Date.parse(arrival))}
+                                  </time>
+                                  {arrivalDayLabel(d.scheduledAt, arrival) && (
+                                    <small className="arrival-day">
+                                      {arrivalDayLabel(d.scheduledAt, arrival)}
+                                    </small>
+                                  )}
+                                </div>
                               )}
                             </div>
-                          )}
+                          </div>
                         </div>
                         <div className="countdown">
                           <strong>
