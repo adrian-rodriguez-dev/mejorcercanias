@@ -40,11 +40,13 @@ The system SHALL mostrar hasta ocho salidas no pasadas, ordenadas por instante, 
 - **THEN** el orden usa instantes absolutos y la hora visible sigue siendo la de Bilbao
 
 ### Requirement: Procedencia honesta
-The system SHALL identificar siempre los horarios ficticios como demostración no válida para viajar y SHALL evitar afirmar puntualidad o tiempo real sin datos que lo acrediten.
-
+The system SHALL identificar siempre los horarios ficticios como demostración no válida para viajar, identificar los oficiales como horarios programados de Renfe y SHALL evitar afirmar puntualidad o tiempo real sin datos que lo acrediten.
 #### Scenario: Demo
 - **WHEN** se muestra cualquier salida del proveedor de demostración
 - **THEN** el aviso de horarios ficticios permanece visible junto al panel
+#### Scenario: Horario oficial
+- **WHEN** se usa el proveedor GTFS oficial
+- **THEN** se muestra atribución Renfe, vigencia y ausencia de datos de retrasos en tiempo real
 
 ### Requirement: Estados recuperables
 The system SHALL mostrar carga, error con reintento y ausencia de próximas salidas de forma explícita.
@@ -63,3 +65,9 @@ The system SHALL mantener los controles utilizables con teclado y el contenido l
 #### Scenario: Pantalla estrecha
 - **WHEN** se abre el panel en un móvil de 360 píxeles
 - **THEN** se ven línea, destino, hora y cuenta atrás, y el selector conserva su etiqueta y foco visible
+
+### Requirement: Migración de favoritas
+The system SHALL conservar las cinco preferencias de la demo asignándolas a las estaciones oficiales correspondientes.
+#### Scenario: Favorita anterior
+- **WHEN** existe demo-barakaldo como preferencia
+- **THEN** se abre Desertu-Barakaldo con el identificador oficial y el panel de próximas salidas
