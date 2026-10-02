@@ -2,7 +2,7 @@
 ## Why
 El snapshot oficial se renueva manualmente y puede envejecer aunque la aplicación siga funcionando. La antigüedad debe controlarse centralmente, sin obligar a cada móvil a procesar GTFS.
 ## What Changes
-- Comprobar periódicamente la antigüedad y descargar GTFS oficial al superar 24 horas desde la última comprobación correcta.
+- Comprobar periódicamente la antigüedad y descargar GTFS oficial cuando termine la vigencia oficial del snapshot.
 - Validar y publicar JSON por estación, conservando el último conjunto correcto si falla la renovación.
 - Publicar metadatos de comprobación y versión para que una pestaña abierta detecte y adopte datos nuevos.
 - Diferenciar antigüedad de comprobación, fecha de descarga y cobertura de servicios.
