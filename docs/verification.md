@@ -31,3 +31,5 @@ GitHub Actions del cambio de filtros: [ejecución 37058431421](https://github.co
 Publicación GitHub Pages: ejecución 37059728144 correcta (724ece3). URL HTTPS responde 200. Navegador Chromium a 360 px contra la web pública: Barakaldo muestra 8 próximas salidas y 181 filas del horario diario, con reloj fijado al snapshot para una comprobación reproducible.
 
 Cabecera compacta: 23 pruebas TypeScript y 10 pruebas de navegador correctas; build y OpenSpec estrictos válidos. Verificados panel único, intercambio Santurtzi/Bilbao con teclado, conservación de fecha y hora, persistencia del origen invertido, destino vacío y ruta sin servicio directo. Móvil 360 px sin desbordamiento y primer tren visible. Capturas inspeccionadas.
+
+GitHub Pages: despliegue 37061542140 correcto, commit 68e0e69. Comprobación pública en móvil: sin tarjeta externa, intercambio a origen Bilbao (13200) y destino Santurtzi (13405), ocho trenes cargados.
