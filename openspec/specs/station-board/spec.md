@@ -138,3 +138,9 @@ The system SHALL eliminar la franja Renfe/horario programado encima de los horar
 #### Scenario: Consulta de trenes
 - **WHEN** se muestran próximas salidas u horario completo
 - **THEN** los horarios siguen a los controles sin franja informativa intermedia.
+
+### Requirement: Encabezados legibles y próximos a filtros
+The system SHALL mostrar LÍNEA / DESTINO y SALE EN a 10 px y reducir el espacio vertical entre filtros y primera salida, manteniendo alineación, áreas táctiles y ausencia de desbordamiento móvil.
+#### Scenario: Consulta móvil
+- **WHEN** se muestran próximas salidas con o sin barra de líneas
+- **THEN** los encabezados son legibles y no queda la separación anterior de la franja retirada.

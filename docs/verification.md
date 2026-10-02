@@ -65,3 +65,5 @@ Horas bajo destino: 37 pruebas unitarias y 26 de navegador correctas, build/Open
 Campana superior: 37 pruebas unitarias y 26 de navegador correctas; build/OpenSpec válidos. Actions 37073053130 correcto (2a7694c). Web pública 360 px: campana en masthead, sin aviso visible de indisponibilidad, separación exacta de 8 px y sin desbordamiento. Avisos activos probados con fixtures; conexión real sigue pendiente.
 
 Franja Renfe retirada completamente del panel: Actions 37073555578 correcto (22ec923), web pública verificada a 360 px sin demo-notice y con procedencia en el pie exterior.
+
+Encabezados compactos: build, OpenSpec estricto y cuatro pruebas de navegador correctos. Actions 37074137055 comprobación y despliegue correctos (b194209). Web pública verificada a 360 px: encabezados 10 px, separación superior 8 px, margen bajo líneas 4 px y sin desbordamiento.
