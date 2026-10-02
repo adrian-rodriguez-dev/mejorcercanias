@@ -27,3 +27,5 @@ Capturas inspeccionadas a 360 px y escritorio: tabla completa, filtros y recomen
 23 pruebas TypeScript y 8 pruebas de navegador correctas. El importador conserva sus 4 pruebas. Filtro de línea y parada intermedia aplicado antes del límite de ocho salidas; combinación con hora de llegada; conservación entre vistas; limpieza de destino incompatible y cambio de origen. En escritorio y 360 px se comprueba apertura con teclado, devolución del foco al cerrar, controles de al menos 44 px, primer tren visible y ausencia de desbordamiento horizontal. Capturas inspeccionadas: filtros abiertos y cerrados. Los filtros no se guardan en almacenamiento persistente.
 
 GitHub Actions del cambio de filtros: [ejecución 37058431421](https://github.com/adrian-rodriguez-dev/mejorcercanias/actions/runs/37058431421), commit 23f7590, completada correctamente (35 pruebas, build y OpenSpec).
+
+Publicación GitHub Pages: ejecución 37059728144 correcta (724ece3). URL HTTPS responde 200. Navegador Chromium a 360 px contra la web pública: Barakaldo muestra 8 próximas salidas y 181 filas del horario diario, con reloj fijado al snapshot para una comprobación reproducible.
