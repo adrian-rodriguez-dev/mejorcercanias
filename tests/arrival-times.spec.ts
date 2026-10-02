@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import manifest from "../src/data/renfe-manifest.json" with { type: "json" };
+import manifest from "./fixtures/manifest.json" with { type: "json" };
 test("llegada intermedia, medianoche, cambio, inversión y eliminación", async ({
   page,
 }, info) => {

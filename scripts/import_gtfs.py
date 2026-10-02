@@ -114,8 +114,9 @@ def write_json(path, value):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--zip', type=Path, help='Use an already downloaded official ZIP')
+    parser.add_argument('--output', type=Path, help='Stage generated output in this directory')
     args = parser.parse_args()
-    root = Path(__file__).resolve().parents[1]
+    root = args.output or Path(__file__).resolve().parents[1]
     archive_path = args.zip or root / 'work/gtfs/renfe.zip'
     if not args.zip:
         archive_path.parent.mkdir(parents=True, exist_ok=True)
@@ -126,7 +127,7 @@ def main():
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         manifest, station_data = compile_feed(archive)
     version = digest[:16]
-    manifest.update({'version': version, 'sha256': digest, 'sourceUrl': SOURCE, 'downloadedAt': datetime.now(timezone.utc).isoformat(), 'license': 'CC BY 4.0', 'attribution': 'Renfe Operadora'})
+    manifest.update({'version': version, 'sha256': digest, 'sourceUrl': SOURCE, 'downloadedAt': datetime.now(timezone.utc).isoformat() if not args.zip else None, 'checkedAt': datetime.now(timezone.utc).isoformat() if not args.zip else None, 'publishedAt': None, 'license': 'CC BY 4.0', 'attribution': 'Renfe Operadora'})
     # Validate all input before publishing files. Publish manifest last; builds
     # reference immutable version paths and cannot mix successive snapshots.
     for station in manifest['stations']:

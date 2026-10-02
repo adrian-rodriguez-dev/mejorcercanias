@@ -1,0 +1,62 @@
+name: Validate and publish
+on:
+  workflow_call:
+    inputs:
+      revision:
+        type: string
+        required: true
+      publish:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.revision }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: npm ci
+      - run: python -m unittest discover -s scripts -p 'test_*.py'
+      - run: npm run check
+        env:
+          OPENSPEC_TELEMETRY: "0"
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-pages-artifact@v4
+        if: inputs.publish
+        with:
+          path: dist
+  deploy:
+    if: inputs.publish
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.revision }}
+      - name: Reject outdated publication
+        env:
+          EXPECTED: ${{ inputs.revision }}
+        run: test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$EXPECTED"
+      - uses: actions/configure-pages@v5
+      - uses: actions/deploy-pages@v4
+        id: deployment

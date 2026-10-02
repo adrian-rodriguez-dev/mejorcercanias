@@ -108,3 +108,5 @@ Se recuerdan origen, destino y líneas en localStorage (`mejorcercanias.journey.
 Manifiesto e iconos permiten instalación en navegadores compatibles. La invitación aparece bajo los trenes cuando hay mecanismo nativo o guía iOS. «Ahora no» y descartar el diálogo silencian 30 días; la ayuda del pie sigue accesible. Sin almacenamiento, el cierre dura la sesión. No se añade service worker ni se promete acceso offline. Referencia: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable
 
 Validación: eventos nativos simulados, guía iOS, rechazo, teclado, modo instalado y recursos en HTTPS. No hay dispositivo Android/iOS físico conectado: instalación real y relanzamiento en esos sistemas no verificados.
+
+Renovación automática por caducidad: [contrato, pruebas y recuperación](docs/data-freshness.md). El móvil consulta metadatos de versión y JSON compactos; no descarga el GTFS bruto.

@@ -1,6 +1,12 @@
+import {
+  checkSnapshot,
+  subscribeSnapshot,
+  snapshotRevision,
+  refreshError,
+} from "./data/snapshot";
 import { InstallPrompt } from "./InstallPrompt";
 import { arrivalAt, arrivalDayLabel } from "./data/arrival";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { renfeProvider, manifest } from "./data/renfe";
 import { Timetable } from "./Timetable";
 import { LineBar } from "./LineBar";
@@ -20,6 +26,7 @@ import {
 } from "./preference";
 
 type LoadState = {
+  version?: string;
   stationId: string;
   status: "loading" | "error" | "ready";
   schedule?: StationSchedule;
@@ -33,6 +40,8 @@ export function App({
   provider?: ScheduleProvider;
   clock?: () => number;
 }) {
+  useSyncExternalStore(subscribeSnapshot, snapshotRevision);
+  const version = manifest.version;
   const [initialJourney] = useState(readJourney);
   const [stationId, setStationId] = useState(initialJourney.stationId);
   const [saved, setSaved] = useState(true);
@@ -59,6 +68,19 @@ export function App({
     status: "loading",
   });
   const day = localDay(now);
+  useEffect(() => {
+    if (provider !== renfeProvider) return;
+    const check = () => {
+      if (document.visibilityState !== "hidden") void checkSnapshot(stationId);
+    };
+    check();
+    document.addEventListener("visibilitychange", check);
+    const timer = window.setInterval(check, 60000);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", check);
+    };
+  }, [stationId, provider]);
   const station = stations.find((s) => s.id === stationId);
 
   useEffect(() => {
@@ -74,22 +96,24 @@ export function App({
   useEffect(() => {
     if (!stationId) return;
     const controller = new AbortController();
-    setLoad({ stationId, status: "loading" });
+    setLoad({ version, stationId, status: "loading" });
     provider
       .load(stationId, clock(), controller.signal)
       .then((schedule) => {
         if (controller.signal.aborted) return;
         if (schedule.stationId !== stationId)
           throw new Error("Estación incorrecta");
-        setLoad({ stationId, status: "ready", schedule });
+        setLoad({ version, stationId, status: "ready", schedule });
       })
       .catch(() => {
-        if (!controller.signal.aborted) setLoad({ stationId, status: "error" });
+        if (!controller.signal.aborted)
+          setLoad({ version, stationId, status: "error" });
       });
     return () => controller.abort();
-  }, [stationId, day, retry, provider, clock]);
+  }, [stationId, day, retry, provider, clock, version]);
 
-  const current = load.stationId === stationId ? load : undefined;
+  const current =
+    load.stationId === stationId && load.version === version ? load : undefined;
   const rows =
     current?.status === "ready"
       ? upcoming(filterRoutes(current.schedule!.departures, routeFilter), now)
@@ -219,12 +243,29 @@ export function App({
                   : "Horario programado · Sin información de retrasos en tiempo real"}
               </span>
             </div>
+            {station &&
+              routeFilter.destination &&
+              !stations.some((s) => s.id === routeFilter.destination) && (
+                <p role="status">
+                  El destino ya no está en los datos actuales. Elige otro
+                  destino.
+                </p>
+              )}
+            {day > manifest.validTo && (
+              <p className="storage-warning" role="status">
+                Horario caducado · Actualización pendiente
+              </p>
+            )}
             {!station ? (
               <div className="empty">
                 <span className="empty-icon" aria-hidden="true">
                   ↗
                 </span>
-                <h3>Una estación. Todo a mano.</h3>
+                <h3>
+                  {stationId
+                    ? "Tu estación ya no está en los datos actuales. Elige otra."
+                    : "Una estación. Todo a mano."}
+                </h3>
                 <p>Elige tu estación para ver cómo será tu panel de salidas.</p>
                 <button
                   className="light-button"
@@ -347,6 +388,21 @@ export function App({
                 </ol>
               </>
             )}
+            <details className="data-status">
+              <summary>Datos y actualización</summary>
+              <p>
+                Última comprobación de Renfe:{" "}
+                {manifest.checkedAt
+                  ? new Date(manifest.checkedAt).toLocaleString("es", {
+                      timeZone: "Europe/Madrid",
+                    })
+                  : "No registrada"}
+                .{" "}
+                {refreshError
+                  ? "No se pudo comprobar una nueva versión; se conserva la cargada."
+                  : "El móvil recibe JSON compactos, nunca el GTFS completo."}
+              </p>
+            </details>
             <div className="board-footer">
               <span>
                 <span className="dot" />{" "}

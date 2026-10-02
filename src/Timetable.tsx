@@ -1,5 +1,6 @@
+import { subscribeSnapshot, snapshotRevision } from "./data/snapshot";
 import { arrivalDayLabel } from "./data/arrival";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { addDays, dateTitle, loadDay, manifest } from "./data/renfe";
 import { stationName } from "./data/stations";
 import { RouteFilters } from "./RouteFilters";
@@ -20,6 +21,8 @@ export function Timetable({
   routeFilter?: RouteFilter;
   onRouteFilterChange?: (filter: RouteFilter) => void;
 }) {
+  useSyncExternalStore(subscribeSnapshot, snapshotRevision);
+  const version = manifest.version;
   const today = localDay(now);
   const [date, setDate] = useState(today);
   const [localFilter, setLocalFilter] = useState(emptyRouteFilter);
@@ -37,7 +40,7 @@ export function Timetable({
     data?: StationSchedule;
     error?: boolean;
   }>();
-  const key = `${stationId}/${date}`;
+  const key = `${version}/${stationId}/${date}`;
   const current = loaded?.key === key ? loaded : undefined;
   useEffect(() => {
     const controller = new AbortController();

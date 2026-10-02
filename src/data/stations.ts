@@ -1,9 +1,6 @@
 import type { Station } from "./types";
-import manifest from "./renfe-manifest.json";
-export const stations: Station[] = manifest.stations.map((s) => ({
-  ...s,
-  name: s.id === "13200" ? "Bilbao-Abando" : s.name,
-}));
+import { stations } from "./snapshot";
+export { stations } from "./snapshot";
 export const stationName = (id: string) =>
   stations.find((s) => s.id === id)?.name ?? id;
 export const demoStationIds: Record<string, string> = {

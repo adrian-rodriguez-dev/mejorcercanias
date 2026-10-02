@@ -1213,3 +1213,4 @@ time {
   border-radius: 12px;
 }
 .install-area button { min-height: 44px; }
+.data-status {padding:8px 20px;font-size:12px}.data-status summary {cursor:pointer;min-height:44px;display:flex;align-items:center}.data-status p{max-width:70ch}

@@ -1,5 +1,10 @@
 import { DateTime } from "luxon";
-import manifest from "./renfe-manifest.json";
+import {
+  manifest,
+  preparedFiles,
+  checkSnapshot,
+  type Manifest,
+} from "./snapshot";
 import { stations, stationName } from "./stations";
 import { localDay, ZONE } from "./time";
 import type { Departure, ScheduleProvider, StationSchedule } from "./types";
@@ -84,17 +89,23 @@ export function resolveDay(
 async function loadFile(
   stationId: string,
   signal: AbortSignal,
+  snapshot: Manifest = manifest,
 ): Promise<StationFile> {
+  const cached = preparedFiles.get(`${snapshot.version}/${stationId}`);
+  if (cached) return cached as StationFile;
   if (!stations.some((s) => s.id === stationId))
     throw new Error("Unknown station");
   const response = await fetch(
-    `${import.meta.env.BASE_URL}data/renfe/${manifest.version}/${stationId}.json`,
+    `${import.meta.env.BASE_URL}data/renfe/${snapshot.version}/${stationId}.json`,
     { signal },
   );
-  if (!response.ok) throw new Error("Unable to load station");
+  if (!response.ok) {
+    if (response.status === 404) void checkSnapshot(stationId);
+    throw new Error("Unable to load station");
+  }
   const file = (await response.json()) as StationFile;
   if (
-    file.version !== manifest.version ||
+    file.version !== snapshot.version ||
     file.stationId !== stationId ||
     !Array.isArray(file.patterns)
   )
@@ -106,18 +117,25 @@ export async function loadDay(
   day: string,
   signal: AbortSignal,
 ): Promise<StationSchedule> {
-  if (!manifest.coverageDates.includes(day))
+  const snapshot = manifest;
+  if (!snapshot.coverageDates.includes(day))
     return {
       stationId,
       source: "renfe-gtfs",
       departures: [],
       availability: "unpublished",
     };
-  return resolveDay(await loadFile(stationId, signal), day);
+  return resolveDay(
+    await loadFile(stationId, signal, snapshot),
+    day,
+    snapshot.calendars,
+    snapshot.coverageDates,
+  );
 }
 export const renfeProvider: ScheduleProvider = {
   async load(stationId, now, signal) {
     const day = localDay(now);
+    const snapshot = manifest;
     if (!manifest.coverageDates.includes(day))
       return {
         stationId,
@@ -125,9 +143,19 @@ export const renfeProvider: ScheduleProvider = {
         departures: [],
         availability: "unpublished",
       };
-    const file = await loadFile(stationId, signal);
-    const today = resolveDay(file, day);
-    const tomorrow = resolveDay(file, addDays(day, 1));
+    const file = await loadFile(stationId, signal, snapshot);
+    const today = resolveDay(
+      file,
+      day,
+      snapshot.calendars,
+      snapshot.coverageDates,
+    );
+    const tomorrow = resolveDay(
+      file,
+      addDays(day, 1),
+      snapshot.calendars,
+      snapshot.coverageDates,
+    );
     return {
       ...today,
       departures: [...today.departures, ...tomorrow.departures],

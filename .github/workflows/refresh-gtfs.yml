@@ -1,0 +1,65 @@
+name: Refresh GTFS
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Download even while coverage is valid
+        type: boolean
+        default: false
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: gtfs-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    outputs:
+      revision: ${{ steps.commit.outputs.revision }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Download only when due
+        env:
+          FORCE: ${{ inputs.force }}
+        run: |
+          args=()
+          if [ "$FORCE" = "true" ]; then args+=(--force); fi
+          python scripts/refresh_gtfs.py "${args[@]}"
+      - run: npm ci
+      - run: python -m unittest discover -s scripts -p 'test_*.py'
+      - run: npm run check
+        env:
+          OPENSPEC_TELEMETRY: "0"
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - name: Commit validated data without overwriting newer work
+        id: commit
+        run: |
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$(git rev-parse HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data/renfe-manifest.json public/data/renfe
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: renew validated Renfe snapshot'
+            git push origin HEAD:main
+          fi
+          echo "revision=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+  publish:
+    needs: refresh
+    uses: ./.github/workflows/publish.yml
+    with:
+      revision: ${{ needs.refresh.outputs.revision }}
+      publish: true
