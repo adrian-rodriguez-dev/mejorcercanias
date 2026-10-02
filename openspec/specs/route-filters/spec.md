@@ -15,7 +15,7 @@ The system SHALL filtrar por línea y parada posterior de destino en próximas s
 - **THEN** aparecen los trenes que paran allí aunque su terminal sea otra
 
 ### Requirement: Selección coherente
-The system SHALL conservar línea y destino al cambiar de vista durante la visita, reiniciarlos al cambiar manualmente de origen; al intercambiar origen y destino SHALL conservar la línea e invertir las estaciones y limpiar un destino incompatible al elegir otra línea.
+The system SHALL conservar línea y destino al cambiar de vista durante la visita, reiniciarlos al cambiar manualmente de origen; al intercambiar origen y destino SHALL conservar las líneas compatibles e invertir las estaciones. Al cambiar destino SHALL eliminar selecciones de línea incompatibles sin eliminar el destino; con cero o una línea posible SHALL limpiar la selección explícita.
 #### Scenario: Cambio de vista
 - **WHEN** se pasa del panel a la tabla
 - **THEN** se mantienen los filtros de línea y destino
@@ -24,7 +24,7 @@ The system SHALL conservar línea y destino al cambiar de vista durante la visit
 - **THEN** se conserva visible la selección y se muestra ausencia de coincidencias, sin ampliar filtros silenciosamente
 
 ### Requirement: Presentación móvil compacta
-The system SHALL mostrar el destino opcional únicamente en la cabecera, una barra de líneas siempre visible y plegar inicialmente solo los filtros horarios avanzados con resumen visible, permitir abrir/cerrar y limpiar filtros, ofrecer controles de al menos 44 px y funcionar a 360 px sin desbordamiento horizontal.
+The system SHALL mostrar el destino opcional únicamente en la cabecera, una barra de líneas visible solo cuando al menos dos líneas pasan por las estaciones seleccionadas, sin reservar espacio cuando está oculta y plegar inicialmente solo los filtros horarios avanzados con resumen visible, permitir abrir/cerrar y limpiar filtros, ofrecer controles de al menos 44 px y funcionar a 360 px sin desbordamiento horizontal.
 #### Scenario: Primer tren visible
 - **WHEN** una estación tiene salidas y los filtros horarios están plegados en un móvil de 360 por 800 px
 - **THEN** la primera salida permanece visible sin desplazamiento
@@ -42,7 +42,7 @@ The system SHALL colorear el recuadro completo de C1 rojo, C2 verde y C3 azul cl
 - **THEN** los tres caben en una fila, tienen al menos 44 por 44 px, foco visible y descripción accesible de que ninguna selección equivale a todas.
 
 ### Requirement: Barra de líneas con selección múltiple
-The system SHALL mostrar solo C1, C2 y C3; cada botón alterna su selección independientemente y el filtro acepta trenes de cualquiera de las líneas marcadas. Sin líneas marcadas SHALL mostrar todas, manteniendo destino y criterios horarios compatibles. El estado SHALL conservarse entre vistas e intercambio de estaciones.
+The system SHALL mostrar únicamente las líneas C1, C2 y C3 que pasan por el origen y, si hay destino, también por él; SHALL ocultar toda la barra con cero o una línea posible; cada botón alterna su selección independientemente y el filtro acepta trenes de cualquiera de las líneas marcadas. Sin líneas marcadas SHALL mostrar todas, manteniendo destino y criterios horarios compatibles. Las selecciones compatibles SHALL conservarse entre vistas e intercambio de estaciones; ninguna selección oculta podrá bloquear resultados.
 #### Scenario: Combinación
 - **WHEN** se marcan C1 y C2
 - **THEN** se muestran trenes de C1 o C2 que cumplen el resto de filtros.
@@ -50,5 +50,14 @@ The system SHALL mostrar solo C1, C2 y C3; cada botón alterna su selección ind
 - **WHEN** se desmarca la última línea activa
 - **THEN** todos los botones quedan desmarcados y se muestran todas las líneas sin perder destino ni hora.
 #### Scenario: Disponibilidad
-- **WHEN** una línea no pasa por la estación
-- **THEN** no se puede activar, pero si estaba seleccionada antes de un intercambio se permite desmarcarla; la falta de servicios en una fecha no deshabilita por sí sola una línea de la estación.
+- **WHEN** se elige Barakaldo sin destino
+- **THEN** se muestran C1 y C2; una fecha sin servicio no altera estas opciones.
+#### Scenario: Una sola línea
+- **WHEN** se elige Santurtzi como destino desde Barakaldo, o Santurtzi como único origen
+- **THEN** no se muestra la barra ni se reserva su espacio; los trenes siguen apareciendo sin filtro oculto.
+#### Scenario: Ninguna conexión
+- **WHEN** se eligen estaciones sin línea común
+- **THEN** la barra desaparece y el panel informa de ausencia de trenes directos.
+#### Scenario: Recuperar opciones
+- **WHEN** se elimina un destino que limitaba Barakaldo a C1
+- **THEN** reaparecen C1 y C2 sin selección explícita.

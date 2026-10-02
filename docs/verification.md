@@ -47,3 +47,5 @@ Cabecera redundante eliminada: 24 pruebas unitarias, 10 de navegador, build y Op
 Llegadas al destino: 27 pruebas unitarias y 12 de navegador correctas; build y OpenSpec estrictos válidos. Verificados destino intermedio, cambio e inversión, eliminación, llegadas inválidas, medianoche (+1 día), cambio horario y cuenta atrás asociada a salida. Captura inspeccionada a 360 px: sin nueva columna ni desbordamiento, primer tren visible. La llegada diaria comparte la misma validación de datos.
 
 Llegadas publicadas: Actions 37067822308 con comprobación y despliegue correctos (804e951). Verificación HTTPS a 360 px con datos oficiales Barakaldo–Abando: ocho trenes, llegada visible y sin desbordamiento.
+
+Barra por estaciones: 27 pruebas unitarias y 14 de navegador correctas; build y OpenSpec válidos. Cero/una línea oculta contenedor sin hueco; dos/tres muestran solo compatibles, limpieza de selección incompatible y recuperación al quitar destino. Fecha sin servicios mantiene opciones; ambas vistas e intercambio verificados. Actions 37068553698 correcto (7f711a3). Web pública a 360 px: Barakaldo dos botones; destino Santurtzi cero barra y ocho trenes.
