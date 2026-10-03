@@ -12,10 +12,8 @@ const ios = () =>
   /iPhone|iPad|iPod/.test(navigator.userAgent) ||
   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 export function InstallPrompt({
-  ready,
   headerTarget,
 }: {
-  ready: boolean;
   headerTarget: HTMLElement | null;
 }) {
   const [installed, setInstalled] = useState(standalone);
@@ -108,42 +106,41 @@ export function InstallPrompt({
   return (
     <section className="install-area" aria-label="Instalación de la app">
       {headerTarget &&
+        now >= until &&
         createPortal(
-          <button
-            className="header-install"
-            aria-label="Instalar app"
-            title="Instalar app"
-            disabled={busy}
-            onClick={install}
-          >
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+          <div className="install-invitation" aria-label="Instala la app">
+            <span>Tu tren, a un toque</span>
+            <button
+              className="install-action"
+              disabled={busy}
+              onClick={install}
             >
-              <path d="M8 3H5v18h14v-6M14 2v11m-4-4 4 4 4-4M10 18h4" />
-            </svg>
-            <span>Instalar</span>
-          </button>,
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M8 3H5v18h14v-6M14 2v11m-4-4 4 4 4-4M10 18h4" />
+              </svg>
+              Instalar
+            </button>
+            <button
+              className="install-dismiss"
+              aria-label="Ahora no"
+              title="Cerrar aviso"
+              onClick={dismiss}
+            >
+              ×
+            </button>
+          </div>,
           headerTarget,
         )}
-      {ready && now >= until && (available || ios()) && (
-        <div className="install-invitation">
-          <span>Tu tren, desde la pantalla de inicio</span>
-          <button className="light-button" disabled={busy} onClick={install}>
-            Instalar
-          </button>
-          <button className="text-button" onClick={dismiss}>
-            Ahora no
-          </button>
-        </div>
-      )}
       <button
         className="text-button"
         ref={helpButton}
