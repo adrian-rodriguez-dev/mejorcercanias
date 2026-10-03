@@ -166,11 +166,20 @@ export function Timetable({
                         className={`line line-${row.line.toLowerCase()}`}
                       >
                         {row.line}
+                        {row.mode === "bus" ? " · Bus" : ""}
                       </span>
                     </td>
                     <td
-                      title={row.journey ? `Trayecto a ${row.destination}` : `Tren con destino final ${row.destination}`}
-                      aria-label={row.journey ? `Trayecto a ${row.destination}` : `${destination ? stationName(destination) : row.destination}; tren con destino final ${row.destination}`}
+                      title={
+                        row.journey
+                          ? `Trayecto a ${row.destination}`
+                          : `${row.mode === "bus" ? "Autobús" : "Tren"} con destino final ${row.destination}`
+                      }
+                      aria-label={
+                        row.journey
+                          ? `Trayecto a ${row.destination}`
+                          : `${destination ? stationName(destination) : row.destination}; ${row.mode === "bus" ? "autobús" : "tren"} con destino final ${row.destination}`
+                      }
                     >
                       {destination ? stationName(destination) : row.destination}
                       <JourneyDetail departure={row} />

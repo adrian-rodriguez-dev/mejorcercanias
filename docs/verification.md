@@ -116,3 +116,16 @@ con e867f10 ajustado a la misma política de 60 segundos. Tiempo de cálculo por
 - bilbao 13400 → 13200: 3018 → 82 ms; 71 itinerarios idénticos.
 - valencia valencia-65200 → valencia-65000: 706 → 43 ms; 22 itinerarios idénticos.
 Prueba de flujo real y recarga offline: 9,3 s antes, 1,2 s después (orientativo, no garantía de latencia). Margen implícito 60 s verificado en frontera 59/60; mínimos oficiales y prohibiciones prevalecen.
+
+
+Madrid/Rodalies (local, 2026-10-03): 634 estaciones en diez redes. Snapshot
+227d8748274b9442; todos los archivos de estación pasan validate_snapshot.
+59 pruebas unitarias propias del proyecto más 3 de la vista de paletas concurrente;
+14 Python; 44 navegador (incluyen 2 de paletas); 5 producción/offline. Build y
+OpenSpec válidos. Selección real Madrid Aeropuerto T4 → Humanes y Mataró → Sabadell
+Centre: detalle de transbordos y horas; Atocha/Sants muestran 9/11 filtros sin
+exceso horizontal a 360 px. Captura Rodalies inspeccionada. Bus conservado y
+mostrado en prueba de enlace tren/bus. Regeneración audita 178/26 viajes sin
+paradas suficientes, excluidos de ambos formatos y advertidos en pantalla.
+Transferencias oficiales Madrid 1140/1080 segundos y Montcada 300 segundos
+conservadas. Madrid hasta 30/10; Rodalies hasta 04/10. No publicado remotamente.

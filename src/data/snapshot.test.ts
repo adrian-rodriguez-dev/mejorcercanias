@@ -87,7 +87,7 @@ it("rechaza catálogo inválido y permite avisar de estaciones retiradas", async
   expect(fetcher).toHaveBeenCalledTimes(2);
 });
 
-it("rechaza núcleos sin colores y más de seis líneas", async () => {
+it("rechaza núcleos con colores ausentes, también en redes grandes", async () => {
   const { validManifest } = await import("./snapshot");
   expect(validManifest(fixture)).toBe(true);
   expect(
@@ -105,6 +105,42 @@ it("rechaza núcleos sin colores y más de seis líneas", async () => {
     validManifest({
       ...fixture,
       networks: [{ ...fixture.networks[0], colors: {} }],
+    }),
+  ).toBe(false);
+});
+
+it("acepta redes grandes y variantes Rodalies sin perder validación", async () => {
+  const { validManifest } = await import("./snapshot");
+  const lines = [
+    "R1",
+    "R2",
+    "R2N",
+    "R2S",
+    "R3",
+    "R4",
+    "R7",
+    "R8",
+    "RG1",
+    "RT1",
+    "RL3",
+    "R11",
+  ];
+  const n = {
+    ...fixture.networks[0],
+    id: "rodalies",
+    lines,
+    colors: Object.fromEntries(lines.map((l) => [l, "123456"])),
+  };
+  const m = {
+    ...fixture,
+    networks: [n],
+    stations: [{ id: "rodalies-1", name: "Sants", network: "rodalies", lines }],
+  };
+  expect(validManifest(m)).toBe(true);
+  expect(
+    validManifest({
+      ...m,
+      stations: [{ ...m.stations[0], lines: ["INVALID"] }],
     }),
   ).toBe(false);
 });

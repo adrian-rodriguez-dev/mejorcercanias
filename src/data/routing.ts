@@ -39,6 +39,7 @@ export function validGraph(
         typeof t.id === "string" &&
         typeof t.route === "string" &&
         typeof t.line === "string" &&
+        (t.mode === undefined || t.mode === "train" || t.mode === "bus") &&
         Number.isInteger(t.calendar) &&
         !!g.calendars[t.calendar] &&
         Array.isArray(t.calls) &&
@@ -183,6 +184,7 @@ export async function loadJourneys(
       return {
         id: j.legs.map((l) => `${l.tripId}:${l.from}:${l.to}`).join("/"),
         line: first.line,
+        mode: first.mode,
         destination:
           snapshot.stations.find((s) => s.id === destination)?.name ??
           destination,

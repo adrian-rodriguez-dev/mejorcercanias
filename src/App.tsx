@@ -378,6 +378,15 @@ export function App({
                     destino.
                   </p>
                 )}
+              {selectedNetwork?.description && (
+                <p className="storage-warning">{selectedNetwork.description}</p>
+              )}
+              {!!selectedNetwork?.excludedTrips?.length && (
+                <p className="storage-warning" role="status">
+                  Horarios incompletos: Renfe publica algunos servicios sin
+                  suficientes paradas. Esos servicios no aparecen en las rutas.
+                </p>
+              )}
               {day > (selectedNetwork?.validTo ?? manifest.validTo) && (
                 <p className="storage-warning" role="status">
                   Horario caducado · Actualización pendiente
@@ -495,11 +504,20 @@ export function App({
                               className={`line line-${d.line.toLowerCase()}`}
                             >
                               {d.line}
+                              {d.mode === "bus" ? " · Bus" : ""}
                             </span>
                             <div>
                               <strong
-                                title={d.journey ? `Trayecto a ${arrivalName}` : `Tren con destino final ${d.destination}`}
-                                aria-label={d.journey ? `Trayecto a ${arrivalName}` : `${arrivalName}; tren con destino final ${d.destination}`}
+                                title={
+                                  d.journey
+                                    ? `Trayecto a ${arrivalName}`
+                                    : `${d.mode === "bus" ? "Autobús" : "Tren"} con destino final ${d.destination}`
+                                }
+                                aria-label={
+                                  d.journey
+                                    ? `Trayecto a ${arrivalName}`
+                                    : `${arrivalName}; ${d.mode === "bus" ? "autobús" : "tren"} con destino final ${d.destination}`
+                                }
                               >
                                 {arrivalName}
                               </strong>

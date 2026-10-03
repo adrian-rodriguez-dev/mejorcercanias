@@ -29,7 +29,8 @@ export function JourneyDetail({ departure }: { departure: Departure }) {
               </p>
             )}
             <p>
-              <b>{leg.line}</b> · {leg.fromName}{" "}
+              <b>{leg.line}</b>
+              {leg.mode === "bus" ? " · Autobús" : ""} · {leg.fromName}{" "}
               {clockTime(leg.departure * 1000)} → {leg.toName}{" "}
               {clockTime(leg.arrival * 1000)}
             </p>

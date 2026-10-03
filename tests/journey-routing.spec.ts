@@ -6,8 +6,10 @@ const version = "bbbbbbbbbbbbbbbb";
 test("destino calcula, despliega horarios y respeta el cambio peatonal", async ({
   page,
 }) => {
-  let workers=0;
-  page.on("worker",()=>{ workers++; });
+  let workers = 0;
+  page.on("worker", () => {
+    workers++;
+  });
   await page.clock.install({ time: new Date("2026-10-03T07:00:00+02:00") });
   const nodes = {
     "13400": { stationId: "13400", name: "Barakaldo" },
@@ -45,6 +47,7 @@ test("destino calcula, despliega horarios y respeta el cambio peatonal", async (
       },
       {
         id: "connection",
+        mode: "bus",
         route: "b",
         line: "C2",
         calendar: 0,
@@ -83,6 +86,7 @@ test("destino calcula, despliega horarios y respeta el cambio peatonal", async (
   await expect(first.locator(".journey-detail")).toContainText("08:10");
   await expect(first.locator(".journey-detail")).toContainText("08:20");
   await expect(first.locator(".journey-detail")).toContainText("A pie");
+  await expect(first.locator(".journey-detail")).toContainText("Autobús");
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -93,7 +97,7 @@ test("destino calcula, despliega horarios y respeta el cambio peatonal", async (
       await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()
     ).violations.map((v) => v.id),
   ).toEqual([]);
-  const initialWorkers=workers;
+  const initialWorkers = workers;
   expect(initialWorkers).toBeGreaterThan(0);
   await page
     .getByRole("button", { name: "Horario completo", exact: true })

@@ -118,7 +118,7 @@ En próximas salidas, las horas de salida y llegada aparecen bajo el nombre del 
 La campana de incidencias está en la barra superior: neutra sin avisos verificables y marcada con contador al haberlos. Se oculta el texto de error de fuente mientras la integración está pendiente. El panel queda a 8 px de la cabecera.
 
 ## Núcleos y asistente
-Ocho núcleos y 329 estaciones. Sin núcleo guardado se abre siempre el asistente (núcleo, origen y destino opcional). El núcleo se cambia tocando su nombre en la cabecera. [Catálogo, exclusiones, datos y cómo añadir núcleos](docs/networks.md).
+Diez redes y 634 estaciones. Sin núcleo guardado se abre siempre el asistente (núcleo, origen y destino opcional). El núcleo se cambia tocando su nombre en la cabecera. [Catálogo, exclusiones, datos y cómo añadir núcleos](docs/networks.md).
 
 Horario completo muestra siempre todos los trenes de la fecha elegida: selector y flechas de día junto a la tabla. Los filtros de origen, destino y líneas se comparten con próximas salidas. Se retiraron los límites de hora y los atajos de mañana.
 
@@ -164,8 +164,7 @@ son de 600 segundos y se identifican en el detalle como margen estimado.
 Solo se habilitan los núcleos ya validados por el importador. Sevilla, Málaga,
 Murcia/Alicante y Cantabria continúan excluidos en este snapshot por secuencias de
 paradas incompletas. La regla de Los Rosales está preparada y probada con fixture,
-pero no se publica un horario de Sevilla incompleto. Asturias/Madrid/Barcelona no
-forman parte del catálogo actual de la web. El pipeline de mapas no amplía por sí
+pero no se publica un horario de Sevilla incompleto. Asturias no forma parte del catálogo actual de la web. El pipeline de mapas no amplía por sí
 solo la cobertura de horarios.
 
 El grafo se descarga bajo demanda y se guarda para consulta sin conexión. Cambiar
@@ -186,3 +185,26 @@ Requiere historia Git con ese commit y el snapshot local; resultados en work/.
 El minuto es una política estimada del producto, no un tiempo garantizado por Renfe.
 Las reglas GTFS aplicables mantienen prioridad y los enlaces peatonales conservan
 sus márgenes (10 minutos estimados en las conexiones de mapas revisadas).
+
+
+### Madrid y Rodalies
+Madrid (95 estaciones) y Rodalies de Catalunya (210) están incorporados en el
+snapshot de octubre de 2026. Se mantienen los identificadores de línea del GTFS:
+14 variantes en Madrid y 20 en Rodalies, incluyendo R2N/R2S, RG/RT/RL y regionales.
+No representa 14 o 20 líneas comerciales independientes. Rodalies usa un grafo
+conjunto para permitir enlaces entre esos servicios. Metro y FGC no se añaden.
+Los servicios con route_type=3 se identifican como Bus en panel/tabla y Autobús
+en el detalle; el algoritmo conserva el modo sin reglas particulares por ciudad.
+
+Admisión parcial explícita: 178 viajes de Madrid y 26 de Rodalies tienen menos de
+dos paradas. Se registran con tripId, motivo y número de paradas en excludedTrips
+por red y se omiten tanto en horarios como en rutas. La interfaz avisa de horarios
+incompletos. No se reconstruyen paradas ni tiempos. Secuencias duplicadas o tiempos
+no monótonos continúan rechazando la red. Las otras redes conservan su validación
+estricta. Esta política se aplica también al refresco automático del GTFS.
+
+Fuentes: [Renfe](https://www.renfe.com/es/es/cercanias/rodalies-catalunya) y
+[horarios oficiales de Rodalies](https://rodalies.gencat.cat/es/horaris/tots-els-horaris/).
+
+Vigencia del snapshot: Madrid 1–30 de octubre de 2026; Rodalies 1–4 de octubre.
+La renovación comprueba cobertura por red y no prolonga calendarios artificialmente.

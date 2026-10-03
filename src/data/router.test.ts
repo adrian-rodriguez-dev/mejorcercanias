@@ -31,15 +31,28 @@ function graph(trips: RoutingTrip[], transfers: Transfer[] = []): Graph {
 }
 const run = (g: Graph, a = "A", b = "D", lines: string[] = []) =>
   findJourneys(g, a, b, "2026-10-03", lines);
-it('uses one estimated minute only for implicit same-point transfers', () => {
-  const incoming=trip('a', [['A',1000],['B',1600]]);
-  const missed=trip('short', [['B',1659],['D',1800]]);
-  const valid=trip('valid', [['B',1660],['D',1900]]);
-  const result=run(graph([incoming,missed,valid]))[0];
-  expect(result.legs[1].tripId).toContain('valid');
-  expect(result.legs[1].change).toMatchObject({seconds:60,estimated:true});
-  expect(run(graph([incoming,valid],[{from:'B',to:'B',seconds:480}]))).toEqual([]);
-  expect(run(graph([incoming,valid],[{from:'B',to:'B',seconds:null}]))).toEqual([]);
+it("uses one estimated minute only for implicit same-point transfers", () => {
+  const incoming = trip("a", [
+    ["A", 1000],
+    ["B", 1600],
+  ]);
+  const missed = trip("short", [
+    ["B", 1659],
+    ["D", 1800],
+  ]);
+  const valid = trip("valid", [
+    ["B", 1660],
+    ["D", 1900],
+  ]);
+  const result = run(graph([incoming, missed, valid]))[0];
+  expect(result.legs[1].tripId).toContain("valid");
+  expect(result.legs[1].change).toMatchObject({ seconds: 60, estimated: true });
+  expect(
+    run(graph([incoming, valid], [{ from: "B", to: "B", seconds: 480 }])),
+  ).toEqual([]);
+  expect(
+    run(graph([incoming, valid], [{ from: "B", to: "B", seconds: null }])),
+  ).toEqual([]);
 });
 
 describe("renfe-cli round-based routing adaptation", () => {
@@ -247,4 +260,29 @@ describe("renfe-cli round-based routing adaptation", () => {
     expect(run(g)).toHaveLength(1);
     expect(findJourneys(g, "A", "D", "2026-10-04")).toEqual([]);
   });
+});
+
+it("preserves bus mode through a train-to-bus transfer", () => {
+  const g = graph([
+    trip(
+      "train",
+      [
+        ["A", 1000],
+        ["B", 1600],
+      ],
+      "R2N",
+    ),
+    {
+      ...trip(
+        "bus",
+        [
+          ["B", 1800],
+          ["D", 2400],
+        ],
+        "R3",
+      ),
+      mode: "bus",
+    },
+  ]);
+  expect(run(g)[0].legs[1]).toMatchObject({ line: "R3", mode: "bus" });
 });

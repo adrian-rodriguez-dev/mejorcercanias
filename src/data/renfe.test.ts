@@ -96,3 +96,14 @@ describe("calendario y horario", () => {
     localStorage.clear();
   });
 });
+
+it("conserva autobuses sustitutorios al materializar horarios", () => {
+  const bus: StationFile = {
+    ...file,
+    patterns: [["bus", "R3", "13200", 28800, 0, [["13200", 29400]], "bus"]],
+  };
+  expect(
+    resolveDay(bus, "2026-10-03", [["2026-10-03"]], ["2026-10-03"])
+      .departures[0].mode,
+  ).toBe("bus");
+});

@@ -28,8 +28,10 @@ def compile_routing(archive, manifest):
             groups[parent]=[p['id'] for p in split['points']]
             del nodes[parent]
             for p in split['points']: nodes[p['id']]={'stationId':parent,'name':p['name']}
+        excluded_ids = {t['tripId'] for t in network.get('excludedTrips',[])}
         out=[]; calendars=[]; calendar_ids={}
         for tid,t in trips.items():
+            if tid in excluded_ids: continue
             route=routes[t['route_id']]
             if not t['route_id'].startswith(prefix+'T') or route['route_short_name'] not in network['lines']: continue
             seq=sorted(calls[tid],key=lambda s:int(s['stop_sequence']))
@@ -47,7 +49,7 @@ def compile_routing(archive, manifest):
                         node=matches[0]['id']
                 cs.append([node,seconds(s['arrival_time']),seconds(s['departure_time']),int(s.get('pickup_type') or 0),int(s.get('drop_off_type') or 0)])
             if any(a[2]>b[1] for a,b in zip(cs,cs[1:])) or any(c[1]>c[2] for c in cs): raise ValueError('Non-monotonic routing trip')
-            out.append({'id':tid,'route':t['route_id'],'line':route['route_short_name'],'calendar':calendar_ids[days],'calls':cs})
+            out.append({'id':tid,'route':t['route_id'],'line':route['route_short_name'],'calendar':calendar_ids[days],'calls':cs,**({'mode':'bus'} if route.get('route_type')=='3' else {})})
         transfers=[]
         for row in rows(archive,'transfers.txt'):
             a,b=sid(row['from_stop_id']),sid(row['to_stop_id'])

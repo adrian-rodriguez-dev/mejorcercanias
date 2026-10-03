@@ -79,3 +79,30 @@ test('ruta real con transbordo, detalle y recálculo offline en app instalada',a
   await expect(page.locator('.schedule-table .journey-detail').first()).toBeVisible({timeout:15000});
   await context.setOffline(false);
 });
+
+for (const sample of [
+  {network:"Madrid", origin:"Madrid-Aeropuerto T4", destination:"Humanes", lines:["C1","C5"]},
+  {network:"Rodalies de Catalunya", origin:"Mataró", destination:"Sabadell Centre", lines:["R1","R4"]},
+]) test(`red real ${sample.network}: selección, transbordos y móvil`, async ({page}) => {
+  test.setTimeout(60000);
+  await page.goto('./');
+  await page.getByRole('button',{name:'Cambiar núcleo'}).click();
+  await page.getByLabel('Núcleo de Cercanías',{exact:true}).fill(sample.network);
+  await page.getByRole('button',{name:'Continuar',exact:true}).click();
+  await page.getByLabel('Estación de origen',{exact:true}).fill(sample.origin);
+  await page.getByRole('button',{name:'Continuar',exact:true}).click();
+  await page.getByLabel('Estación de destino opcional',{exact:true}).fill(sample.destination);
+  await page.getByRole('button',{name:'Ver mis trenes',exact:true}).click();
+  await expect(page.getByText(/^Horarios incompletos:/)).toBeVisible();
+  const detail=page.locator('.departures > li .journey-detail').first();
+  await expect(detail).toBeVisible({timeout:25000});
+  await detail.locator('summary').click();
+  for(const line of sample.lines) await expect(detail).toContainText(line);
+  await expect(detail).toContainText(/\d{2}:\d{2}/);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.getByLabel('Destino',{exact:true}).fill('');
+  await page.getByLabel('¿Desde dónde sales?').fill(sample.network==='Madrid' ? 'Madrid-Atocha Cercanías' : 'Barcelona-Sants');
+  await expect(page.locator('.line-bar button')).toHaveCount(sample.network==='Madrid' ? 9 : 11);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:`work/${sample.network==='Madrid'?'madrid':'rodalies'}-mobile.png`,fullPage:true});
+});

@@ -18,6 +18,7 @@ export type Pattern = [
   number,
   number,
   [string, number][],
+  ("train" | "bus")?,
 ];
 export interface StationFile {
   version: string;
@@ -60,6 +61,7 @@ export function resolveDay(
     seconds,
     calendarId,
     calls,
+    mode,
   ] of file.patterns) {
     calls.forEach(([stop]) => destinations.add(stop));
     for (const serviceDay of calendars[calendarId]) {
@@ -69,6 +71,7 @@ export function resolveDay(
       departures.push({
         id: `${id}-${serviceDay}`,
         line,
+        mode,
         destination: stationName(terminal),
         terminalId: terminal,
         scheduledAt: at,
@@ -103,7 +106,8 @@ export function validStationFile(
     f.patterns.every(
       (p) =>
         Array.isArray(p) &&
-        p.length === 6 &&
+        (p.length === 6 ||
+          (p.length === 7 && ["train", "bus"].includes(p[6]!))) &&
         typeof p[0] === "string" &&
         typeof p[1] === "string" &&
         typeof p[2] === "string" &&
@@ -133,7 +137,8 @@ async function loadFile(
   const prepared = preparedFiles.get(key);
   if (validStationFile(prepared, stationId, snapshot)) {
     await storeData(key, prepared);
-    if (manifest.version === snapshot.version) await storeData("manifest", snapshot);
+    if (manifest.version === snapshot.version)
+      await storeData("manifest", snapshot);
     return { file: prepared, offline: !navigator.onLine };
   }
   const saved = await readStored(key);
@@ -154,7 +159,8 @@ async function loadFile(
   if (!validStationFile(file, stationId, snapshot))
     throw new Error("Invalid dataset");
   await storeData(key, file);
-  if (manifest.version === snapshot.version) await storeData("manifest", snapshot);
+  if (manifest.version === snapshot.version)
+    await storeData("manifest", snapshot);
   return { file, offline: false };
 }
 export async function loadDay(

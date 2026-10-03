@@ -6,6 +6,7 @@ export interface RoutingTrip {
   id: string;
   route: string;
   line: string;
+  mode?: "train" | "bus";
   calendar: number;
   calls: Call[];
 }
@@ -33,6 +34,7 @@ export interface Leg {
   tripId: string;
   route: string;
   line: string;
+  mode?: "train" | "bus";
   from: string;
   to: string;
   departure: number;
@@ -179,6 +181,7 @@ function findOne(
             tripId: trip.serviceId,
             route: trip.route,
             line: trip.line,
+            ...(trip.mode ? { mode: trip.mode } : {}),
             from: node,
             to: node,
             departure: dep,

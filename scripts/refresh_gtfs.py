@@ -22,7 +22,9 @@ def validate_snapshot(manifest, data):
     by_id={s['id']:s for s in manifest['stations']}
     for station, patterns in data.items():
         if station not in ids: raise ValueError('Unknown origin')
-        for _, line, terminal, departure, calendar, calls in patterns:
+        for pattern in patterns:
+            if len(pattern) not in (6,7) or (len(pattern)==7 and pattern[6] not in ('train','bus')): raise ValueError('Invalid pattern mode')
+            _, line, terminal, departure, calendar, calls = pattern[:6]
             if terminal not in ids or line not in next(s['lines'] for s in manifest['stations'] if s['id']==station) or not 0 <= calendar < len(manifest['calendars']):
                 raise ValueError('Invalid pattern reference')
             if terminal in ids and by_id[terminal]['network']!=by_id[station]['network']: raise ValueError('Cross-network terminal')

@@ -1774,3 +1774,6 @@ summary:focus-visible,
 .journey-detail[open] .journey-toggle { transform:rotate(45deg); }
 
 .departures > li:has(.journey-detail[open]) > .countdown, .destination:has(.journey-detail[open]) > .line { align-self:start; margin-top:.25rem; }
+
+/* Larger networks keep every line available on narrow screens. */
+.line-bar { grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); }

@@ -50,7 +50,7 @@ def seconds(value):
         raise ValueError('Unsupported GTFS time: ' + value)
     return h * 3600 + m * 60 + s
 
-def compile_feed(archive, route_ids=None):
+def compile_feed(archive, route_ids=None, allow_incomplete=False):
     if route_ids is None:
         return compile_networks(archive)
     routes = {r['route_id']: r for r in rows(archive, 'routes.txt') if r['route_id'] in route_ids}
@@ -74,8 +74,12 @@ def compile_feed(archive, route_ids=None):
         pickup, dropoff = r.get('pickup_type', '0') or '0', r.get('drop_off_type', '0') or '0'
         calls[r['trip_id']].append((int(r['stop_sequence']), r['stop_id'], seconds(r['arrival_time']), seconds(r['departure_time']), pickup, dropoff))
     patterns = {}
+    excluded_trips = []
     for trip_id, trip in trips.items():
         sequence = sorted(calls[trip_id])
+        if len(sequence) < 2 and allow_incomplete:
+            excluded_trips.append({'tripId':trip_id,'reason':'fewer-than-two-stops','stopCount':len(sequence)})
+            continue
         if len(sequence) < 2 or len({s[0] for s in sequence}) != len(sequence):
             raise ValueError('Invalid stop sequence ' + trip_id)
         last = -1
@@ -84,12 +88,13 @@ def compile_feed(archive, route_ids=None):
                 raise ValueError('Non-monotonic times ' + trip_id)
             last = departure
         line = routes[trip['route_id']]['route_short_name']
-        key = (line, tuple(s[1:] for s in sequence))
+        mode = 'bus' if routes[trip['route_id']].get('route_type') == '3' else 'train'
+        key = (line, mode, tuple(s[1:] for s in sequence))
         patterns.setdefault(key, set()).update(dates[trip['service_id']])
     calendars, calendar_ids = [], {}
     by_station = defaultdict(list)
     lines = defaultdict(set)
-    for (line, sequence), active in sorted(patterns.items()):
+    for (line, mode, sequence), active in sorted(patterns.items()):
         if not active:
             continue
         days = tuple(sorted(active))
@@ -97,34 +102,34 @@ def compile_feed(archive, route_ids=None):
             calendar_ids[days] = len(calendars)
             calendars.append(days)
         calendar = calendar_ids[days]
-        pattern_id = hashlib.sha256(repr((line, sequence)).encode()).hexdigest()[:16]
+        pattern_id = hashlib.sha256(repr((line, mode, sequence)).encode()).hexdigest()[:16]
         for index, (stop, arrival, departure, pickup, _) in enumerate(sequence):
             lines[stop].add(line)
             later = [[s[0], s[1]] for s in sequence[index + 1:] if s[4] == '0']
             if pickup != '0' or not later:
                 continue
-            by_station[stop].append([pattern_id, line, sequence[-1][0], departure, calendar, later])
+            by_station[stop].append([pattern_id, line, sequence[-1][0], departure, calendar, later] + ([mode] if mode == 'bus' else []))
     all_dates = sorted({day for calendar in calendars for day in calendar})
     if not all_dates:
         raise ValueError('No dated services')
     stations = [{'id': s, 'name': stops[s]['stop_name'], 'network': 'bilbao', 'lines': sorted(lines[s])} for s in sorted(lines, key=lambda s: stops[s]['stop_name'])]
     manifest = {'schemaVersion': 1, 'coverageDates': all_dates, 'validFrom': all_dates[0], 'validTo': all_dates[-1], 'calendars': calendars, 'stations': stations}
+    manifest['excludedTrips'] = excluded_trips
     return manifest, dict(by_station)
 
 
-TRANSFORM_VERSION = 'networks-routing-v1'
-NETWORKS = {'30':('sevilla','Sevilla'), '31':('cadiz','CÃ¡diz'), '32':('malaga','MÃ¡laga'), '40':('valencia','ValÃ¨ncia'), '41':('murcia-alicante','Murcia/Alicante'), '45':('cartagena','Cartagena'), '46':('ferrol','Ferrol'), '47':('leon','LeÃ³n'), '60':('bilbao','Bilbao'), '61':('san-sebastian','San SebastiÃ¡n'), '62':('cantabria','Cantabria'), '70':('zaragoza','Zaragoza')}
+TRANSFORM_VERSION = 'networks-routing-v2'
+NETWORKS = {'10':('madrid','Madrid'), '51':('rodalies','Rodalies de Catalunya'), '30':('sevilla','Sevilla'), '31':('cadiz','CÃ¡diz'), '32':('malaga','MÃ¡laga'), '40':('valencia','ValÃ¨ncia'), '41':('murcia-alicante','Murcia/Alicante'), '45':('cartagena','Cartagena'), '46':('ferrol','Ferrol'), '47':('leon','LeÃ³n'), '60':('bilbao','Bilbao'), '61':('san-sebastian','San SebastiÃ¡n'), '62':('cantabria','Cantabria'), '70':('zaragoza','Zaragoza')}
 def snapshot_version(raw):
     return hashlib.sha256(raw + TRANSFORM_VERSION.encode() + (Path(__file__).resolve().parents[1]/'data/routing-corrections.json').read_bytes()).hexdigest()[:16]
 def compile_networks(archive):
     all_routes=list(rows(archive,'routes.txt'))
     calendars=[]; stations=[]; data={}; networks=[]; excluded=[]
     for prefix,(nid,name) in NETWORKS.items():
-        routes=[r for r in all_routes if r['route_id'].startswith(prefix+'T') and (r['route_short_name'].startswith('C') and not r['route_short_name'].startswith('CR') or nid=='cadiz' and r['route_short_name']=='T1')]
+        routes=[r for r in all_routes if r['route_id'].startswith(prefix+'T') and (r['route_short_name'].startswith('C') and not r['route_short_name'].startswith('CR') or nid=='rodalies' and r['route_short_name'].startswith('R') or nid=='cadiz' and r['route_short_name']=='T1')]
         if not routes: continue
         lines=sorted({r['route_short_name'] for r in routes})
-        if len(lines)>6: raise ValueError('Network exceeds six lines: '+nid)
-        try: m,files=compile_feed(archive,{r['route_id'] for r in routes})
+        try: m,files=compile_feed(archive,{r['route_id'] for r in routes},allow_incomplete=nid in ('madrid','rodalies'))
         except ValueError as error:
             excluded.append({'id':nid,'reason':str(error)}); print('Excluded '+nid+': '+str(error)); continue
         offset=len(calendars);calendars.extend(m['calendars'])
@@ -133,9 +138,9 @@ def compile_networks(archive):
             station.update(id=sid(station['id']),network=nid)
             stations.append(station)
         for origin,patterns in files.items():
-            data[sid(origin)]=[[pid,line,sid(terminal),sec,cal+offset,[[sid(stop),at] for stop,at in calls]] for pid,line,terminal,sec,cal,calls in patterns]
+            data[sid(origin)]=[[p[0],p[1],sid(p[2]),p[3],p[4]+offset,[[sid(stop),at] for stop,at in p[5]],*p[6:]] for p in patterns]
         colors={line:next((r.get('route_color','') for r in routes if r['route_short_name']==line and len(r.get('route_color',''))==6),'789B88') for line in lines}
-        networks.append({'id':nid,'name':name,'lines':lines,'colors':colors,'coverageDates':m['coverageDates'],'validFrom':m['validFrom'],'validTo':m['validTo']})
+        networks.append({'excludedTrips':m['excludedTrips'], 'description': 'Incluye servicios regionales, RG, RT y RL del GTFS de Renfe.' if nid=='rodalies' else '', 'id':nid,'name':name,'lines':lines,'colors':colors,'coverageDates':m['coverageDates'],'validFrom':m['validFrom'],'validTo':m['validTo']})
     coverage=sorted({d for n in networks for d in n['coverageDates']})
     if not coverage: raise ValueError('No supported networks')
     manifest = {'schemaVersion':1,'transformVersion':TRANSFORM_VERSION,'networks':networks,'excludedNetworks':excluded,'stations':stations,'calendars':calendars,'coverageDates':coverage,'validFrom':coverage[0],'validTo':coverage[-1]}

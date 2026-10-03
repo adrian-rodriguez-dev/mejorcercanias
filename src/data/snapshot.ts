@@ -3,6 +3,8 @@ import initial from "./renfe-manifest.json";
 import type { Station } from "./types";
 import { readStored, storeData } from "./offline-store";
 export interface Network {
+  description?: string;
+  excludedTrips?: { tripId: string; reason: string; stopCount: number }[];
   id: string;
   name: string;
   lines: string[];
@@ -84,9 +86,20 @@ export function validManifest(value: unknown): value is Manifest {
         (n) =>
           /^[a-z-]+$/.test(n.id) &&
           typeof n.name === "string" &&
+          (n.description === undefined || typeof n.description === "string") &&
+          (n.excludedTrips === undefined ||
+            (Array.isArray(n.excludedTrips) &&
+              n.excludedTrips.every(
+                (t) =>
+                  t &&
+                  typeof t.tripId === "string" &&
+                  t.reason === "fewer-than-two-stops" &&
+                  Number.isInteger(t.stopCount) &&
+                  t.stopCount >= 0 &&
+                  t.stopCount < 2,
+              ))) &&
           Array.isArray(n.lines) &&
           n.lines.length > 0 &&
-          n.lines.length <= 6 &&
           new Set(n.lines).size === n.lines.length &&
           n.colors &&
           n.lines.every(
@@ -125,7 +138,9 @@ export function validManifest(value: unknown): value is Manifest {
         typeof s.network === "string" &&
         Array.isArray(s.lines) &&
         s.lines.every(
-          (l) => typeof l === "string" && /^[CT][0-9][0-9a-zA-Z]*$/.test(l),
+          (l) =>
+            typeof l === "string" &&
+            /^(?:[CT]|R[GLT]?)[0-9][0-9a-zA-Z]*$/.test(l),
         ),
     )
   );
