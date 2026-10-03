@@ -1,14 +1,32 @@
 import initial from "./renfe-manifest.json";
 import type { Station } from "./types";
-export type Manifest = Omit<
-  typeof initial,
-  "downloadedAt" | "checkedAt" | "publishedAt"
-> & {
+export interface Network {
+  id: string;
+  name: string;
+  lines: string[];
+  colors: Record<string, string | undefined>;
+  coverageDates: string[];
+  validFrom: string;
+  validTo: string;
+}
+export interface Manifest {
+  schemaVersion: number;
+  version: string;
+  sha256: string;
+  sourceUrl: string;
+  license: string;
+  attribution: string;
+  stations: Station[];
+  calendars: string[][];
+  coverageDates: string[];
+  validFrom: string;
+  validTo: string;
+  networks?: Network[];
   downloadedAt?: string | null;
   checkedAt?: string | null;
   publishedAt?: string | null;
-};
-export let manifest: Manifest = initial;
+}
+export let manifest: Manifest = initial as Manifest;
 const catalog = (m: Manifest): Station[] =>
   m.stations.map((s) => ({
     ...s,
@@ -54,17 +72,52 @@ export function validManifest(value: unknown): value is Manifest {
     !m.stations.length
   )
     return false;
+  if (
+    m.networks &&
+    (!Array.isArray(m.networks) ||
+      !m.networks.length ||
+      new Set(m.networks.map((n) => n.id)).size !== m.networks.length ||
+      !m.networks.every(
+        (n) =>
+          /^[a-z-]+$/.test(n.id) &&
+          typeof n.name === "string" &&
+          Array.isArray(n.lines) &&
+          n.lines.length > 0 &&
+          n.lines.length <= 6 &&
+          new Set(n.lines).size === n.lines.length &&
+          n.colors &&
+          n.lines.every(
+            (l) =>
+              typeof l === "string" &&
+              /^[A-Fa-f0-9]{6}$/.test(n.colors[l] ?? ""),
+          ) &&
+          Array.isArray(n.coverageDates) &&
+          n.coverageDates.length > 0 &&
+          n.coverageDates.every(validDate) &&
+          n.coverageDates[0] === n.validFrom &&
+          n.coverageDates.at(-1) === n.validTo,
+      ) ||
+      !m.stations.every((s) =>
+        m.networks!.some(
+          (n) =>
+            n.id === s.network && s.lines.every((l) => n.lines.includes(l)),
+        ),
+      ))
+  )
+    return false;
   return (
     m.coverageDates[0] === m.validFrom &&
     m.coverageDates.at(-1) === m.validTo &&
     new Set(m.stations.map((s) => s.id)).size === m.stations.length &&
     m.stations.every(
       (s) =>
-        /^\d+$/.test(s.id) &&
+        /^[a-z0-9-]+$/.test(s.id) &&
         typeof s.name === "string" &&
-        s.network === "bilbao" &&
+        typeof s.network === "string" &&
         Array.isArray(s.lines) &&
-        s.lines.every((l) => ["C1", "C2", "C3"].includes(l)),
+        s.lines.every(
+          (l) => typeof l === "string" && /^[CT][0-9][0-9a-zA-Z]*$/.test(l),
+        ),
     )
   );
 }

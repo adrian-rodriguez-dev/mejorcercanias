@@ -99,6 +99,7 @@ export function relevantAlerts(
   departures: Departure[],
   now: number,
 ): Alert[] {
+  if (stations.find((s) => s.id === origin)?.network !== "bilbao") return [];
   const station = stations.find((s) => s.id === origin);
   if (!station) return [];
   const destination = stations.find((s) => s.id === filter.destination);

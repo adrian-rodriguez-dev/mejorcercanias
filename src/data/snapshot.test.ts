@@ -79,3 +79,10 @@ it("rechaza catálogo inválido y permite avisar de estaciones retiradas", async
   expect(s.stations.some((x) => x.id === "13400")).toBe(false);
   expect(fetcher).toHaveBeenCalledTimes(2);
 });
+
+it('rechaza núcleos sin colores y más de seis líneas',async()=>{
+ const {validManifest}=await import('./snapshot');
+ expect(validManifest(fixture)).toBe(true);
+ expect(validManifest({...fixture,networks:[{...fixture.networks[0],lines:['C1','C2','C3','C4','C5','C6','C7']}]})).toBe(false);
+ expect(validManifest({...fixture,networks:[{...fixture.networks[0],colors:{}}]})).toBe(false);
+});

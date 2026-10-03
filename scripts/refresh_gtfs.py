@@ -3,11 +3,13 @@ import argparse, hashlib, io, json, shutil, tempfile, urllib.request, zipfile
 from datetime import datetime, timedelta, timezone, date
 from pathlib import Path
 from zoneinfo import ZoneInfo
-from import_gtfs import compile_feed, write_json, SOURCE
+from import_gtfs import compile_feed, write_json, SOURCE, snapshot_version, TRANSFORM_VERSION
 ROOT = Path(__file__).resolve().parents[1]
 def expired(manifest, now):
     try:
         start, end = date.fromisoformat(manifest['validFrom']), date.fromisoformat(manifest['validTo'])
+        if manifest.get('networks'):
+            return any(expired(n, now) for n in manifest['networks'])
         today = now.astimezone(ZoneInfo('Europe/Madrid')).date()
         return start > end or today < start or today > end
     except (KeyError, ValueError, TypeError):
@@ -17,12 +19,14 @@ def validate_snapshot(manifest, data):
     ids = {s['id'] for s in manifest['stations']}
     if len(ids) != len(manifest['stations']) or not ids or not manifest['coverageDates']:
         raise ValueError('Invalid catalog')
+    by_id={s['id']:s for s in manifest['stations']}
     for station, patterns in data.items():
         if station not in ids: raise ValueError('Unknown origin')
         for _, line, terminal, departure, calendar, calls in patterns:
-            if terminal not in ids or line not in ('C1','C2','C3') or not 0 <= calendar < len(manifest['calendars']):
+            if terminal not in ids or line not in next(s['lines'] for s in manifest['stations'] if s['id']==station) or not 0 <= calendar < len(manifest['calendars']):
                 raise ValueError('Invalid pattern reference')
-            if any(stop not in ids or arrival < departure for stop, arrival in calls): raise ValueError('Invalid arrival')
+            if terminal in ids and by_id[terminal]['network']!=by_id[station]['network']: raise ValueError('Cross-network terminal')
+            if any(stop not in ids or arrival < departure or by_id[stop]['network']!=by_id[station]['network'] for stop, arrival in calls): raise ValueError('Invalid arrival')
 
 def publish_metadata(root, manifest, now):
     # This timestamp is the candidate publication time; it is only exposed if deployment succeeds.
@@ -36,7 +40,7 @@ def publish_metadata(root, manifest, now):
 def renew(root=ROOT, force=False, now=None, downloader=None):
     now = now or datetime.now(timezone.utc)
     manifest_path=root/'src/data/renfe-manifest.json'
-    old=json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
+    old=json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else {}
     if old and not force and not expired(old,now):
         print('Coverage still valid; no download');return False
     if downloader is None:
@@ -51,13 +55,14 @@ def renew(root=ROOT, force=False, now=None, downloader=None):
             for info in rows(archive,'feed_info.txt'):
                 start,end=info.get('feed_start_date'),info.get('feed_end_date')
                 if start and end and parse_date(start)>parse_date(end): raise ValueError('Invalid feed_info dates')
+    if {n['id'] for n in old.get('networks',[])} - {n['id'] for n in manifest.get('networks',[])}: raise ValueError('Previously published network failed validation; keeping snapshot')
     validate_snapshot(manifest,data)
     if expired(manifest,now): raise ValueError('Downloaded feed does not cover today; keeping previous snapshot')
-    if digest == old.get('sha256'):
+    if digest == old.get('sha256') and old.get('transformVersion') == manifest.get('transformVersion'):
         old['checkedAt']=now.isoformat()
         publish_metadata(root,old,now)
         return True
-    version=digest[:16]
+    version=snapshot_version(raw)
     manifest.update(version=version,sha256=digest,sourceUrl=SOURCE,downloadedAt=now.isoformat(),checkedAt=now.isoformat(),license='CC BY 4.0',attribution='Renfe Operadora')
     with tempfile.TemporaryDirectory() as staging:
         stage=Path(staging)
@@ -71,12 +76,12 @@ def renew(root=ROOT, force=False, now=None, downloader=None):
         if not folder.is_dir() or folder.name in (version,old.get('version')): continue
         meta=folder/'manifest.json'
         if not meta.exists(): continue
-        try: published=datetime.fromisoformat(json.loads(meta.read_text())['publishedAt'])
+        try: published=datetime.fromisoformat(json.loads(meta.read_text(encoding="utf-8"))['publishedAt'])
         except (ValueError,KeyError,TypeError): continue
         if now-published > timedelta(days=7): shutil.rmtree(folder)
     return True
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--force',action='store_true');parser.add_argument('--bootstrap',action='store_true');args=parser.parse_args()
     if args.bootstrap:
-        m=json.loads((ROOT/'src/data/renfe-manifest.json').read_text());m['checkedAt']=m.get('checkedAt');publish_metadata(ROOT,m,datetime.now(timezone.utc))
+        m=json.loads((ROOT/'src/data/renfe-manifest.json').read_text(encoding="utf-8"));m['checkedAt']=m.get('checkedAt');publish_metadata(ROOT,m,datetime.now(timezone.utc))
     else: renew(force=args.force)

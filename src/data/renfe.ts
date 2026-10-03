@@ -1,3 +1,4 @@
+import { coverageFor } from "./networks";
 import { DateTime } from "luxon";
 import {
   manifest,
@@ -118,7 +119,8 @@ export async function loadDay(
   signal: AbortSignal,
 ): Promise<StationSchedule> {
   const snapshot = manifest;
-  if (!snapshot.coverageDates.includes(day))
+  const coverage = coverageFor(stationId);
+  if (!coverage.includes(day))
     return {
       stationId,
       source: "renfe-gtfs",
@@ -129,14 +131,15 @@ export async function loadDay(
     await loadFile(stationId, signal, snapshot),
     day,
     snapshot.calendars,
-    snapshot.coverageDates,
+    coverage,
   );
 }
 export const renfeProvider: ScheduleProvider = {
   async load(stationId, now, signal) {
     const day = localDay(now);
     const snapshot = manifest;
-    if (!manifest.coverageDates.includes(day))
+    const coverage = coverageFor(stationId);
+    if (!coverage.includes(day))
       return {
         stationId,
         source: "renfe-gtfs",
@@ -144,17 +147,12 @@ export const renfeProvider: ScheduleProvider = {
         availability: "unpublished",
       };
     const file = await loadFile(stationId, signal, snapshot);
-    const today = resolveDay(
-      file,
-      day,
-      snapshot.calendars,
-      snapshot.coverageDates,
-    );
+    const today = resolveDay(file, day, snapshot.calendars, coverage);
     const tomorrow = resolveDay(
       file,
       addDays(day, 1),
       snapshot.calendars,
-      snapshot.coverageDates,
+      coverage,
     );
     return {
       ...today,

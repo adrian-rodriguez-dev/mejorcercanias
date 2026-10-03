@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => ({
             configureServer(server: import("vite").ViteDevServer) {
               server.middlewares.use((req, res, next) => {
                 const match = req.url?.match(
-                  /^\/data\/renfe\/([a-f0-9]{16})\/(\d+)\.json$/,
+                  /^\/data\/renfe\/([a-f0-9]{16})\/([a-z0-9-]+)\.json$/,
                 );
                 if (match) {
                   try {

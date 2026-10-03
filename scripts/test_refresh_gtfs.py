@@ -26,7 +26,7 @@ class RefreshTests(unittest.TestCase):
   import hashlib
   raw=io.BytesIO()
   with zipfile.ZipFile(raw,'w') as z:z.writestr('fixture','x')
-  raw=raw.getvalue();version=hashlib.sha256(raw).hexdigest()[:16]
+  raw=raw.getvalue();version=__import__('import_gtfs').snapshot_version(raw)
   m={'schemaVersion':1,'validFrom':'2026-10-01','validTo':'2026-10-30','coverageDates':['2026-10-01','2026-10-30'],'calendars':[['2026-10-01']], 'stations':[{'id':'1','name':'A','lines':['C1'],'network':'bilbao'},{'id':'2','name':'B','lines':['C1'],'network':'bilbao'}]}
   data={'1':[['t','C1','2',100,0,[['2',200]]]]}
   with tempfile.TemporaryDirectory() as tmp,patch('refresh_gtfs.compile_feed',return_value=(m,data)):

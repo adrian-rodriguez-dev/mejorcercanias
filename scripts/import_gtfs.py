@@ -50,7 +50,9 @@ def seconds(value):
         raise ValueError('Unsupported GTFS time: ' + value)
     return h * 3600 + m * 60 + s
 
-def compile_feed(archive, route_ids=ROUTES):
+def compile_feed(archive, route_ids=None):
+    if route_ids is None:
+        return compile_networks(archive)
     routes = {r['route_id']: r for r in rows(archive, 'routes.txt') if r['route_id'] in route_ids}
     if not routes or set(route_ids) - routes.keys():
         raise ValueError('Expected Bilbao routes missing; review network selection')
@@ -107,6 +109,35 @@ def compile_feed(archive, route_ids=ROUTES):
     manifest = {'schemaVersion': 1, 'coverageDates': all_dates, 'validFrom': all_dates[0], 'validTo': all_dates[-1], 'calendars': calendars, 'stations': stations}
     return manifest, dict(by_station)
 
+
+TRANSFORM_VERSION = 'networks-v2'
+NETWORKS = {'30':('sevilla','Sevilla'), '31':('cadiz','Cádiz'), '32':('malaga','Málaga'), '40':('valencia','València'), '41':('murcia-alicante','Murcia/Alicante'), '45':('cartagena','Cartagena'), '46':('ferrol','Ferrol'), '47':('leon','León'), '60':('bilbao','Bilbao'), '61':('san-sebastian','San Sebastián'), '62':('cantabria','Cantabria'), '70':('zaragoza','Zaragoza')}
+def snapshot_version(raw):
+    return hashlib.sha256(raw + TRANSFORM_VERSION.encode()).hexdigest()[:16]
+def compile_networks(archive):
+    all_routes=list(rows(archive,'routes.txt'))
+    calendars=[]; stations=[]; data={}; networks=[]; excluded=[]
+    for prefix,(nid,name) in NETWORKS.items():
+        routes=[r for r in all_routes if r['route_id'].startswith(prefix+'T') and (r['route_short_name'].startswith('C') and not r['route_short_name'].startswith('CR') or nid=='cadiz' and r['route_short_name']=='T1')]
+        if not routes: continue
+        lines=sorted({r['route_short_name'] for r in routes})
+        if len(lines)>6: raise ValueError('Network exceeds six lines: '+nid)
+        try: m,files=compile_feed(archive,{r['route_id'] for r in routes})
+        except ValueError as error:
+            excluded.append({'id':nid,'reason':str(error)}); print('Excluded '+nid+': '+str(error)); continue
+        offset=len(calendars);calendars.extend(m['calendars'])
+        sid=lambda value: value if nid=='bilbao' else nid+'-'+value
+        for station in m['stations']:
+            station.update(id=sid(station['id']),network=nid)
+            stations.append(station)
+        for origin,patterns in files.items():
+            data[sid(origin)]=[[pid,line,sid(terminal),sec,cal+offset,[[sid(stop),at] for stop,at in calls]] for pid,line,terminal,sec,cal,calls in patterns]
+        colors={line:next((r.get('route_color','') for r in routes if r['route_short_name']==line and len(r.get('route_color',''))==6),'789B88') for line in lines}
+        networks.append({'id':nid,'name':name,'lines':lines,'colors':colors,'coverageDates':m['coverageDates'],'validFrom':m['validFrom'],'validTo':m['validTo']})
+    coverage=sorted({d for n in networks for d in n['coverageDates']})
+    if not coverage: raise ValueError('No supported networks')
+    return {'schemaVersion':1,'transformVersion':TRANSFORM_VERSION,'networks':networks,'excludedNetworks':excluded,'stations':stations,'calendars':calendars,'coverageDates':coverage,'validFrom':coverage[0],'validTo':coverage[-1]},data
+
 def write_json(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
@@ -126,7 +157,7 @@ def main():
     digest = hashlib.sha256(raw).hexdigest()
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         manifest, station_data = compile_feed(archive)
-    version = digest[:16]
+    version = snapshot_version(raw)
     manifest.update({'version': version, 'sha256': digest, 'sourceUrl': SOURCE, 'downloadedAt': datetime.now(timezone.utc).isoformat() if not args.zip else None, 'checkedAt': datetime.now(timezone.utc).isoformat() if not args.zip else None, 'publishedAt': None, 'license': 'CC BY 4.0', 'attribution': 'Renfe Operadora'})
     # Validate all input before publishing files. Publish manifest last; builds
     # reference immutable version paths and cannot mix successive snapshots.
@@ -139,3 +170,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
