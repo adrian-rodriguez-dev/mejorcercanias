@@ -67,6 +67,7 @@ test("routing oculta una sola línea, limpia la selección y repara nombres de n
   await page.getByLabel("Destino", { exact: true }).fill("Santurtzi");
   await expect(bar).toHaveCount(0);
   await expect(page.locator(".departures > li").first()).toContainText("08:20");
+  await expect(page.getByText("Directo", { exact: true })).toHaveCount(0);
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();

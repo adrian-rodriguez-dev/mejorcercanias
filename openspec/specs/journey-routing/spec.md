@@ -20,7 +20,7 @@ The system SHALL buscar hasta tres transbordos usando calendarios, tiempos de em
 - **THEN** se admite una conexión con 60 segundos disponibles, se rechaza una de 59 segundos y el margen se identifica como estimado.
 
 ### Requirement: Integración en panel y tabla
-The system SHALL mostrar llegada final, Directo o número de transbordos y detalle desplegable al elegir destino, sin nueva vista ni formulario.
+The system SHALL mostrar llegada final y, solo cuando haya cambios, número de transbordos y detalle desplegable al elegir destino, sin nueva vista ni formulario. SHALL omitir la etiqueta Directo.
 #### Scenario: Dos líneas
 - **WHEN** el usuario elige dos estaciones sin tren directo
 - **THEN** el panel y la tabla muestran itinerarios con cambios y llegada a destino.

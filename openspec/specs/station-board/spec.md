@@ -135,7 +135,7 @@ The system SHALL omitir la campana de incidencias y sus consultas periódicas mi
 The system SHALL mostrar Mañana debajo del bloque de salida y del bloque de llegada cuando la hora respectiva pertenezca al día siguiente al actual en Europe/Madrid. SHALL destacar la etiqueta en ambos temas; fechas posteriores SHALL mostrar su fecha en lugar de Mañana.
 #### Scenario: Viaje de mañana
 - **WHEN** tanto la salida como la llegada ocurren mañana
-- **THEN** ambos bloques muestran Mañana debajo de sus horas.
+- **THEN** una única etiqueta Mañana aparece debajo del conjunto de salida y llegada, sin duplicarse en cada bloque.
 #### Scenario: Viaje que cruza medianoche
 - **WHEN** el tren sale hoy y llega mañana
 - **THEN** solo la llegada muestra Mañana; el horario completo conserva sus indicadores relativos de cambio de día.

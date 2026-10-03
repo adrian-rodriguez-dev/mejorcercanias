@@ -82,11 +82,11 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   );
   await expect(first.locator(".train-departure time")).toHaveText("23:58");
   const tomorrow = page.getByRole("listitem").nth(1);
-  await expect(tomorrow.locator(".departure-day")).toHaveText("Mañana");
-  await expect(tomorrow.locator(".arrival-day")).toHaveText("Mañana");
+  await expect(tomorrow.getByText("Mañana", { exact: true })).toHaveCount(1);
+  await expect(tomorrow.locator(".journey-day")).toHaveText("Mañana");
   for (const kind of ["departure", "arrival"]) {
     const time = (await tomorrow.locator(`.train-${kind} time`).boundingBox())!;
-    const label = (await tomorrow.locator(`.${kind}-day`).boundingBox())!;
+    const label = (await tomorrow.locator(".journey-day").boundingBox())!;
     expect(label.y).toBeGreaterThanOrEqual(time.y + time.height);
   }
   await expect(first.locator(".countdown strong")).toHaveText("8");
@@ -159,7 +159,7 @@ test("hora grande desde 60 minutos y transición automática", async ({
   await expect(rows.nth(0).locator(".countdown")).toHaveText("59 min");
   await expect(rows.nth(1).locator(".countdown")).toHaveText("00:50");
   await expect(rows.nth(2).locator(".countdown")).toHaveText("00:51");
-  await expect(rows.nth(1).locator(".departure-day")).toBeVisible();
+  await expect(rows.nth(1).locator(".journey-day")).toHaveText("Mañana");
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

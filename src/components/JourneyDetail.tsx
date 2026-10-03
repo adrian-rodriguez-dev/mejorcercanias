@@ -4,7 +4,7 @@ export function JourneyDetail({ departure }: { departure: Departure }) {
   const legs = departure.journey;
   if (!legs) return null;
   const count = legs.length - 1;
-  if (!count) return <small className="journey-status">Directo</small>;
+  if (!count) return null;
   return (
     <details className="journey-detail">
       <summary>

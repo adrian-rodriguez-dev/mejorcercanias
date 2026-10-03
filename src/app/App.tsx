@@ -467,6 +467,12 @@ export function App({
                   <ol className="departures" aria-label="Próximos trenes">
                     {rows.map((d, index) => {
                       const arrival = arrivalAt(d, routeFilter.destination);
+                      const departureDay = localDay(Date.parse(d.scheduledAt));
+                      const arrivalDay = arrival
+                        ? localDay(Date.parse(arrival))
+                        : undefined;
+                      const sharedDay =
+                        departureDay !== day && departureDay === arrivalDay;
                       const arrivalName = routeFilter.destination
                         ? stationName(routeFilter.destination)
                         : d.destination;
@@ -504,8 +510,7 @@ export function App({
                                   <time dateTime={d.scheduledAt}>
                                     {clockTime(Date.parse(d.scheduledAt))}
                                   </time>
-                                  {localDay(Date.parse(d.scheduledAt)) !==
-                                    day && (
+                                  {!sharedDay && departureDay !== day && (
                                     <small className="departure-day">
                                       {dayLabel(Date.parse(d.scheduledAt), now)}
                                     </small>
@@ -526,14 +531,22 @@ export function App({
                                         —
                                       </span>
                                     )}
-                                    {arrival &&
-                                      localDay(Date.parse(arrival)) !== day && (
+                                    {!sharedDay &&
+                                      arrival &&
+                                      arrivalDay !== day && (
                                         <small className="arrival-day">
                                           {dayLabel(Date.parse(arrival), now)}
                                         </small>
                                       )}
                                   </div>
                                 }
+                                {sharedDay && (
+                                  <div className="train-day">
+                                    <small className="journey-day">
+                                      {dayLabel(Date.parse(d.scheduledAt), now)}
+                                    </small>
+                                  </div>
+                                )}
                               </div>
                               <JourneyDetail departure={d} />
                             </div>
