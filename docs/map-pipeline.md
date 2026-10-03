@@ -112,3 +112,11 @@ Estas comprobaciones contienen cantidades y casos de la captura original; actual
 El workflow primero reproduce los mapas conservados (`maps-reviewed/`) y después comprueba las fuentes actuales (`maps/`). El artefacto contiene ambas carpetas. Así se conserva una extracción útil aunque falle la red. Ambas fases usan el GTFS descargado durante su ejecución; una correspondencia con un ZIP cambiado seguirá necesitando revisión.
 
 Se han observado respuestas de Renfe con HTTP 200 y Content-Type PDF cuyo cuerpo solo contiene seis bytes de espacios. Se comprueba la firma real del PDF; los reintentos solicitan revalidación de caché y usan una clave de consulta nueva. Si persiste, se informa como error de fuente y se conserva el último conjunto aprobado. Nunca se interpreta un archivo vacío como desaparición de las conexiones.
+
+## Revisiones posteriores del GTFS
+
+`data/maps/gtfs-reviews.json` registra revisiones explícitas de un ZIP nuevo contra la captura original. Solo se aceptan hashes exactos listados y comprobados; no se acepta cualquier ZIP con nombres parecidos. El pipeline aplica esa revisión a la copia de trabajo de las anotaciones, conserva las originales en Git y exporta `applied-gtfs-review.json`.
+
+La revisión del ZIP `72355fad13b80eb94d8007a432ebe59286ba2324a0d646072154e8a63c2505fe` comparó stops.txt y transfers.txt (idénticos byte a byte), servicios de las estaciones anotadas (26 con cambios) y las seis rutas de Los Rosales (sin cambios en C1/C3). Esas variaciones de servicio no cambian las identidades físicas anotadas en los mapas. La propuesta nueva actualiza su procedencia GTFS; sigue requiriendo promoción para modificar la configuración de la web. Un tercer ZIP desconocido volverá a pedir revisión.
+
+Verificación de incorporación (2026-10-03): 13 pruebas pequeñas de regresión, nueve comprobaciones del corpus inicial, captura local con descarga nueva y reproducción de 537 observaciones en GitHub. La primera captura remota detectó correctamente un ZIP nuevo y exigió revisión; su comparación quedó registrada antes de admitirlo. La publicación inicial de la aplicación se confirmó en la ejecución 37143836986.

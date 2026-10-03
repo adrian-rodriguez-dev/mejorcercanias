@@ -52,6 +52,27 @@ def review_reasons(root):
     return reasons
 
 
+def apply_feed_review(root, reviews):
+    """Apply only an explicitly reviewed ZIP crosswalk; original annotations stay in Git."""
+    actual = digest(root / "sources/gtfs.zip")
+    review = next((r for r in reviews if r["sha256"] == actual), None)
+    if review is None:
+        return None
+    with zipfile.ZipFile(root / "sources/gtfs.zip") as archive:
+        for table, key in [("stops.txt", "stopsSha256"), ("transfers.txt", "transfersSha256")]:
+            if hashlib.sha256(archive.read(table)).hexdigest() != review[key]:
+                raise ValueError("Reviewed feed table integrity failure: " + table)
+    for file, field in [("connections.json", "gtfs_source_sha256"), ("boarding_points.json", "gtfs_sha256")]:
+        path = root / "annotations" / file
+        records = read(path)
+        if any(r[field] not in (review["reviewedFromSha256"], actual) for r in records):
+            raise ValueError("Feed review does not apply to these annotations")
+        for record in records:
+            record[field] = actual
+        path.write_text(json.dumps(records, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return review
+
+
 def corrections(root, policy, previous):
     """Compile the app's existing generic contract from approved observations."""
     import pipeline
@@ -140,6 +161,12 @@ def run(args):
             pipeline.dump(output / "sources/gtfs-source.json", {
                 "url": acquire.GTFS, "sha256": digest(args.gtfs), "retrieved_at": None})
         acquire.acquire(refresh=args.refresh)
+        reviews_file = BASE / "gtfs-reviews.json"
+        reviews = read(reviews_file) if reviews_file.exists() else []
+        applied_review = apply_feed_review(output, reviews)
+        if applied_review:
+            pipeline.dump(output / "data/applied-gtfs-review.json", applied_review)
+            report["appliedGtfsReview"] = applied_review["sha256"]
         reasons = review_reasons(output)
         report["reasons"] = reasons
         pipeline.extract()

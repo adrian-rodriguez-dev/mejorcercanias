@@ -1,0 +1,11 @@
+[
+  {
+    "sha256": "72355fad13b80eb94d8007a432ebe59286ba2324a0d646072154e8a63c2505fe",
+    "reviewedFromSha256": "b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043",
+    "reviewedAt": "2026-10-03",
+    "stopsSha256": "e03b32a5330dd84c6a3258959062157ebc757c2b0b7ba379fd34c794ff947e17",
+    "transfersSha256": "0b66d714b8fe02f3f078fa819e825f837c8e4bb28f773139faf1fb75aaf24d7e",
+    "evidence": "Compared both ZIPs from GitHub run 37145136537. stops.txt and transfers.txt are byte-identical. Reviewed stop service membership changed at 26 stops, without changing station identities. The six route IDs serving parent 50700 are unchanged and retain C1/C3 assignments. No annotation assigns these changed route IDs as physical boarding points.",
+    "workflowRun": "https://github.com/adrian-rodriguez-dev/mejorcercanias/actions/runs/37145136537"
+  }
+]

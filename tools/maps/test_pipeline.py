@@ -148,6 +148,21 @@ class MapPipelineTests(unittest.TestCase):
                 acquire.fetch(response.geturl(), expected=".pdf")
             self.assertEqual(fetch.call_count, 3)
 
+    def test_feed_review_requires_exact_approved_zip_and_table_hashes(self):
+        with zipfile.ZipFile(self.feed, "a") as archive:
+            archive.writestr("stops.txt", "stop_id,stop_name\n50700,Los Rosales\n")
+            archive.writestr("transfers.txt", "from_stop_id,to_stop_id\n")
+        with zipfile.ZipFile(self.feed) as archive:
+            review = {"sha256": run.digest(self.feed), "reviewedFromSha256": self.rule["gtfs_sha256"],
+                      "stopsSha256": hashlib.sha256(archive.read("stops.txt")).hexdigest(),
+                      "transfersSha256": hashlib.sha256(archive.read("transfers.txt")).hexdigest()}
+        self.assertIsNone(run.apply_feed_review(self.root, [dict(review, sha256="0" * 64)]))
+        self.assertTrue(run.review_reasons(self.root))
+        with self.assertRaisesRegex(ValueError, "integrity"):
+            run.apply_feed_review(self.root, [dict(review, stopsSha256="0" * 64)])
+        run.apply_feed_review(self.root, [review])
+        self.assertEqual(run.review_reasons(self.root), [])
+
     def test_existing_output_is_never_reused(self):
         from argparse import Namespace
         with self.assertRaisesRegex(ValueError, "already exists"):
