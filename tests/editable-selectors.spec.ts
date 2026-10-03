@@ -6,9 +6,8 @@ test("escribir, cancelar texto y borrar destino y origen", async ({
   await page.goto("/");
   const origin = page.getByLabel("¿Desde dónde sales?"),
     dest = page.getByLabel("Destino directo");
-  await page
-    .getByRole("button", { name: "Desplegar destino", exact: true })
-    .click();
+  await dest.click();
+  await expect(page.locator('.show-options')).toHaveCount(0);
   await page
     .getByRole("option", { name: "Bilbao-Abando", exact: true })
     .click();

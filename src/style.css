@@ -1449,8 +1449,6 @@ time {
 .editable-select .clear-selection:disabled {opacity:.35;cursor:default;}
 .origin-field .editable-select input {font-weight:650;}
 .onboarding .editable-select {margin-top:8px;}
-.editable-select input {padding-right:88px;}
-.editable-select .show-options {position:absolute;right:44px;top:0;bottom:0;width:44px;min-height:44px;border:0;background:transparent;color:#cfdbc9;font-size:20px;cursor:pointer;padding:0;}
 .select-options {position:absolute;top:100%;left:0;right:0;z-index:10;max-height:240px;overflow:auto;border:1px solid #7f9984;border-radius:8px;background:#f4f5ed;box-shadow:0 8px 18px #0004;}
 .select-options button {display:block;width:100%;min-height:44px;padding:10px;text-align:left;font:inherit;font-size:15px;color:#173731;background:transparent;border:0;border-radius:0;cursor:pointer;}
 .select-options button[aria-selected="true"],.select-options button:hover {background:#dceaaf;}

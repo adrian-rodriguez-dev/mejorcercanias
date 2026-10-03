@@ -124,21 +124,6 @@ export function EditableSelect({
       />
       <button
         type="button"
-        className="show-options"
-        aria-label={clearLabel.replace("Borrar", "Desplegar")}
-        disabled={disabled}
-        onMouseDown={(e) => e.preventDefault()}
-        onClick={() => {
-          input.current?.focus();
-          setFiltering(false);
-          setActive(0);
-          setOpen(!open);
-        }}
-      >
-        ⌄
-      </button>
-      <button
-        type="button"
         className="clear-selection"
         aria-label={clearLabel}
         disabled={disabled || (!text && !value)}
