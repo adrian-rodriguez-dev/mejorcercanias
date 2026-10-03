@@ -42,7 +42,12 @@ The system SHALL colorear el recuadro completo de C1 rojo, C2 verde y C3 azul cl
 - **THEN** los tres caben en una fila, tienen al menos 44 por 44 px, foco visible y descripción accesible de que ninguna selección equivale a todas.
 
 ### Requirement: Barra de líneas con selección múltiple
-The system SHALL mostrar las líneas del núcleo que pasan por el origen; con cálculo de rutas habilitado no exigirá que pasen por el destino, pues podrán enlazar con otra línea; en snapshots antiguos sin grafo conservará la intersección con destino; SHALL ocultar toda la barra con cero o una línea posible; cada botón alterna su selección independientemente y el filtro acepta trenes de cualquiera de las líneas marcadas. Sin líneas marcadas SHALL mostrar todas, manteniendo destino y criterios horarios compatibles. Las selecciones compatibles SHALL conservarse entre vistas e intercambio de estaciones; ninguna selección oculta podrá bloquear resultados.
+The system SHALL mostrar las líneas que pasan por el origen cuando no hay destino; con destino SHALL ofrecer las líneas compartidas por ambas estaciones. Si no comparten ninguna y hay cálculo de rutas habilitado, SHALL ofrecer las líneas del origen para el primer tren de un viaje con transbordos. En snapshots antiguos sin grafo conservará la intersección con destino. SHALL ocultar toda la barra con cero o una línea posible; cada botón alterna su selección independientemente y el filtro acepta trenes de cualquiera de las líneas marcadas. Sin líneas marcadas SHALL calcular todas las alternativas, incluidos transbordos por otras líneas, manteniendo destino y criterios horarios compatibles. Las selecciones compatibles SHALL conservarse entre vistas e intercambio de estaciones; ninguna selección oculta podrá bloquear resultados.
+
+#### Scenario: Una línea compartida con cálculo de transbordos habilitado
+
+- **WHEN** el origen tiene C1 y C2, se seleccionó C2 y se elige un destino servido solo por C1
+- **THEN** la barra se oculta, se limpia C2 y se calculan las rutas sin un filtro oculto, tanto en próximos trenes como en horario completo.
 #### Scenario: Combinación
 - **WHEN** se marcan C1 y C2
 - **THEN** se muestran trenes de C1 o C2 que cumplen el resto de filtros.
