@@ -45,7 +45,14 @@ test("indicador condicional, detalle accesible, retirada y fallo", async ({
   expect((await button.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   const headerBox = (await page.locator(".masthead").boundingBox())!;
   const panelBox = (await page.locator(".board").boundingBox())!;
-  expect(Math.round(panelBox.y - headerBox.y - headerBox.height)).toBe(8);
+  const noticeBox = (await page.locator(".install-invitation").boundingBox())!;
+  expect(Math.round(noticeBox.y - headerBox.y - headerBox.height)).toBe(8);
+  expect(noticeBox.height).toBeLessThanOrEqual(48);
+  expect(Math.round(panelBox.y - noticeBox.y - noticeBox.height)).toBe(8);
+  await expect(page.locator(".brand img")).toBeVisible();
+  await page.getByRole("button", {name:"Ahora no", exact:true}).click();
+  const compactBox = (await page.locator(".board").boundingBox())!;
+  expect(Math.round(compactBox.y - headerBox.y - headerBox.height)).toBe(8);
   const first = (await page.getByRole("listitem").first().boundingBox())!;
   expect(first.y + first.height).toBeLessThan(page.viewportSize()!.height);
   await page.screenshot({
