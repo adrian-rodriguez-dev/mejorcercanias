@@ -152,3 +152,7 @@ Cuatro pruebas de tema correctas tras el ajuste y cuatro de accesibilidad en cla
 Fondos cálidos: subtonos verdes sustituidos por carbón marrón, marfil y bordes
 cálidos, manteniendo naranja y colores oficiales. Verificado visualmente en la
 pestaña local y con ocho pruebas de tema/contraste móvil y escritorio.
+
+Alternativa grafito + rosa chicle (#ff70b5), solicitada tras descartar los fondos
+cálidos: grises neutros en ambos modos, iconos actualizados y colores de líneas
+conservados. Ocho pruebas de contraste/tema correctas; revisión en pestaña local.
