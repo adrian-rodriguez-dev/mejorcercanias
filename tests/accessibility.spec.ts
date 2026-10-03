@@ -21,9 +21,9 @@ test("accesibilidad del panel, desplegable, tabla y texto ampliado", async ({
       })),
     ).toEqual([]);
   await audit();
-  await page.getByLabel("Destino directo").click();
+  await page.getByLabel("Destino", {exact:true}).click();
   await audit();
-  await page.getByLabel("Destino directo").press("Escape");
+  await page.getByLabel("Destino", {exact:true}).press("Escape");
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();
@@ -44,7 +44,7 @@ test("accesibilidad del panel, desplegable, tabla y texto ampliado", async ({
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  const input = page.getByLabel("Destino directo");
+  const input = page.getByLabel("Destino", {exact:true});
   await input.focus();
   await input.press("ArrowDown");
   await input.press("Enter");

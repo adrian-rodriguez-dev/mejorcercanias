@@ -56,3 +56,26 @@ test('worker nuevo espera el gesto y conserva preferencias al actualizar',async(
     await page.waitForFunction(async()=>!(await navigator.serviceWorker.getRegistration())?.waiting);
   } finally {await request.post('/__test/revision');}
 });
+
+test('ruta real con transbordo, detalle y recálculo offline en app instalada',async({page,context})=>{
+  test.setTimeout(60000);
+  await page.goto('./');
+  await page.getByLabel('¿Desde dónde sales?').fill('Santurtzi');
+  await page.getByLabel('Destino',{exact:true}).fill('Muskiz');
+  const detail=page.locator('.departures > li .journey-detail').first();
+  await expect(detail).toBeVisible({timeout:20000});
+  await expect(detail.locator('summary')).toContainText('1 transbordo');
+  await detail.locator('summary').click();
+  await expect(detail).toContainText('C1');await expect(detail).toContainText('C2');
+  await expect(detail).toContainText('Cambio en');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:'work/routing-mobile.png',fullPage:true});
+  await page.evaluate(()=>navigator.serviceWorker.ready);
+  await page.waitForFunction(()=>!!navigator.serviceWorker.controller);
+  await context.setOffline(true);await page.reload();
+  await expect(detail).toBeVisible({timeout:20000});
+  await expect(page.locator('.offline-status')).toContainText('Sin conexión');
+  await page.getByRole('button',{name:'Horario completo',exact:true}).click();
+  await expect(page.locator('.schedule-table .journey-detail').first()).toBeVisible({timeout:15000});
+  await context.setOffline(false);
+});

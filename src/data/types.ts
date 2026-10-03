@@ -5,6 +5,14 @@ export interface Station {
   lines: string[];
 }
 export interface Departure {
+  journey?: (import("./router").Leg & {
+    fromName: string;
+    toName: string;
+    change?: import("./router").Leg["change"] & {
+      fromName: string;
+      toName: string;
+    };
+  })[];
   id: string;
   line: string;
   destination: string;

@@ -56,9 +56,10 @@ def renew(root=ROOT, force=False, now=None, downloader=None):
                 start,end=info.get('feed_start_date'),info.get('feed_end_date')
                 if start and end and parse_date(start)>parse_date(end): raise ValueError('Invalid feed_info dates')
     if {n['id'] for n in old.get('networks',[])} - {n['id'] for n in manifest.get('networks',[])}: raise ValueError('Previously published network failed validation; keeping snapshot')
+    routing = manifest.pop('_routing', {})
     validate_snapshot(manifest,data)
     if expired(manifest,now): raise ValueError('Downloaded feed does not cover today; keeping previous snapshot')
-    if digest == old.get('sha256') and old.get('transformVersion') == manifest.get('transformVersion'):
+    if digest == old.get('sha256') and old.get('version') == snapshot_version(raw) and old.get('transformVersion') == manifest.get('transformVersion'):
         old['checkedAt']=now.isoformat()
         publish_metadata(root,old,now)
         return True
@@ -66,6 +67,8 @@ def renew(root=ROOT, force=False, now=None, downloader=None):
     manifest.update(version=version,sha256=digest,sourceUrl=SOURCE,downloadedAt=now.isoformat(),checkedAt=now.isoformat(),license='CC BY 4.0',attribution='Renfe Operadora')
     with tempfile.TemporaryDirectory() as staging:
         stage=Path(staging)
+        for network, graph in routing.items():
+            write_json(stage/f'routing-{network}.json', dict(graph, version=version))
         for station in manifest['stations']:
             write_json(stage/f'{station["id"]}.json',{'version':version,'stationId':station['id'],'patterns':data.get(station['id'],[])})
         target=root/'public/data/renfe'/version

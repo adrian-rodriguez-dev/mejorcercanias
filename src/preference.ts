@@ -1,3 +1,4 @@
+import { routingAvailable } from "./data/routing";
 import { networks } from "./data/networks";
 import { stations, demoStationIds } from "./data/stations";
 export const STORAGE_KEY = "mejorcercanias.station.v1";
@@ -33,7 +34,10 @@ export function linesForStations(
   const destinationLines =
     stations.find((s) => s.id === destination)?.lines ?? [];
   return originLines.filter(
-    (line) => !destination || destinationLines.includes(line),
+    (line) =>
+      !destination ||
+      routingAvailable(origin) ||
+      destinationLines.includes(line),
   );
 }
 export function normalizeJourney(value: unknown): Journey {

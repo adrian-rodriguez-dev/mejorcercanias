@@ -6,7 +6,7 @@ Elegir línea y destino directo de forma consistente en ambas vistas, conservand
 ## Requirements
 
 ### Requirement: Filtros combinados
-The system SHALL filtrar por línea y parada posterior de destino en próximas salidas y horario completo, antes del límite de ocho salidas y junto a los filtros horarios existentes.
+The system SHALL filtrar por línea del primer tren y destino de itinerario (directo o con hasta tres transbordos) en próximas salidas y horario completo, antes del límite de ocho salidas y junto a los filtros horarios existentes.
 #### Scenario: Tren posterior a los ocho primeros
 - **WHEN** la primera coincidencia de línea y destino está después de los ocho trenes generales
 - **THEN** el panel la muestra entre los próximos trenes filtrados
@@ -42,7 +42,7 @@ The system SHALL colorear el recuadro completo de C1 rojo, C2 verde y C3 azul cl
 - **THEN** los tres caben en una fila, tienen al menos 44 por 44 px, foco visible y descripción accesible de que ninguna selección equivale a todas.
 
 ### Requirement: Barra de líneas con selección múltiple
-The system SHALL mostrar únicamente las líneas C1, C2 y C3 que pasan por el origen y, si hay destino, también por él; SHALL ocultar toda la barra con cero o una línea posible; cada botón alterna su selección independientemente y el filtro acepta trenes de cualquiera de las líneas marcadas. Sin líneas marcadas SHALL mostrar todas, manteniendo destino y criterios horarios compatibles. Las selecciones compatibles SHALL conservarse entre vistas e intercambio de estaciones; ninguna selección oculta podrá bloquear resultados.
+The system SHALL mostrar las líneas del núcleo que pasan por el origen; con cálculo de rutas habilitado no exigirá que pasen por el destino, pues podrán enlazar con otra línea; en snapshots antiguos sin grafo conservará la intersección con destino; SHALL ocultar toda la barra con cero o una línea posible; cada botón alterna su selección independientemente y el filtro acepta trenes de cualquiera de las líneas marcadas. Sin líneas marcadas SHALL mostrar todas, manteniendo destino y criterios horarios compatibles. Las selecciones compatibles SHALL conservarse entre vistas e intercambio de estaciones; ninguna selección oculta podrá bloquear resultados.
 #### Scenario: Combinación
 - **WHEN** se marcan C1 y C2
 - **THEN** se muestran trenes de C1 o C2 que cumplen el resto de filtros.

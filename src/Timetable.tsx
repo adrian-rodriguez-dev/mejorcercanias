@@ -1,3 +1,5 @@
+import { JourneyDetail } from "./JourneyDetail";
+import { loadJourneys, routingAvailable } from "./data/routing";
 import { OfflineStatus, useOnline } from "./OfflineStatus";
 import { networkForStation, lineStyle } from "./data/networks";
 import { subscribeSnapshot, snapshotRevision } from "./data/snapshot";
@@ -42,12 +44,15 @@ export function Timetable({
     data?: StationSchedule;
     error?: boolean;
   }>();
-  const key = `${version}/${stationId}/${date}`;
+  const key = `${version}/${stationId}/${date}/${destination}/${lines.join(",")}`;
   const current = loaded?.key === key ? loaded : undefined;
   useEffect(() => {
     const controller = new AbortController();
     setLoaded(undefined);
-    loader(stationId, date, controller.signal)
+    (loader === loadDay && destination && routingAvailable(stationId)
+      ? loadJourneys(stationId, destination, [date], lines, controller.signal)
+      : loader(stationId, date, controller.signal)
+    )
       .then((data) => {
         if (!controller.signal.aborted) setLoaded({ key, data });
       })
@@ -164,10 +169,11 @@ export function Timetable({
                       </span>
                     </td>
                     <td
-                      title={`Tren con destino final ${row.destination}`}
-                      aria-label={`${destination ? stationName(destination) : row.destination}; tren con destino final ${row.destination}`}
+                      title={row.journey ? `Trayecto a ${row.destination}` : `Tren con destino final ${row.destination}`}
+                      aria-label={row.journey ? `Trayecto a ${row.destination}` : `${destination ? stationName(destination) : row.destination}; tren con destino final ${row.destination}`}
                     >
                       {destination ? stationName(destination) : row.destination}
+                      <JourneyDetail departure={row} />
                     </td>
                     <td>
                       <time dateTime={row.scheduledAt}>

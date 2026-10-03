@@ -52,11 +52,11 @@ test("sin núcleo siempre asistente, configuración, regreso y cambio cancelable
     .getByLabel("Estación de destino opcional")
     .fill(optionName("13200"));
   await page.getByRole("button", { name: "Ver mis trenes" }).click();
-  await expect(page.getByLabel("Destino directo")).toHaveValue(
+  await expect(page.getByLabel("Destino", {exact:true})).toHaveValue(
     optionName("13200"),
   );
   await page.reload();
-  await expect(page.getByLabel("Destino directo")).toHaveValue(
+  await expect(page.getByLabel("Destino", {exact:true})).toHaveValue(
     optionName("13200"),
   );
   expect(

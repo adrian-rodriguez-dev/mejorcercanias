@@ -3,7 +3,7 @@ import {optionName} from './option-name';
 test('volver a ahora mantiene trayecto y líneas y recupera el foco',async({page})=>{
   await page.clock.install({time:new Date('2026-10-02T10:00:00+02:00')});
   await page.goto('/');
-  await page.getByLabel('Destino directo').fill(optionName('13200'));
+  await page.getByLabel('Destino', {exact:true}).fill(optionName('13200'));
   await page.getByRole('button',{name:'C1',exact:true}).click();
   await page.getByRole('button',{name:'Horario completo',exact:true}).click();
   await expect(page.getByRole('button',{name:'Volver a ahora',exact:true})).toHaveCount(0);

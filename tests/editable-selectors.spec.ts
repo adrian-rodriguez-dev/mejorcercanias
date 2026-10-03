@@ -5,7 +5,7 @@ test("escribir, cancelar texto y borrar destino y origen", async ({
   await page.clock.install({ time: new Date("2026-10-03T10:00:00+02:00") });
   await page.goto("/");
   const origin = page.getByLabel("¿Desde dónde sales?"),
-    dest = page.getByLabel("Destino directo");
+    dest = page.getByLabel("Destino", {exact:true});
   await dest.click();
   await expect(page.locator('.show-options')).toHaveCount(0);
   await page

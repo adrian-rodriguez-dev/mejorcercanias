@@ -6,7 +6,7 @@ test("cabecera única e intercambio conserva día, hora y preferencia", async ({
   await page.clock.install({ time: new Date("2026-10-02T10:00:00+02:00") });
   await page.goto("/");
   const origin = page.getByLabel("¿Desde dónde sales?");
-  const destination = page.getByLabel("Destino directo");
+  const destination = page.getByLabel("Destino", {exact:true});
   const swap = page.getByRole("button", {
     name: "Intercambiar origen y destino",
   });

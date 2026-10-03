@@ -86,3 +86,18 @@ Mejoras de app instalada (octubre 2026): aviso de nueva versión publicado con e
 Llegadas terminales y retorno a ahora verificados en publicación bc36ed5 (Actions 37123246866). Llegada intermedia, terminal real más corta que línea, dato ausente, medianoche y destino borrado probados; botón Ahora conserva filtros, foco y fecha actual. El despliegue intermedio 3ab3565 quedó superado por el siguiente commit; la publicación conjunta de bc36ed5 pasó todos los controles.
 
 Accesibilidad publicada: Actions 37123652335 correcto (233eb4b). 43 pruebas de lógica, 40 de navegador y dos de producción offline correctas. Axe sin infracciones detectadas en asistente/panel/desplegable/tabla; contraste de todos los colores del catálogo comprobado. Web pública a 360 px auditada sin infracciones, texto al 200 % sin desbordamiento de página, horas dentro de la fila y reapertura offline con llegadas. Capturas normales y texto ampliado inspeccionadas. No se afirma certificación WCAG ni prueba física con lector de pantalla.
+
+
+## Rutas integradas · 2026-10-03
+53 pruebas TypeScript (incluidas diez de motor), 12 pruebas Python, 42 pruebas de
+navegador escritorio/móvil y 3 de producción/offline correctas. Ruta real Santurtzi
+→ Muskiz: cambio C1/C2, salida/llegada final, expansión de horarios y recálculo tras
+recarga offline verificados en build de producción a 360 px. Captura inspeccionada.
+Fixture navegador prueba enlace peatonal, rechazo de tren demasiado próximo, tabla,
+fecha sin cobertura, cancelación por cambio de destino y accesibilidad axe.
+El motor ejecuta rondas como renfe-cli, con protección adicional de etiquetas por
+viaje entrante para restricciones específicas. No es una prueba de equivalencia
+exhaustiva ni de incidencias en vivo. Los ocho núcleos publicados se conservan.
+Datos: Renfe b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043;
+snapshot con grafos 3b4c3c4b71c964f7. Los Rosales se comprueba en fixture del
+normalizador; Sevilla continúa excluida por el importador de horarios.

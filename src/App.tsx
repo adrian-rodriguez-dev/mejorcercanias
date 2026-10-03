@@ -1,3 +1,6 @@
+import { JourneyDetail } from "./JourneyDetail";
+import { routingAvailable, loadJourneys } from "./data/routing";
+import { addDays } from "./data/renfe";
 import { OfflineStatus, useOnline } from "./OfflineStatus";
 import { EditableSelect } from "./EditableSelect";
 import { Onboarding } from "./Onboarding";
@@ -38,8 +41,10 @@ import {
 } from "./preference";
 
 type LoadState = {
-  version?: string;
   stationId: string;
+  version?: string;
+  destination?: string;
+  lines?: string;
   status: "loading" | "error" | "ready";
   schedule?: StationSchedule;
 };
@@ -134,27 +139,74 @@ export function App({
     };
   }, [clock]);
 
+  const routingDestination =
+    provider === renfeProvider && routingAvailable(stationId)
+      ? routeFilter.destination
+      : "";
+  const routingLines = routingDestination
+    ? JSON.stringify(routeFilter.lines)
+    : "";
   useEffect(() => {
     if (!stationId || needsSetup) return;
     const controller = new AbortController();
     setLoad({ version, stationId, status: "loading" });
-    provider
-      .load(stationId, clock(), controller.signal)
+    const request =
+      provider === renfeProvider &&
+      routeFilter.destination &&
+      routingAvailable(stationId)
+        ? loadJourneys(
+            stationId,
+            routeFilter.destination,
+            [day, addDays(day, 1)],
+            routeFilter.lines,
+            controller.signal,
+          )
+        : provider.load(stationId, clock(), controller.signal);
+    request
       .then((schedule) => {
         if (controller.signal.aborted) return;
         if (schedule.stationId !== stationId)
           throw new Error("Estación incorrecta");
-        setLoad({ version, stationId, status: "ready", schedule });
+        setLoad({
+          version,
+          stationId,
+          status: "ready",
+          destination: routingDestination,
+          lines: routingLines,
+          schedule,
+        });
       })
       .catch(() => {
         if (!controller.signal.aborted)
-          setLoad({ version, stationId, status: "error" });
+          setLoad({
+            version,
+            stationId,
+            status: "error",
+            destination: routingDestination,
+            lines: routingLines,
+          });
       });
     return () => controller.abort();
-  }, [stationId, day, retry, provider, clock, version, needsSetup, online]);
+  }, [
+    stationId,
+    day,
+    retry,
+    provider,
+    clock,
+    version,
+    needsSetup,
+    online,
+    routingDestination,
+    routingLines,
+  ]);
 
   const current =
-    load.stationId === stationId && load.version === version ? load : undefined;
+    load.stationId === stationId &&
+    load.version === version &&
+    (load.status === "loading" ||
+      (load.destination === routingDestination && load.lines === routingLines))
+      ? load
+      : undefined;
   const rows =
     current?.status === "ready"
       ? upcoming(filterRoutes(current.schedule!.departures, routeFilter), now)
@@ -269,7 +321,7 @@ export function App({
                   <span>Destino · opcional</span>
                   <EditableSelect
                     id="destination"
-                    label="Destino directo"
+                    label="Destino"
                     value={routeFilter.destination}
                     options={networkStations.filter((s) => s.id !== stationId)}
                     disabled={!stationId}
@@ -446,8 +498,8 @@ export function App({
                             </span>
                             <div>
                               <strong
-                                title={`Tren con destino final ${d.destination}`}
-                                aria-label={`${arrivalName}; tren con destino final ${d.destination}`}
+                                title={d.journey ? `Trayecto a ${arrivalName}` : `Tren con destino final ${d.destination}`}
+                                aria-label={d.journey ? `Trayecto a ${arrivalName}` : `${arrivalName}; tren con destino final ${d.destination}`}
                               >
                                 {arrivalName}
                               </strong>
@@ -495,6 +547,7 @@ export function App({
                                   </div>
                                 }
                               </div>
+                              <JourneyDetail departure={d} />
                             </div>
                           </div>
                           <div className="countdown">

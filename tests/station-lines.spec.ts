@@ -6,7 +6,7 @@ test("barra solo con varias líneas compatibles y sin filtros ocultos", async ({
   await page.clock.install({ time: new Date("2026-10-02T10:00:00+02:00") });
   await page.goto("/");
   const origin = page.getByLabel("¿Desde dónde sales?");
-  const destination = page.getByLabel("Destino directo");
+  const destination = page.getByLabel("Destino", {exact:true});
   const bar = page.getByRole("group", { name: /Filtrar por líneas/ });
   await origin.fill(optionName("13400"));
   await expect(bar.getByRole("button")).toHaveCount(2);

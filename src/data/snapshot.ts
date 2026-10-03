@@ -12,6 +12,7 @@ export interface Network {
   validTo: string;
 }
 export interface Manifest {
+  routingNetworks?: string[];
   schemaVersion: number;
   version: string;
   sha256: string;
@@ -108,6 +109,12 @@ export function validManifest(value: unknown): value is Manifest {
   )
     return false;
   return (
+    (m.routingNetworks === undefined ||
+      (Array.isArray(m.routingNetworks) &&
+        m.routingNetworks.every(
+          (id) =>
+            typeof id === "string" && m.networks?.some((n) => n.id === id),
+        ))) &&
     m.coverageDates[0] === m.validFrom &&
     m.coverageDates.at(-1) === m.validTo &&
     new Set(m.stations.map((s) => s.id)).size === m.stations.length &&

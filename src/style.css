@@ -1761,3 +1761,16 @@ summary:focus-visible,
     animation: none !important;
   }
 }
+
+.journey-status,.journey-detail { display:block; font-size:.8rem; margin:.35rem 0; color:#c9e4d8; }
+.journey-detail summary { cursor:pointer; min-height:28px; padding:6px 0; }
+.journey-detail ol { padding-left:1rem; margin:0; }
+.departures .journey-detail li { display:block; padding:.4rem 0; border:0; background:none; }
+.journey-detail p { margin:.2rem 0; white-space:normal; overflow-wrap:anywhere; }
+.journey-detail b { font-size:inherit; }
+
+.journey-detail summary { list-style:none; min-height:44px; }
+.journey-toggle { display:inline-block; font-size:1.1rem; padding:0 .35rem; }
+.journey-detail[open] .journey-toggle { transform:rotate(45deg); }
+
+.departures > li:has(.journey-detail[open]) > .countdown, .destination:has(.journey-detail[open]) > .line { align-self:start; margin-top:.25rem; }

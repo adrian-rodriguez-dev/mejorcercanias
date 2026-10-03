@@ -14,7 +14,7 @@
 - Atajo **Mañana a Bilbao antes de las 09:00**: configura fecha, destino y hora; destaca la última salida compatible y conserva todas las alternativas anteriores.
 - **Ver todo el día** elimina los filtros. Volver a Próximos trenes recupera el panel inmediato.
 
-Se utilizan **horarios programados oficiales de Renfe**, no tiempo real. Fines de semana y excepciones se resuelven con los calendarios publicados por el operador; no se asume que festivo equivale a domingo. No se buscan transbordos ni se incluyen Euskotren o metro. Deja margen si tienes una cita: las llegadas programadas no garantizan puntualidad.
+Se utilizan **horarios programados oficiales de Renfe**, no tiempo real. Fines de semana y excepciones se resuelven con los calendarios publicados por el operador; no se asume que festivo equivale a domingo. Al elegir destino se calculan rutas de hasta tres transbordos dentro del núcleo. No se incluyen Euskotren o metro. Deja margen si tienes una cita: las llegadas programadas no garantizan puntualidad.
 
 El snapshot inicial cubre **1–30 de octubre de 2026**, 44 estaciones de Bilbao C1/C2/C3. Fuera del horizonte la app indica que no hay datos publicados, sin repetir un horario de otro día. **El refresco aún es manual**; consulta [regeneración de datos](docs/gtfs-import.md) antes de que caduque. Los fixtures demo permanecen solo como soporte de desarrollo.
 
@@ -140,3 +140,36 @@ Al consultar otra fecha aparece Ahora: vuelve al panel actual y conserva estacio
 La tipografía respeta el tamaño de texto del usuario; se comprobó al 200 % a 360 px. La tabla puede desplazarse dentro de su propia región al ampliar texto, sin desplazar toda la página. Los controles principales conservan 44 px, foco visible y nombres accesibles; Saltar a horarios permite omitir la cabecera. Los colores oficiales se conservan y el texto de cada línea se elige con contraste mínimo de 4.5:1.
 
 Validación automática con axe en asistente, selectores, panel y tabla, más pruebas de teclado, texto ampliado y contraste de todos los colores del catálogo. No constituye una certificación completa de WCAG; no se ha probado con un lector de pantalla físico Android/iOS.
+
+
+## Rutas integradas en origen y destino
+Al elegir destino en los selectores actuales, el panel y la tabla calculan la llegada
+final: Directo, 1 transbordo, 2 transbordos o 3 transbordos. El signo + despliega
+cada tren con salida/llegada, estación de cambio, espera y tramo a pie cuando existe.
+La selección de líneas se aplica al primer tren; el resto del itinerario puede usar
+otras líneas. Sin destino permanece el panel original de próximos trenes.
+
+Motor TypeScript adaptado de [renfe-cli](https://github.com/gerardcl/renfe-cli/blob/938db1536b7e148553c03b0322f2b49f4a21b7f3/src/router.rs), BSD-3-Clause
+(ver public/licenses/renfe-cli.txt). Búsqueda por rondas en Web Worker: cuatro trenes,
+margen por defecto 5 minutos y penalización de 15 minutos por cambio al comparar
+alternativas con la misma salida. Esta penalización no altera los horarios mostrados.
+Los cambios explícitos de GTFS tienen prioridad, incluidas prohibiciones y reglas
+por ruta/viaje. Se respetan calendario, excepciones, >24h y subida/bajada permitida.
+
+scripts/routing_data.py genera routing-<núcleo>.json en la misma versión que los
+horarios. El refresco publica ambos conjuntamente. data/routing-corrections.json
+conserva enlaces oficiales revisados y la división de puntos de embarque; el motor
+no contiene nombres ni casos de estaciones. Las estimaciones de enlaces de mapas
+son de 600 segundos y se identifican en el detalle como margen estimado.
+Solo se habilitan los núcleos ya validados por el importador. Sevilla, Málaga,
+Murcia/Alicante y Cantabria continúan excluidos en este snapshot por secuencias de
+paradas incompletas. La regla de Los Rosales está preparada y probada con fixture,
+pero no se publica un horario de Sevilla incompleto. Asturias/Madrid/Barcelona no
+forman parte del catálogo actual de la web. El pipeline de mapas no amplía por sí
+solo la cobertura de horarios.
+
+El grafo se descarga bajo demanda y se guarda para consulta sin conexión. Cambiar
+origen/destino cancela el cálculo anterior. El motor usa horarios programados; los
+avisos de incidencias siguen siendo informativos y no reescriben el itinerario.
+No se infieren caminatas por proximidad. La búsqueda admite caminata entre trenes;
+no calcula viajes exclusivamente a pie ni accesos/egresos peatonales del trayecto.

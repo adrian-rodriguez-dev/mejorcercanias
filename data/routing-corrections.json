@@ -1,0 +1,100 @@
+{
+  "estimatedWalkSeconds": 600,
+  "reviewedLinks": [
+    {
+      "id": "bilbao-134",
+      "network": "bilbao",
+      "stops": [
+        "13200",
+        "05451"
+      ],
+      "source": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2026/plano_cercanias_bilbao_mayo-2026-c.pdf",
+      "mapSha256": "97b4e04bbd6fcb9722841e87fe44c56d75479802cdfac6eb22823c5e56b35251",
+      "reviewedGtfsSha256": "b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043",
+      "upperBoundSeconds": 600
+    },
+    {
+      "id": "bilbao-135",
+      "network": "bilbao",
+      "stops": [
+        "13208",
+        "05455"
+      ],
+      "source": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2026/plano_cercanias_bilbao_mayo-2026-c.pdf",
+      "mapSha256": "97b4e04bbd6fcb9722841e87fe44c56d75479802cdfac6eb22823c5e56b35251",
+      "reviewedGtfsSha256": "b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043",
+      "upperBoundSeconds": 600
+    },
+    {
+      "id": "cantabria-136",
+      "network": "cantabria",
+      "stops": [
+        "14231",
+        "05651"
+      ],
+      "source": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/Mapa_Cantabria_Cercanias_julio_2025-b.pdf",
+      "mapSha256": "7e5ba205ffda5ac8e074a6b1e50ef6be6c7706850561010966b0aed39f9babfe",
+      "reviewedGtfsSha256": "b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043",
+      "upperBoundSeconds": 600
+    },
+    {
+      "id": "cantabria-137",
+      "network": "cantabria",
+      "stops": [
+        "14230",
+        "05602"
+      ],
+      "source": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/Mapa_Cantabria_Cercanias_julio_2025-b.pdf",
+      "mapSha256": "7e5ba205ffda5ac8e074a6b1e50ef6be6c7706850561010966b0aed39f9babfe",
+      "reviewedGtfsSha256": "b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043",
+      "upperBoundSeconds": 600
+    },
+    {
+      "id": "asturias-138",
+      "network": "asturias",
+      "stops": [
+        "15203",
+        "05369"
+      ],
+      "source": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/Mapa_Asturias_Cercanias_enero2026_v2.pdf",
+      "mapSha256": "23f91900c7b57fa70e387a3b432f62ec0cf3c14c68eaa0571b1c59c2f32c306c",
+      "reviewedGtfsSha256": "b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043",
+      "upperBoundSeconds": 600
+    }
+  ],
+  "boardingPoints": [
+    {
+      "network": "sevilla",
+      "stop": "50700",
+      "points": [
+        {
+          "id": "mc:50700:c1",
+          "name": "Los Rosales · C1",
+          "lines": [
+            "C1"
+          ]
+        },
+        {
+          "id": "mc:50700:c3",
+          "name": "Los Rosales Apeadero · C3",
+          "lines": [
+            "C3"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/Mapa_Sevilla_Cercanias_feb_2025.pdf",
+          "local_file": "sources/sevilla-febrero-2025.pdf",
+          "sha256": "b344b57914850e9d7f9611a3da82b01bac3a14eca47dacc15063f62ad90ce602",
+          "evidence": "Rótulo Los Rosales Apeadero en C-3 entre Tocina y Cantillana."
+        },
+        {
+          "url": "https://www.tocinalosrosales.es/es/actualidad/noticias/COMIENZA-EL-ARREGLO-DEL-APARCAMIENTO-DE-RENFE-Y-DE-SUS-ACCESOS/",
+          "date": "2022-04-20",
+          "evidence": "El Ayuntamiento documenta iluminación del paseo entre estación y apeadero."
+        }
+      ]
+    }
+  ]
+}

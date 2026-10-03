@@ -52,7 +52,7 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   );
   await page.goto("/");
   const origin = page.getByLabel("¿Desde dónde sales?");
-  const destination = page.getByLabel("Destino directo");
+  const destination = page.getByLabel("Destino", {exact:true});
   await origin.fill(optionName("13400"));
   await expect(page.getByRole("listitem").first()).toBeVisible();
   await expect(page.locator(".train-arrival time").first()).toHaveText("00:15");
@@ -127,7 +127,7 @@ test("hora grande desde 60 minutos y transición automática", async ({
   );
   await page.goto("/");
   await page.getByLabel("¿Desde dónde sales?").fill(optionName("13400"));
-  await page.getByLabel("Destino directo").fill(optionName("13405"));
+  await page.getByLabel("Destino", {exact:true}).fill(optionName("13405"));
   const rows = page.locator(".departures li");
   await expect(rows).toHaveCount(3);
   await expect(rows.nth(0).locator(".countdown")).toHaveText("59 min");
