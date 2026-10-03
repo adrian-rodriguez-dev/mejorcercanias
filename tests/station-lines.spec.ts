@@ -1,3 +1,4 @@
+import {optionName} from './option-name';
 import { test, expect } from "./configured-test";
 test("barra solo con varias líneas compatibles y sin filtros ocultos", async ({
   page,
@@ -7,10 +8,10 @@ test("barra solo con varias líneas compatibles y sin filtros ocultos", async ({
   const origin = page.getByLabel("¿Desde dónde sales?");
   const destination = page.getByLabel("Destino directo");
   const bar = page.getByRole("group", { name: /Filtrar por líneas/ });
-  await origin.selectOption("13400");
+  await origin.fill(optionName("13400"));
   await expect(bar.getByRole("button")).toHaveCount(2);
   await bar.getByRole("button", { name: "C2", exact: true }).click();
-  await destination.selectOption("13405");
+  await destination.fill(optionName("13405"));
   await expect(bar).toHaveCount(0);
   await expect(page.getByRole("listitem")).toHaveCount(8);
   expect(await page.locator(".departures .line").allTextContents()).toEqual(
@@ -25,21 +26,21 @@ test("barra solo con varias líneas compatibles y sin filtros ocultos", async ({
     .click();
   await expect(bar).toHaveCount(0);
   await expect(page.getByRole("table")).toBeVisible();
-  await destination.selectOption("");
+  await destination.fill(optionName(""));
   await expect(bar.getByRole("button")).toHaveCount(2);
   await expect(bar.locator('[aria-pressed="true"]')).toHaveCount(0);
   await page.getByLabel("Fecha").fill("2026-11-15");
   await expect(bar.getByRole("button")).toHaveCount(2);
-  await destination.selectOption("13101");
+  await destination.fill(optionName("13101"));
   await expect(bar).toHaveCount(0);
   await page
     .getByRole("button", { name: "Próximos trenes", exact: true })
     .click();
   await expect(page.getByRole("listitem")).toHaveCount(0);
-  await origin.selectOption("13405");
+  await origin.fill(optionName("13405"));
   await expect(bar).toHaveCount(0);
   await expect(page.getByRole("listitem")).toHaveCount(8);
-  await origin.selectOption("13200");
+  await origin.fill(optionName("13200"));
   await expect(bar.getByRole("button")).toHaveCount(3);
   expect(
     await page.evaluate(

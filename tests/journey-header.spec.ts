@@ -1,3 +1,4 @@
+import {optionName} from './option-name';
 import { test, expect } from "./configured-test";
 test("cabecera única e intercambio conserva día, hora y preferencia", async ({
   page,
@@ -12,13 +13,13 @@ test("cabecera única e intercambio conserva día, hora y preferencia", async ({
   await expect(page.locator(".station-card")).toHaveCount(0);
   await expect(page.locator(".board #station")).toHaveCount(1);
   await expect(swap).toBeDisabled();
-  await origin.selectOption("13405");
-  await destination.selectOption("13200");
+  await origin.fill(optionName("13405"));
+  await destination.fill(optionName("13200"));
   await expect(page.getByRole("listitem")).toHaveCount(8);
   await swap.focus();
   await page.keyboard.press("Enter");
-  await expect(origin).toHaveValue("13200");
-  await expect(destination).toHaveValue("13405");
+  await expect(origin).toHaveValue(optionName("13200"));
+  await expect(destination).toHaveValue(optionName("13405"));
   await expect(page.getByRole("listitem")).toHaveCount(8);
   expect(
     await page.locator(".departures .destination strong").allTextContents(),
@@ -31,8 +32,8 @@ test("cabecera única e intercambio conserva día, hora y preferencia", async ({
     .click();
   await expect(page.getByRole("table")).toBeVisible();
   await swap.click();
-  await expect(origin).toHaveValue("13405");
-  await expect(destination).toHaveValue("13200");
+  await expect(origin).toHaveValue(optionName("13405"));
+  await expect(destination).toHaveValue(optionName("13200"));
   await expect(page.getByLabel("Fecha")).toHaveValue("2026-10-03");
   await expect(page.getByRole("table")).toBeVisible();
   const arrivals = await page
@@ -51,13 +52,13 @@ test("cabecera única e intercambio conserva día, hora y preferencia", async ({
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  await destination.selectOption("");
+  await destination.fill(optionName(""));
   await expect(swap).toBeDisabled();
-  await destination.selectOption("13101");
+  await destination.fill(optionName("13101"));
   await expect(
     page.getByText(/No hay trenes que coincidan con esta consulta/),
   ).toBeVisible();
   await page.reload();
-  await expect(origin).toHaveValue("13405");
-  await expect(destination).toHaveValue("13101");
+  await expect(origin).toHaveValue(optionName("13405"));
+  await expect(destination).toHaveValue(optionName("13101"));
 });

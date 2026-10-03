@@ -1,42 +1,71 @@
-import {test,expect} from '@playwright/test';
-test('sin núcleo siempre asistente, configuración, regreso y cambio cancelable',async({page},info)=>{
- await page.clock.install({time:new Date('2026-10-03T10:00:00+02:00')});
- await page.addInitScript(()=>{if(!localStorage.getItem('test.legacy')){localStorage.setItem('mejorcercanias.station.v1','13400');localStorage.setItem('test.legacy','1');}});
- await page.goto('/');
- await expect(page.getByLabel('Núcleo de Cercanías')).toBeVisible();
- await expect(page.getByRole('button',{name:'Cancelar'})).toHaveCount(0);
- await page.getByLabel('Núcleo de Cercanías').selectOption('zaragoza');
- await page.getByRole('button',{name:'Continuar',exact:true}).click();
- await page.reload();
- await expect(page.getByLabel('Núcleo de Cercanías')).toBeVisible();
- await page.screenshot({path:`work/onboarding-${info.project.name}.png`,fullPage:true});
- await page.getByLabel('Núcleo de Cercanías').selectOption('zaragoza');
- await page.getByRole('button',{name:'Continuar',exact:true}).click();
- const origin=await page.getByLabel('Estación de origen').locator('option').nth(1).getAttribute('value');
- await page.getByLabel('Estación de origen').selectOption(origin!);
- await page.getByRole('button',{name:'Continuar',exact:true}).click();
- await page.getByRole('button',{name:'Ver mis trenes'}).click();
- await expect(page.getByLabel('Cambiar núcleo')).toContainText('Zaragoza');
- await expect(page.getByLabel('¿Desde dónde sales?')).toHaveValue(origin!);
- await expect(page.locator('.departures li').first()).toBeVisible();
- await page.reload();
- await expect(page.getByLabel('Núcleo de Cercanías')).toHaveCount(0);
- await expect(page.getByLabel('Cambiar núcleo')).toContainText('Zaragoza');
- await page.getByRole('button',{name:'Horario completo',exact:true}).click();
- await expect(page.getByText('Mañana a Bilbao antes de las 09:00 ↗')).toHaveCount(0);
- await page.getByLabel('Cambiar núcleo').click();
- await page.getByRole('button',{name:'Cancelar'}).click();
- await expect(page.getByLabel('¿Desde dónde sales?')).toHaveValue(origin!);
- await page.getByLabel('Cambiar núcleo').click();
- await page.getByLabel('Núcleo de Cercanías').selectOption('bilbao');
- await page.getByRole('button',{name:'Continuar',exact:true}).click();
- await page.getByLabel('Estación de origen').selectOption('13400');
- await page.getByRole('button',{name:'Continuar',exact:true}).click();
- await page.getByLabel('Estación de destino opcional').selectOption('13200');
- await page.getByRole('button',{name:'Ver mis trenes'}).click();
- await expect(page.getByLabel('Destino directo')).toHaveValue('13200');
- await page.reload();
- await expect(page.getByLabel('Destino directo')).toHaveValue('13200');
- expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
- await page.screenshot({path:`work/network-header-${info.project.name}.png`,fullPage:true});
+import { optionName } from "./option-name";
+import { test, expect } from "@playwright/test";
+test("sin núcleo siempre asistente, configuración, regreso y cambio cancelable", async ({
+  page,
+}, info) => {
+  await page.clock.install({ time: new Date("2026-10-03T10:00:00+02:00") });
+  await page.addInitScript(() => {
+    if (!localStorage.getItem("test.legacy")) {
+      localStorage.setItem("mejorcercanias.station.v1", "13400");
+      localStorage.setItem("test.legacy", "1");
+    }
+  });
+  await page.goto("/");
+  await expect(page.getByLabel("Núcleo de Cercanías")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Cancelar" })).toHaveCount(0);
+  await page.getByLabel("Núcleo de Cercanías").fill(optionName("zaragoza"));
+  await page.getByRole("button", { name: "Continuar", exact: true }).click();
+  await page.reload();
+  await expect(page.getByLabel("Núcleo de Cercanías")).toBeVisible();
+  await page.screenshot({
+    path: `work/onboarding-${info.project.name}.png`,
+    fullPage: true,
+  });
+  await page.getByLabel("Núcleo de Cercanías").fill(optionName("zaragoza"));
+  await page.getByRole("button", { name: "Continuar", exact: true }).click();
+  await page.getByLabel("Estación de origen").click();
+  const origin = await page.getByRole("option").first().getAttribute("value");
+  await page.getByLabel("Estación de origen").fill(optionName(origin!));
+  await page.getByRole("button", { name: "Continuar", exact: true }).click();
+  await page.getByRole("button", { name: "Ver mis trenes" }).click();
+  await expect(page.getByLabel("Cambiar núcleo")).toContainText("Zaragoza");
+  await expect(page.getByLabel("¿Desde dónde sales?")).toHaveValue(origin!);
+  await expect(page.locator(".departures li").first()).toBeVisible();
+  await page.reload();
+  await expect(page.getByLabel("Núcleo de Cercanías")).toHaveCount(0);
+  await expect(page.getByLabel("Cambiar núcleo")).toContainText("Zaragoza");
+  await page
+    .getByRole("button", { name: "Horario completo", exact: true })
+    .click();
+  await expect(
+    page.getByText("Mañana a Bilbao antes de las 09:00 ↗"),
+  ).toHaveCount(0);
+  await page.getByLabel("Cambiar núcleo").click();
+  await page.getByRole("button", { name: "Cancelar" }).click();
+  await expect(page.getByLabel("¿Desde dónde sales?")).toHaveValue(origin!);
+  await page.getByLabel("Cambiar núcleo").click();
+  await page.getByLabel("Núcleo de Cercanías").fill(optionName("bilbao"));
+  await page.getByRole("button", { name: "Continuar", exact: true }).click();
+  await page.getByLabel("Estación de origen").fill(optionName("13400"));
+  await page.getByRole("button", { name: "Continuar", exact: true }).click();
+  await page
+    .getByLabel("Estación de destino opcional")
+    .fill(optionName("13200"));
+  await page.getByRole("button", { name: "Ver mis trenes" }).click();
+  await expect(page.getByLabel("Destino directo")).toHaveValue(
+    optionName("13200"),
+  );
+  await page.reload();
+  await expect(page.getByLabel("Destino directo")).toHaveValue(
+    optionName("13200"),
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({
+    path: `work/network-header-${info.project.name}.png`,
+    fullPage: true,
+  });
 });

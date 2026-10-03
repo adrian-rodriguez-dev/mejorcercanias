@@ -1,3 +1,4 @@
+import { EditableSelect } from "./EditableSelect";
 import { Onboarding } from "./Onboarding";
 import { networks, lineStyle } from "./data/networks";
 import { readNetwork, saveNetwork } from "./preference";
@@ -56,9 +57,16 @@ export function App({
 
   const [initialJourney] = useState(readJourney);
   const [stationId, setStationId] = useState(initialJourney.stationId);
+  const [setupComplete, setSetupComplete] = useState(() =>
+    stations.some(
+      (s) => s.id === initialJourney.stationId && s.network === networkId,
+    ),
+  );
   const needsSetup =
     !networks().some((n) => n.id === networkId) ||
-    !stations.some((s) => s.id === stationId && s.network === networkId);
+    !setupComplete ||
+    (stationId !== "" &&
+      !stations.some((s) => s.id === stationId && s.network === networkId));
   const [saved, setSaved] = useState(true);
   const [now, setNow] = useState(clock);
   const [retry, setRetry] = useState(0);
@@ -158,6 +166,8 @@ export function App({
   const choose = (id: string) => {
     setRouteFilter(emptyRouteFilter);
     setStationId(id);
+    if (!id)
+      setSaved(saveJourney({ stationId: "", destination: "", lines: [] }));
     setNow(clock());
   };
 
@@ -197,6 +207,7 @@ export function App({
                 !needsSetup ? () => setEditingNetwork(false) : undefined
               }
               onComplete={(network, origin, destination) => {
+                setSetupComplete(true);
                 setNetworkId(network);
                 setStationId(origin);
                 storeRouteFilter({ destination, lines: [] });
@@ -214,21 +225,15 @@ export function App({
               <div className="journey-header">
                 <label className="origin-field" htmlFor="station">
                   <span>Origen</span>
-                  <select
+                  <EditableSelect
                     id="station"
-                    aria-label="¿Desde dónde sales?"
+                    label="¿Desde dónde sales?"
                     value={stationId}
-                    onChange={(e) => choose(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      Elige tu estación
-                    </option>
-                    {networkStations.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.name}
-                      </option>
-                    ))}
-                  </select>
+                    options={networkStations}
+                    onChange={choose}
+                    placeholder="Elige tu estación"
+                    clearLabel="Borrar origen"
+                  />
                 </label>
                 <button
                   className="swap-stations"
@@ -251,27 +256,18 @@ export function App({
                 </button>
                 <label className="destination-field" htmlFor="destination">
                   <span>Destino · opcional</span>
-                  <select
+                  <EditableSelect
                     id="destination"
-                    aria-label="Destino directo"
+                    label="Destino directo"
                     value={routeFilter.destination}
+                    options={networkStations.filter((s) => s.id !== stationId)}
                     disabled={!stationId}
-                    onChange={(e) =>
-                      setRouteFilter({
-                        ...routeFilter,
-                        destination: e.target.value,
-                      })
+                    onChange={(destination) =>
+                      setRouteFilter({ ...routeFilter, destination })
                     }
-                  >
-                    <option value="">Todos los destinos</option>
-                    {networkStations
-                      .filter((s) => s.id !== stationId)
-                      .map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {s.name}
-                        </option>
-                      ))}
-                  </select>
+                    placeholder="Todos los destinos"
+                    clearLabel="Borrar destino"
+                  />
                 </label>
               </div>
               {!saved && (

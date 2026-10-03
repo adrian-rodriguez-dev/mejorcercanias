@@ -1,3 +1,12 @@
+import { stations } from "./data/stations";
+import { networks } from "./data/networks";
+const optionName = (id: string) =>
+  stations.find((s) => s.id === id)?.name ??
+  networks().find((n) => n.id === id)?.name ??
+  id;
+const choose = async (el: HTMLElement, id: string) => {
+  fireEvent.change(el, { target: { value: optionName(id) } });
+};
 import {
   act,
   fireEvent,
@@ -41,10 +50,11 @@ afterEach(() => {
 
 describe("panel de estación", () => {
   it("selecciona, guarda y restaura sin volver a pedir datos", async () => {
-    const user = userEvent.setup();
     const view = render(<App provider={provider} clock={clock} />);
-    expect(screen.getByLabelText("¿Desde dónde sales?")).toHaveValue("13400");
-    await user.selectOptions(
+    expect(screen.getByLabelText("¿Desde dónde sales?")).toHaveValue(
+      optionName("13400"),
+    );
+    await choose(
       screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
       "13400",
     );
@@ -55,7 +65,7 @@ describe("panel de estación", () => {
     expect(await screen.findByText("Destino de prueba")).toBeVisible();
     expect(
       screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
-    ).toHaveValue("13400");
+    ).toHaveValue(optionName("13400"));
     expect(
       screen.getByText("Horarios ficticios. No los uses para viajar."),
     ).toBeVisible();
@@ -67,15 +77,9 @@ describe("panel de estación", () => {
     });
     render(<App provider={provider} clock={clock} />);
     const user = userEvent.setup();
-    await user.selectOptions(
-      screen.getByLabelText("Núcleo de Cercanías"),
-      "bilbao",
-    );
+    await choose(screen.getByLabelText("Núcleo de Cercanías"), "bilbao");
     await user.click(screen.getByText("Continuar"));
-    await user.selectOptions(
-      screen.getByLabelText("Estación de origen"),
-      "13400",
-    );
+    await choose(screen.getByLabelText("Estación de origen"), "13400");
     await user.click(screen.getByText("Continuar"));
     await user.click(screen.getByText("Ver mis trenes"));
     expect(await screen.findByText("Destino de prueba")).toBeVisible();
@@ -111,14 +115,14 @@ describe("panel de estación", () => {
     fireEvent.change(
       screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
       {
-        target: { value: "13400" },
+        target: { value: optionName("13400") },
       },
     );
     expect(screen.getByText("Preparando tu panel…")).toBeVisible();
     fireEvent.change(
       screen.getByRole("combobox", { name: "¿Desde dónde sales?" }),
       {
-        target: { value: "13200" },
+        target: { value: optionName("13200") },
       },
     );
     expect(await screen.findByText("Nuevo destino")).toBeVisible();
@@ -139,8 +143,10 @@ describe("panel de estación", () => {
   });
 });
 
-it('vuelve al asistente si leer las preferencias falla',async()=>{
- vi.spyOn(Storage.prototype,'getItem').mockImplementation(()=>{throw Error('blocked')});
- render(<App provider={provider} clock={clock}/>);
- expect(screen.getByLabelText('Núcleo de Cercanías')).toBeVisible();
+it("vuelve al asistente si leer las preferencias falla", async () => {
+  vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+    throw Error("blocked");
+  });
+  render(<App provider={provider} clock={clock} />);
+  expect(screen.getByLabelText("Núcleo de Cercanías")).toBeVisible();
 });

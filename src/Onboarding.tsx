@@ -1,3 +1,4 @@
+import { EditableSelect } from "./EditableSelect";
 import { useEffect, useRef, useState } from "react";
 import { networks } from "./data/networks";
 import { stations } from "./data/stations";
@@ -34,60 +35,45 @@ export function Onboarding({
       {step === 0 ? (
         <label>
           Núcleo
-          <select
-            autoFocus
-            aria-label="Núcleo de Cercanías"
+          <EditableSelect
+            label="Núcleo de Cercanías"
             value={network}
-            onChange={(e) => {
-              setNetwork(e.target.value);
+            options={networks()}
+            onChange={(id) => {
+              setNetwork(id);
               setOrigin("");
               setDestination("");
             }}
-          >
-            <option value="">Elige un núcleo</option>
-            {networks().map((n) => (
-              <option key={n.id} value={n.id}>
-                {n.name}
-              </option>
-            ))}
-          </select>
+            placeholder="Elige un núcleo"
+            clearLabel="Borrar núcleo"
+          />
         </label>
       ) : step === 1 ? (
         <label>
           Estación de origen
-          <select
-            aria-label="Estación de origen"
+          <EditableSelect
+            label="Estación de origen"
             value={origin}
-            onChange={(e) => {
-              setOrigin(e.target.value);
+            options={options}
+            onChange={(id) => {
+              setOrigin(id);
               setDestination("");
             }}
-          >
-            <option value="">Elige tu estación</option>
-            {options.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
+            placeholder="Elige tu estación"
+            clearLabel="Borrar origen"
+          />
         </label>
       ) : (
         <label>
           Destino · opcional
-          <select
-            aria-label="Estación de destino opcional"
+          <EditableSelect
+            label="Estación de destino opcional"
             value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-          >
-            <option value="">Sin destino</option>
-            {options
-              .filter((s) => s.id !== origin)
-              .map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-          </select>
+            options={options.filter((s) => s.id !== origin)}
+            onChange={setDestination}
+            placeholder="Sin destino"
+            clearLabel="Borrar destino"
+          />
         </label>
       )}
       <div className="onboarding-actions">

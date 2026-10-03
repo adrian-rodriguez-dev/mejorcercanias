@@ -1,3 +1,4 @@
+import {optionName} from './option-name';
 import { test, expect } from "./configured-test";
 test("recuerda destino, multiselección, inversión y vaciado", async ({
   page,
@@ -7,13 +8,13 @@ test("recuerda destino, multiselección, inversión y vaciado", async ({
   const origin = page.getByLabel("¿Desde dónde sales?");
   const destination = page.getByLabel("Destino directo");
   const bar = page.getByRole("group", { name: /Filtrar por líneas/ });
-  await origin.selectOption("13400");
-  await destination.selectOption("13200");
+  await origin.fill(optionName("13400"));
+  await destination.fill(optionName("13200"));
   await bar.getByRole("button", { name: "C1", exact: true }).click();
   await bar.getByRole("button", { name: "C2", exact: true }).click();
   await page.reload();
-  await expect(origin).toHaveValue("13400");
-  await expect(destination).toHaveValue("13200");
+  await expect(origin).toHaveValue(optionName("13400"));
+  await expect(destination).toHaveValue(optionName("13200"));
   await expect(bar.locator('[aria-pressed="true"]')).toHaveCount(2);
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
@@ -23,8 +24,8 @@ test("recuerda destino, multiselección, inversión y vaciado", async ({
     .getByRole("button", { name: "Intercambiar origen y destino" })
     .click();
   await page.reload();
-  await expect(origin).toHaveValue("13200");
-  await expect(destination).toHaveValue("13400");
+  await expect(origin).toHaveValue(optionName("13200"));
+  await expect(destination).toHaveValue(optionName("13400"));
   await expect(
     bar.getByRole("button", { name: "C2", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
@@ -32,7 +33,7 @@ test("recuerda destino, multiselección, inversión y vaciado", async ({
   expect(await page.locator(".departures .line").allTextContents()).toEqual(
     Array(8).fill("C2"),
   );
-  await destination.selectOption("");
+  await destination.fill(optionName(""));
   await bar.getByRole("button", { name: "C2", exact: true }).click();
   await page.reload();
   await expect(destination).toHaveValue("");

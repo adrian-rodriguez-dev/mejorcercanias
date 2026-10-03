@@ -1,3 +1,4 @@
+import {optionName} from './option-name';
 import { test, expect } from "./configured-test";
 import fixture from "./fixtures/manifest.json" with { type: "json" };
 import station from "./fixtures/stations/13400.json" with { type: "json" };
@@ -18,8 +19,8 @@ test("adopta nueva versión conservando trayecto, fecha y hora", async ({
     r.fulfill({ json: { ...station, version: "aaaaaaaaaaaaaaaa" } }),
   );
   await page.goto("/");
-  await page.getByLabel("¿Desde dónde sales?").selectOption("13400");
-  await page.getByLabel("Destino directo").selectOption("13200");
+  await page.getByLabel("¿Desde dónde sales?").fill(optionName("13400"));
+  await page.getByLabel("Destino directo").fill(optionName("13200"));
   await page.getByRole("button", { name: "C2", exact: true }).click();
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
@@ -35,7 +36,7 @@ test("adopta nueva versión conservando trayecto, fecha y hora", async ({
   await response;
   await expect(page.getByRole("table")).toBeVisible();
   await expect(page.getByLabel("Fecha")).toHaveValue("2026-10-03");
-  await expect(page.getByLabel("Destino directo")).toHaveValue("13200");
+  await expect(page.getByLabel("Destino directo")).toHaveValue(optionName("13200"));
   await expect(
     page.getByRole("button", { name: "C2", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");

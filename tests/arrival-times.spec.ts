@@ -1,3 +1,4 @@
+import {optionName} from './option-name';
 import { test, expect } from "./configured-test";
 import manifest from "./fixtures/manifest.json" with { type: "json" };
 test("llegada intermedia, medianoche, cambio, inversión y eliminación", async ({
@@ -52,17 +53,17 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   await page.goto("/");
   const origin = page.getByLabel("¿Desde dónde sales?");
   const destination = page.getByLabel("Destino directo");
-  await origin.selectOption("13400");
+  await origin.fill(optionName("13400"));
   await expect(page.getByRole("listitem").first()).toBeVisible();
   await expect(page.locator(".train-arrival")).toHaveCount(0);
-  await destination.selectOption("13403");
+  await destination.fill(optionName("13403"));
   const first = page.getByRole("listitem").first();
   await expect(first.locator(".destination strong")).toHaveText("Santurtzi");
   await expect(first.locator(".train-arrival time")).toHaveText("00:08");
   await expect(first.locator(".arrival-day")).toHaveText("+1 día");
   await expect(first.locator(".train-departure time")).toHaveText("23:58");
   await expect(first.locator(".countdown strong")).toHaveText("8");
-  await destination.selectOption("13405");
+  await destination.fill(optionName("13405"));
   await expect(first.locator(".train-arrival time")).toHaveText("00:15");
   await expect(first).not.toContainText("Programado");
   await expect(first.locator(".destination .train-times")).toHaveCount(1);
@@ -93,10 +94,10 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   await page
     .getByRole("button", { name: "Intercambiar origen y destino" })
     .click();
-  await expect(origin).toHaveValue("13405");
-  await expect(destination).toHaveValue("13400");
+  await expect(origin).toHaveValue(optionName("13405"));
+  await expect(destination).toHaveValue(optionName("13400"));
   await expect(first.locator(".train-arrival time")).toHaveText("00:20");
-  await destination.selectOption("");
+  await destination.fill(optionName(""));
   await expect(page.locator(".train-arrival")).toHaveCount(0);
 });
 
@@ -125,8 +126,8 @@ test("hora grande desde 60 minutos y transición automática", async ({
     }),
   );
   await page.goto("/");
-  await page.getByLabel("¿Desde dónde sales?").selectOption("13400");
-  await page.getByLabel("Destino directo").selectOption("13405");
+  await page.getByLabel("¿Desde dónde sales?").fill(optionName("13400"));
+  await page.getByLabel("Destino directo").fill(optionName("13405"));
   const rows = page.locator(".departures li");
   await expect(rows).toHaveCount(3);
   await expect(rows.nth(0).locator(".countdown")).toHaveText("59 min");

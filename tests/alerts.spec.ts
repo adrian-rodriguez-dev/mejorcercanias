@@ -1,3 +1,4 @@
+import {optionName} from './option-name';
 import { test, expect } from "./configured-test";
 const now = Date.parse("2026-10-02T10:00:00+02:00");
 test("indicador condicional, detalle accesible, retirada y fallo", async ({
@@ -17,7 +18,7 @@ test("indicador condicional, detalle accesible, retirada y fallo", async ({
         }),
   );
   await page.goto("/");
-  await page.getByLabel("¿Desde dónde sales?").selectOption("13400");
+  await page.getByLabel("¿Desde dónde sales?").fill(optionName("13400"));
   await page.getByRole("listitem").first().waitFor();
   await expect(page.locator(".masthead .alert-indicator")).toBeDisabled();
   entities = [
