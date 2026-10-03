@@ -168,7 +168,7 @@ export function App({
           <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" />
           <span>
             mejor<span className="brand-light">cercanías</span>
-            <small>MENOS BUSCAR. MÁS LLEGAR.</small>
+            <small>Tu tren en menos de 5 segundos</small>
           </span>
         </a>
         <div className="masthead-actions">
