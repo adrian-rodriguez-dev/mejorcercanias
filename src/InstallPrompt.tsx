@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 interface InstallEvent extends Event {
   prompt(): Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
@@ -10,7 +11,13 @@ const standalone = () =>
 const ios = () =>
   /iPhone|iPad|iPod/.test(navigator.userAgent) ||
   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-export function InstallPrompt({ ready }: { ready: boolean }) {
+export function InstallPrompt({
+  ready,
+  headerTarget,
+}: {
+  ready: boolean;
+  headerTarget: HTMLElement | null;
+}) {
   const [installed, setInstalled] = useState(standalone);
   const [available, setAvailable] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -25,6 +32,18 @@ export function InstallPrompt({ ready }: { ready: boolean }) {
   const [now, setNow] = useState(Date.now);
   const pending = useRef<InstallEvent | null>(null);
   const helpButton = useRef<HTMLButtonElement>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const returnFocus = useRef<HTMLElement | null>(null);
+  const openHelp = () => {
+    returnFocus.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    setHelp(true);
+  };
+  useEffect(() => {
+    if (help) dialog.current?.showModal();
+  }, [help]);
   useEffect(() => {
     const capture = (event: Event) => {
       event.preventDefault();
@@ -63,7 +82,7 @@ export function InstallPrompt({ ready }: { ready: boolean }) {
     if (busy) return;
     const event = pending.current;
     if (!event) {
-      setHelp(true);
+      openHelp();
       return;
     }
     pending.current = null;
@@ -75,18 +94,45 @@ export function InstallPrompt({ ready }: { ready: boolean }) {
       if (result.outcome === "dismissed") dismiss();
       else setUntil(Infinity);
     } catch {
-      setHelp(true);
+      openHelp();
     } finally {
       setBusy(false);
     }
   };
   const closeHelp = () => {
+    dialog.current?.close();
     setHelp(false);
-    helpButton.current?.focus();
+    (returnFocus.current ?? helpButton.current)?.focus();
   };
   if (installed) return null;
   return (
     <section className="install-area" aria-label="Instalación de la app">
+      {headerTarget &&
+        createPortal(
+          <button
+            className="header-install"
+            aria-label="Instalar app"
+            title="Instalar app"
+            disabled={busy}
+            onClick={install}
+          >
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M8 3H5v18h14v-6M14 2v11m-4-4 4 4 4-4M10 18h4" />
+            </svg>
+            <span>Instalar</span>
+          </button>,
+          headerTarget,
+        )}
       {ready && now >= until && (available || ios()) && (
         <div className="install-invitation">
           <span>Tu tren, desde la pantalla de inicio</span>
@@ -101,16 +147,19 @@ export function InstallPrompt({ ready }: { ready: boolean }) {
       <button
         className="text-button"
         ref={helpButton}
-        onClick={() => setHelp(!help)}
+        onClick={openHelp}
         aria-expanded={help}
       >
         Cómo instalar la app
       </button>
       {help && (
-        <div
+        <dialog
+          ref={dialog}
           className="install-help"
-          onKeyDown={(e) => {
-            if (e.key === "Escape") closeHelp();
+          aria-label="Cómo instalar la app"
+          onCancel={(e) => {
+            e.preventDefault();
+            closeHelp();
           }}
         >
           <p>
@@ -127,7 +176,7 @@ export function InstallPrompt({ ready }: { ready: boolean }) {
           <button className="text-button" onClick={closeHelp}>
             Cerrar ayuda
           </button>
-        </div>
+        </dialog>
       )}
     </section>
   );

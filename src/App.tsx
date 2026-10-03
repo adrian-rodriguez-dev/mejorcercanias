@@ -52,6 +52,7 @@ export function App({
 }) {
   useSyncExternalStore(subscribeSnapshot, snapshotRevision);
   const version = manifest.version;
+  const [installTarget, setInstallTarget] = useState<HTMLSpanElement | null>(null);
   const [networkId, setNetworkId] = useState(readNetwork);
   const [editingNetwork, setEditingNetwork] = useState(false);
 
@@ -182,6 +183,7 @@ export function App({
           </span>
         </a>
         <div className="masthead-actions">
+          <span className="install-slot" ref={setInstallTarget} />
           <button
             className="network-switch"
             aria-label="Cambiar núcleo"
@@ -504,6 +506,7 @@ export function App({
           )}
         </div>
         <InstallPrompt
+          headerTarget={installTarget}
           ready={Boolean(station && current?.status === "ready")}
         />
         <div className="below-board">
