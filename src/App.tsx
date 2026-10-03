@@ -399,9 +399,20 @@ export function App({
                         </div>
                         <div className="countdown">
                           <strong>
-                            {d.minutes === 0 ? "Ahora" : d.minutes}
+                            {Date.parse(d.scheduledAt) - now >=
+                            60 * 60 * 1000 ? (
+                              <time dateTime={d.scheduledAt}>
+                                {clockTime(Date.parse(d.scheduledAt))}
+                              </time>
+                            ) : d.minutes === 0 ? (
+                              "Ahora"
+                            ) : (
+                              d.minutes
+                            )}
                           </strong>
-                          {d.minutes > 0 && <span> min</span>}
+                          {d.minutes > 0 &&
+                            Date.parse(d.scheduledAt) - now <
+                              60 * 60 * 1000 && <span> min</span>}
                         </div>
                       </li>
                     );

@@ -99,3 +99,62 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   await destination.selectOption("");
   await expect(page.locator(".train-arrival")).toHaveCount(0);
 });
+
+test("hora grande desde 60 minutos y transición automática", async ({
+  page,
+}, info) => {
+  await page.clock.install({ time: new Date("2026-10-02T23:49:59+02:00") });
+  await page.clock.pauseAt(new Date("2026-10-02T23:50:00+02:00"));
+  const calendar = manifest.calendars.findIndex((days) =>
+    days.includes("2026-10-02"),
+  );
+  await page.route("**/data/renfe/*/13400.json", (route) =>
+    route.fulfill({
+      json: {
+        version: manifest.version,
+        stationId: "13400",
+        patterns: [59, 60, 61].map((minutes) => [
+          String(minutes),
+          "C1",
+          "13405",
+          85800 + minutes * 60,
+          calendar,
+          [["13405", 85800 + minutes * 60 + 900]],
+        ]),
+      },
+    }),
+  );
+  await page.goto("/");
+  await page.getByLabel("¿Desde dónde sales?").selectOption("13400");
+  await page.getByLabel("Destino directo").selectOption("13405");
+  const rows = page.locator(".departures li");
+  await expect(rows).toHaveCount(3);
+  await expect(rows.nth(0).locator(".countdown")).toHaveText("59 min");
+  await expect(rows.nth(1).locator(".countdown")).toHaveText("00:50");
+  await expect(rows.nth(2).locator(".countdown")).toHaveText("00:51");
+  await expect(rows.nth(1).locator(".departure-day")).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({
+    path: `work/compact-rows-${info.project.name}.png`,
+    fullPage: true,
+  });
+  await page.clock.fastForward(61000);
+  await expect(rows.nth(1).locator(".countdown")).toHaveText("59 min");
+  await page
+    .getByRole("button", { name: "Horario completo", exact: true })
+    .click();
+  await page.screenshot({
+    path: `work/compact-table-${info.project.name}.png`,
+    fullPage: true,
+  });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+});
+

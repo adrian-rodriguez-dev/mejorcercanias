@@ -280,9 +280,9 @@ select {
   grid-template-columns: minmax(0, 1fr) 80px;
   gap: 10px;
   align-items: center;
-  min-height: 74px;
+  min-height: 56px;
   border-bottom: 1px solid #ffffff10;
-  padding: 14px;
+  padding: 7px 14px;
 }
 .departures li:last-child {
   border: 0;
@@ -304,7 +304,8 @@ select {
 }
 .destination strong {
   display: block;
-  font-size: 15px;
+  font-size: 17px;
+  line-height: 1.2;
   font-weight: 550;
   overflow-wrap: anywhere;
 }
@@ -467,14 +468,14 @@ time {
   }
   .departures li {
     grid-template-columns: minmax(0, 1fr) 64px;
-    padding: 14px 12px;
+    padding: 7px 12px;
     gap: 7px;
   }
   .destination {
     gap: 8px;
   }
   .destination strong {
-    font-size: 13px;
+    font-size: 16px;
   }
   .countdown strong {
     font-size: 22px;
@@ -576,7 +577,7 @@ time {
     font-size: 10px;
   }
   .destination strong {
-    font-size: 13px;
+    font-size: 16px;
   }
   .destination div > span {
     font-size: 8px;
@@ -588,7 +589,7 @@ time {
     font-size: 10px;
   }
   .departures li {
-    min-height: 76px;
+    min-height: 56px;
   }
   .table-heading {
     font-size: 10px;
@@ -787,7 +788,7 @@ time {
   width: 68px;
 }
 .schedule-table td {
-  padding: 15px 6px;
+  padding: 7px 6px;
   border-bottom: 1px solid #ffffff16;
   overflow-wrap: anywhere;
 }
@@ -858,7 +859,7 @@ time {
     width: 26px;
   }
   .schedule-table td {
-    padding: 14px 4px;
+    padding: 7px 4px;
   }
   .board-footer {
     flex-wrap: wrap;
@@ -1163,8 +1164,8 @@ time {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 4px 12px;
-  margin-top: 6px;
+  gap: 1px 12px;
+  margin-top: 3px;
   font-variant-numeric: tabular-nums;
 }
 .train-times > div {
@@ -1179,7 +1180,8 @@ time {
   color: #bacabb;
 }
 .train-times time {
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1.2;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -1340,4 +1342,17 @@ time {
 }
 .alert-source-status {
   font: inherit;
+}
+
+.countdown time {
+  font: inherit;
+  color: inherit;
+}
+.schedule-table td:nth-child(2) {
+  font-size: 16px;
+  line-height: 1.2;
+}
+.schedule-table time {
+  font-size: 16px;
+  font-weight: 600;
 }
