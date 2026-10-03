@@ -240,5 +240,3 @@ if __name__=='__main__':
     if args.command in ('extract','all'):extract()
     if args.command=='gtfs':gtfs()
     if args.command in ('build','all'):build(args.estimated_walk_seconds)
-
-

@@ -48,4 +48,3 @@ $('detail').innerHTML=`<b>${esc(r.map_label)}</b><p>${esc(r.notes)}</p><p>${r.gt
     (ROOT/'index.html').write_text(template.replace('__DATA__',payload),encoding='utf-8')
     print('Viewer built:',ROOT/'index.html')
 if __name__=='__main__':main()
-
