@@ -6,27 +6,23 @@ Permitir consultar las próximas salidas de la estación habitual con una sola m
 ## Requirements
 
 ### Requirement: Elegir estación
-The system SHALL ofrecer estaciones del núcleo de Bilbao y solicitar únicamente una estación en la primera visita.
-
+The system SHALL ofrecer estaciones del núcleo elegido y solicitar núcleo y origen mediante el asistente cuando falte una configuración válida, con destino opcional.
 #### Scenario: Primera visita
-- **WHEN** no existe una estación guardada válida
-- **THEN** aparece un selector con etiqueta y no se exige destino, fecha ni hora
-
+- **WHEN** no hay núcleo guardado válido, aunque exista una estación antigua
+- **THEN** aparece el asistente para núcleo, origen y destino opcional sin exigir fecha ni hora.
 #### Scenario: Cambio de estación
 - **WHEN** se elige otra estación mientras se cargan datos
-- **THEN** el panel muestra exclusivamente las salidas de la selección más reciente
+- **THEN** el panel muestra exclusivamente las salidas de la selección más reciente.
 
 ### Requirement: Recordar preferencia
-The system SHALL restaurar la estación elegida entre visitas y mantener la aplicación utilizable si el almacenamiento no está disponible.
-
+The system SHALL restaurar núcleo, origen, destino y líneas compatibles entre visitas y mantener la aplicación utilizable si el almacenamiento no está disponible.
 #### Scenario: Regreso
-- **WHEN** se abre de nuevo la aplicación con una preferencia válida
-- **THEN** aparece automáticamente el panel de esa estación
-
+- **WHEN** se abre con núcleo y origen válidos guardados
+- **THEN** aparece automáticamente el panel de esa estación.
 #### Scenario: Preferencia inválida o almacenamiento bloqueado
-- **WHEN** el identificador guardado ya no existe o leerlo falla
-- **THEN** se permite elegir estación sin bloquear la aplicación
-- **AND** si guardar falla, se avisa de que la elección solo dura esta visita
+- **WHEN** falta núcleo u origen válido o falla la lectura
+- **THEN** se ofrece la configuración guiada sin bloquear la aplicación
+- **AND** si guardar falla, se avisa de que la selección solo dura esta visita.
 
 ### Requirement: Próximas salidas
 The system SHALL mostrar hasta ocho salidas no pasadas, ordenadas por instante, con línea, destino, hora Europe/Madrid y minutos restantes redondeados hacia arriba cuando falten menos de 60 minutos, u hora de salida grande cuando falten 60 minutos o más; SHALL actualizar el panel al menos cada 30 segundos y al volver a la pestaña.

@@ -10,5 +10,6 @@
 - [x] 2.4 Restaurar configuración completa al volver, invalidando únicamente selecciones incompatibles; probar cambio de núcleo e intercambio sin mezcla de trayectos.
 ## 3. Entrega
 - [x] 3.1 Documentar núcleos publicados y procedimiento de alta en README; ejecutar pruebas de datos, build, navegador móvil/escritorio y validación OpenSpec estricta.
-- [ ] 3.2 Publicar y comprobar primera entrada, regreso y cambio de núcleo en web pública; archivar solo después de guardar evidencia verificable.
+- [x] 3.2 Publicar y comprobar primera entrada, regreso y cambio de núcleo en web pública; archivar solo después de guardar evidencia verificable.
+
 
