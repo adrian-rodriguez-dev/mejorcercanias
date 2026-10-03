@@ -131,3 +131,5 @@ Tras una primera carga online completada, el service worker permite reabrir la a
 El navegador puede borrar el almacenamiento local; no es una garantía de disponibilidad permanente. Si Cache Storage falla, la consulta online sigue funcionando. El shell conserva como máximo dos versiones. Los metadatos de app y de datos siempre se consultan por red. Las actualizaciones del service worker esperan a Actualizar o al cierre de las ventanas antiguas, sin recargar otras pestañas.
 
 Prueba de producción: `npm run build && npm run test:offline`, incluyendo subcarpeta de Pages, corte de conexión, reapertura, fecha fuera de cobertura y activación voluntaria de un nuevo service worker. Basado en la [documentación de service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
+
+Sin destino elegido, la llegada corresponde a la terminal real de cada tren. Con destino intermedio se muestra ese nombre y su hora; la terminal del tren se conserva en el título y nombre accesible. Una hora terminal ausente se muestra como —. No se deducen tiempos de viaje ni finales teóricos de línea.

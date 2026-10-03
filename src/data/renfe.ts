@@ -70,6 +70,7 @@ export function resolveDay(
         id: `${id}-${serviceDay}`,
         line,
         destination: stationName(terminal),
+        terminalId: terminal,
         scheduledAt: at,
         arrivals: calls.map(([stationId, sec]) => ({
           stationId,

@@ -23,7 +23,7 @@ import {
   filterRoutes,
   type RouteFilter,
 } from "./data/route-filters";
-import { stations } from "./data/stations";
+import { stations, stationName } from "./data/stations";
 import { clockTime, dayLabel, localDay, upcoming } from "./data/time";
 import type {
   Departure,
@@ -417,6 +417,9 @@ export function App({
                   <ol className="departures" aria-label="Próximos trenes">
                     {rows.map((d, index) => {
                       const arrival = arrivalAt(d, routeFilter.destination);
+                      const arrivalName = routeFilter.destination
+                        ? stationName(routeFilter.destination)
+                        : d.destination;
                       return (
                         <li
                           key={d.id}
@@ -430,7 +433,12 @@ export function App({
                               {d.line}
                             </span>
                             <div>
-                              <strong>{d.destination}</strong>
+                              <strong
+                                title={`Tren con destino final ${d.destination}`}
+                                aria-label={`${arrivalName}; tren con destino final ${d.destination}`}
+                              >
+                                {arrivalName}
+                              </strong>
                               <div className="train-times">
                                 <div className="train-departure">
                                   <small>Salida</small>
@@ -444,28 +452,36 @@ export function App({
                                     </small>
                                   )}
                                 </div>
-                                {arrival && (
+                                {
                                   <div
                                     className="train-arrival"
-                                    aria-label={`Llegada a ${stations.find((s) => s.id === routeFilter.destination)?.name}`}
+                                    aria-label={`Llegada a ${arrivalName}`}
                                   >
                                     <small>Llegada</small>
-                                    <time dateTime={arrival}>
-                                      {clockTime(Date.parse(arrival))}
-                                    </time>
-                                    {arrivalDayLabel(
-                                      d.scheduledAt,
-                                      arrival,
-                                    ) && (
-                                      <small className="arrival-day">
-                                        {arrivalDayLabel(
-                                          d.scheduledAt,
-                                          arrival,
-                                        )}
-                                      </small>
+                                    {arrival ? (
+                                      <time dateTime={arrival}>
+                                        {clockTime(Date.parse(arrival))}
+                                      </time>
+                                    ) : (
+                                      <span aria-label="Hora de llegada no disponible">
+                                        —
+                                      </span>
                                     )}
+                                    {arrival &&
+                                      arrivalDayLabel(
+                                        d.scheduledAt,
+                                        arrival,
+                                      ) && (
+                                        <small className="arrival-day">
+                                          {arrival &&
+                                            arrivalDayLabel(
+                                              d.scheduledAt,
+                                              arrival,
+                                            )}
+                                        </small>
+                                      )}
                                   </div>
-                                )}
+                                }
                               </div>
                             </div>
                           </div>

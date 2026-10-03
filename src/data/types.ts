@@ -8,6 +8,7 @@ export interface Departure {
   id: string;
   line: string;
   destination: string;
+  terminalId?: string;
   scheduledAt: string;
   arrivals?: { stationId: string; at: string }[];
 }

@@ -55,10 +55,10 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   const destination = page.getByLabel("Destino directo");
   await origin.fill(optionName("13400"));
   await expect(page.getByRole("listitem").first()).toBeVisible();
-  await expect(page.locator(".train-arrival")).toHaveCount(0);
+  await expect(page.locator(".train-arrival time").first()).toHaveText("00:15");
   await destination.fill(optionName("13403"));
   const first = page.getByRole("listitem").first();
-  await expect(first.locator(".destination strong")).toHaveText("Santurtzi");
+  await expect(first.locator(".destination strong")).toHaveText("Portugalete");
   await expect(first.locator(".train-arrival time")).toHaveText("00:08");
   await expect(first.locator(".arrival-day")).toHaveText("+1 día");
   await expect(first.locator(".train-departure time")).toHaveText("23:58");
@@ -98,7 +98,7 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   await expect(destination).toHaveValue(optionName("13400"));
   await expect(first.locator(".train-arrival time")).toHaveText("00:20");
   await destination.fill(optionName(""));
-  await expect(page.locator(".train-arrival")).toHaveCount(0);
+  await expect(page.locator(".train-arrival time").first()).toHaveText("00:35");
 });
 
 test("hora grande desde 60 minutos y transición automática", async ({

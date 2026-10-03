@@ -19,7 +19,7 @@ test("escribir, cancelar texto y borrar destino y origen", async ({
     .getByRole("button", { name: "Borrar destino", exact: true })
     .click();
   await expect(dest).toHaveValue("");
-  await expect(page.locator(".train-arrival")).toHaveCount(0);
+  await expect(page.locator(".train-arrival").first()).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Intercambiar origen y destino" }),
   ).toBeDisabled();
@@ -37,8 +37,8 @@ test("escribir, cancelar texto y borrar destino y origen", async ({
   await page
     .getByRole("button", { name: "Borrar destino", exact: true })
     .click();
-  await expect(page.getByRole("columnheader", { name: /Llegada/ })).toHaveCount(
-    0,
+  await expect(page.getByRole("columnheader", { name: "Hora de llegada", exact:true })).toHaveCount(
+    1,
   );
   await page
     .getByRole("button", { name: "Borrar origen", exact: true })

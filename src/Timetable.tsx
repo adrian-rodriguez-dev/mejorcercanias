@@ -127,17 +127,9 @@ export function Timetable({
             <thead>
               <tr>
                 <th>Línea</th>
-                <th>Destino del tren</th>
+                <th>Llegada a</th>
                 <th>Salida</th>
-                {destination && (
-                  <th>
-                    Llegada
-                    <span className="sr-only">
-                      {" "}
-                      a {stationName(destination)}
-                    </span>
-                  </th>
-                )}
+                <th>Hora de llegada</th>
               </tr>
             </thead>
             <tbody>
@@ -154,26 +146,38 @@ export function Timetable({
                       {row.line}
                     </span>
                   </td>
-                  <td>{row.destination}</td>
+                  <td
+                    title={`Tren con destino final ${row.destination}`}
+                    aria-label={`${destination ? stationName(destination) : row.destination}; tren con destino final ${row.destination}`}
+                  >
+                    {destination ? stationName(destination) : row.destination}
+                  </td>
                   <td>
                     <time dateTime={row.scheduledAt}>
                       {clockTime(Date.parse(row.scheduledAt))}
                     </time>
                   </td>
-                  {destination && (
+                  {
                     <td>
-                      <time dateTime={row.arrivalAt}>
-                        {clockTime(Date.parse(row.arrivalAt!))}
-                      </time>
-                      {Boolean(
-                        arrivalDayLabel(row.scheduledAt, row.arrivalAt!),
-                      ) && (
-                        <small>
-                          {arrivalDayLabel(row.scheduledAt, row.arrivalAt!)}
-                        </small>
+                      {row.arrivalAt ? (
+                        <time dateTime={row.arrivalAt}>
+                          {clockTime(Date.parse(row.arrivalAt!))}
+                        </time>
+                      ) : (
+                        <span aria-label="Hora de llegada no disponible">
+                          —
+                        </span>
                       )}
+                      {row.arrivalAt &&
+                        Boolean(
+                          arrivalDayLabel(row.scheduledAt, row.arrivalAt!),
+                        ) && (
+                          <small>
+                            {arrivalDayLabel(row.scheduledAt, row.arrivalAt!)}
+                          </small>
+                        )}
                     </td>
-                  )}
+                  }
                 </tr>
               ))}
             </tbody>

@@ -6,6 +6,7 @@ const train: Departure = {
   id: "night",
   line: "C1",
   destination: "Santurtzi",
+  terminalId: "13405",
   scheduledAt: "2026-10-02T23:58:00+02:00",
   arrivals: [
     { stationId: "13403", at: "2026-10-03T00:08:00+02:00" },
@@ -16,7 +17,9 @@ describe("llegada a la parada elegida", () => {
   it("usa la parada intermedia y cambia con el destino", () => {
     expect(arrivalAt(train, "13403")).toContain("00:08");
     expect(arrivalAt(train, "13405")).toContain("00:15");
-    expect(arrivalAt(train, "")).toBeUndefined();
+    expect(arrivalAt(train, "")).toContain("00:15");
+    expect(arrivalAt({...train, terminalId:"13403"}, "")).toContain("00:08");
+    expect(arrivalAt({...train, arrivals:train.arrivals!.slice(0,1)}, "")).toBeUndefined();
     expect(arrivalAt(train, "13200")).toBeUndefined();
   });
   it("no inventa llegadas ausentes, inválidas o anteriores a la salida", () => {
