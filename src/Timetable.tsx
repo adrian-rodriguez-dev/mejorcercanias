@@ -4,17 +4,15 @@ import { arrivalDayLabel } from "./data/arrival";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { addDays, dateTitle, loadDay, manifest } from "./data/renfe";
 import { stationName } from "./data/stations";
-import { RouteFilters } from "./RouteFilters";
 import { emptyRouteFilter, type RouteFilter } from "./data/route-filters";
 import { clockTime, localDay } from "./data/time";
-import { filterTimetable, type TimeMode } from "./data/timetable";
+import { filterTimetable } from "./data/timetable";
 import type { Departure, StationSchedule } from "./data/types";
 export function Timetable({
   stationId,
   now,
   loader = loadDay,
   routeFilter,
-  onRouteFilterChange,
   onScheduleChange,
 }: {
   stationId: string;
@@ -31,15 +29,9 @@ export function Timetable({
   const version = manifest.version;
   const today = localDay(now);
   const [date, setDate] = useState(today);
-  const [localFilter, setLocalFilter] = useState(emptyRouteFilter);
+  const localFilter = emptyRouteFilter;
   const selected = routeFilter ?? localFilter;
-  const setFilter = onRouteFilterChange ?? setLocalFilter;
   const { destination, lines } = selected;
-  const [mode, setMode] = useState<TimeMode>("all");
-  const [time, setTime] = useState("09:00");
-  useEffect(() => {
-    if (!destination) setMode("all");
-  }, [destination]);
   const [retry, setRetry] = useState(0);
   const [loaded, setLoaded] = useState<{
     key: string;
@@ -66,44 +58,12 @@ export function Timetable({
   const rows = filterTimetable(current?.data?.departures ?? [], {
     date,
     destination,
-    mode,
-    time,
+    mode: "all",
+    time: "00:00",
     lines,
   });
-  const recommended = mode === "arrive" ? rows.at(-1) : undefined;
-  const reset = () => {
-    setFilter(emptyRouteFilter);
-    setMode("all");
-    setTime("09:00");
-  };
-  const shortcut = () => {
-    setDate(addDays(today, 1));
-    setFilter({ lines: [], destination: "13200" });
-    setMode("arrive");
-    setTime("09:00");
-  };
   return (
     <div className="timetable">
-      <div className="date-actions">
-        <button onClick={() => setDate(today)} aria-pressed={date === today}>
-          Hoy
-        </button>
-        <button
-          onClick={() => setDate(addDays(today, 1))}
-          aria-pressed={date === addDays(today, 1)}
-        >
-          Mañana
-        </button>
-        {networkForStation(stationId)?.id === "bilbao" && (
-          <button
-            className="quick-plan"
-            onClick={shortcut}
-            disabled={stationId === "13200"}
-          >
-            Mañana a Bilbao antes de las 09:00 ↗
-          </button>
-        )}
-      </div>
       <div className="date-picker">
         <button
           aria-label="Día anterior"
@@ -112,8 +72,8 @@ export function Timetable({
           ←
         </button>
         <label>
-          Fecha
           <input
+            aria-label="Fecha"
             type="date"
             value={date}
             onChange={(e) => {
@@ -127,59 +87,6 @@ export function Timetable({
         >
           →
         </button>
-      </div>
-      <h3 className="date-title">{dateTitle(date)}</h3>
-      <p className="calendar-help">
-        Servicios publicados para esta fecha. Fines de semana y excepciones del
-        operador ya aplicados.
-      </p>
-      <RouteFilters
-        showDestination={!onRouteFilterChange}
-        rows={current?.data?.departures ?? []}
-        value={selected}
-        onChange={(filter) => {
-          setFilter(filter);
-          if (!filter.destination && mode === "arrive") setMode("all");
-        }}
-        onClear={reset}
-        disabled={!current?.data || current.data.availability === "unpublished"}
-        extraSummary={
-          mode === "all"
-            ? undefined
-            : `${mode === "arrive" ? "Llegar antes de" : "Salir desde"} ${time}`
-        }
-      >
-        <div className="schedule-filters">
-          <label>
-            Consultar
-            <select
-              value={mode}
-              onChange={(e) => setMode(e.target.value as TimeMode)}
-            >
-              <option value="all">Todo el día</option>
-              <option value="depart">Salir a partir de</option>
-              <option value="arrive" disabled={!destination}>
-                Llegar antes de
-              </option>
-            </select>
-          </label>
-          {mode !== "all" && (
-            <label>
-              Hora
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => {
-                  if (e.target.value) setTime(e.target.value);
-                }}
-              />
-            </label>
-          )}
-        </div>
-      </RouteFilters>
-      <div className="filter-summary">
-        <span>{rows.length} trenes directos</span>
-        <button onClick={reset}>Ver todo el día</button>
       </div>
       {!current ? (
         <p role="status" className="schedule-message">
@@ -200,26 +107,13 @@ export function Timetable({
         </p>
       ) : !rows.length ? (
         <p role="status" className="schedule-message">
-          No hay trenes que coincidan con esta consulta. Prueba otra hora o
-          consulta todo el día.
+          No hay trenes que coincidan con esta consulta. Cambia la fecha o los
+          filtros de estación y línea.
         </p>
       ) : (
         <>
-          {recommended && (
-            <div className="recommendation" role="status">
-              <strong>
-                Última salida que llega a tiempo:{" "}
-                {clockTime(Date.parse(recommended.scheduledAt))}
-              </strong>
-              <span>
-                Llegada a {stationName(destination)} a las{" "}
-                {clockTime(Date.parse(recommended.arrivalAt!))}. Horario
-                programado; deja margen para posibles retrasos.
-              </span>
-            </div>
-          )}
           <table className="schedule-table">
-            <caption>
+            <caption className="sr-only">
               Horario del {dateTitle(date)} desde {stationName(stationId)}
             </caption>
             <thead>
@@ -240,12 +134,7 @@ export function Timetable({
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className={
-                    row.id === recommended?.id ? "recommended-row" : ""
-                  }
-                >
+                <tr key={row.id}>
                   <td>
                     <span
                       style={lineStyle(
@@ -257,12 +146,7 @@ export function Timetable({
                       {row.line}
                     </span>
                   </td>
-                  <td>
-                    {row.destination}
-                    {row.id === recommended?.id && (
-                      <small>Última opción a tiempo</small>
-                    )}
-                  </td>
+                  <td>{row.destination}</td>
                   <td>
                     <time dateTime={row.scheduledAt}>
                       {clockTime(Date.parse(row.scheduledAt))}

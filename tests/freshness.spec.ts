@@ -24,11 +24,9 @@ test("adopta nueva versión conservando trayecto, fecha y hora", async ({
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();
-  await page.getByRole("button", { name: "Mañana", exact: true }).click();
-  await page.locator(".route-filters summary").click();
-  await page.getByLabel("Consultar").selectOption("arrive");
-  await page.getByLabel("Hora", { exact: true }).fill("09:00");
-  await page.getByRole("button", { name: "Ver trenes", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Día siguiente", exact: true })
+    .click();
   version = "aaaaaaaaaaaaaaaa";
   const response = page.waitForResponse(
     "**/data/renfe/aaaaaaaaaaaaaaaa/13400.json",
@@ -41,5 +39,4 @@ test("adopta nueva versión conservando trayecto, fecha y hora", async ({
   await expect(
     page.getByRole("button", { name: "C2", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator(".route-filter-summary")).toContainText("09:00");
 });

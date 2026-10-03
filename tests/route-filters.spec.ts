@@ -47,18 +47,11 @@ test("multiselección, botón completo y ninguna equivale a todas", async ({
     .click();
   await expect(page.getByRole("table")).toBeVisible();
   await expect(bar.locator('[aria-pressed="true"]')).toHaveCount(2);
-  await page.locator(".route-filters summary").click();
-  await page.getByLabel("Consultar").selectOption("arrive");
-  await page.getByLabel("Hora", { exact: true }).fill("09:00");
-  await page.getByRole("button", { name: "Ver trenes", exact: true }).click();
   await b("C1").click();
   await b("C2").click();
   await expect(bar.locator('[aria-pressed="true"]')).toHaveCount(0);
   expect(await bg()).toBe(dark);
   await expect(page.getByLabel("Destino directo")).toHaveValue("13200");
-  await expect(page.locator(".route-filter-summary")).toContainText(
-    "Llegar antes de 09:00",
-  );
   await page.getByLabel("Fecha").fill("2026-11-15");
   await b("C2").click();
   await expect(b("C2")).toHaveAttribute("aria-pressed", "true");

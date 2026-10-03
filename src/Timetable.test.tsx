@@ -20,7 +20,7 @@ const schedule = (day: string): StationSchedule => ({
   ],
 });
 describe("consulta por fecha", () => {
-  it("muestra todo el día, aplica atajo mañana y permite volver al horario completo", async () => {
+  it("muestra todo el día, permite cambiar fecha sin controles redundantes", async () => {
     const user = userEvent.setup();
     render(
       <Timetable
@@ -30,15 +30,11 @@ describe("consulta por fecha", () => {
       />,
     );
     expect(await screen.findByText("08:35")).toBeVisible();
-    await user.click(screen.getByRole("button", { name: /Mañana a Bilbao/ }));
-    expect(
-      await screen.findByText(/Última salida que llega a tiempo: 08:35/),
-    ).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Día siguiente" }));
     expect(screen.getByLabelText("Fecha")).toHaveValue("2026-10-03");
-    expect(screen.getByLabelText("Hora")).toHaveValue("09:00");
-    await user.click(screen.getByRole("button", { name: "Ver todo el día" }));
-    expect(screen.getByLabelText("Destino directo")).toHaveValue("");
-    expect(screen.getByLabelText("Consultar")).toHaveValue("all");
+    expect(await screen.findByText("08:35")).toBeVisible();
+    expect(screen.queryByText("Consultar")).not.toBeInTheDocument();
+    expect(screen.queryByText("Hoy")).not.toBeInTheDocument();
   });
   it("descarta fecha anterior al completar tarde una carga", async () => {
     let finish!: (s: StationSchedule) => void;
@@ -50,7 +46,7 @@ describe("consulta por fecha", () => {
         : Promise.resolve(schedule(day)),
     );
     render(<Timetable stationId="13400" now={now} loader={loader} />);
-    fireEvent.click(screen.getByRole("button", { name: "Mañana" }));
+    fireEvent.click(screen.getByRole("button", { name: "Día siguiente" }));
     await screen.findByText("08:35");
     await act(async () =>
       finish({ ...schedule("2026-10-02"), departures: [] }),

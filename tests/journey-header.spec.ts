@@ -26,25 +26,20 @@ test("cabecera única e intercambio conserva día, hora y preferencia", async ({
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();
-  await page.getByRole("button", { name: "Mañana", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Día siguiente", exact: true })
+    .click();
   await expect(page.getByRole("table")).toBeVisible();
-  await page.locator(".route-filters summary").click();
-  await page.getByLabel("Consultar").selectOption("arrive");
-  await page.getByLabel("Hora", { exact: true }).fill("09:00");
-  await page.getByRole("button", { name: "Ver trenes", exact: true }).click();
   await swap.click();
   await expect(origin).toHaveValue("13405");
   await expect(destination).toHaveValue("13200");
   await expect(page.getByLabel("Fecha")).toHaveValue("2026-10-03");
   await expect(page.getByRole("table")).toBeVisible();
-  await expect(page.locator(".route-filter-summary")).toContainText(
-    "Llegar antes de 09:00",
-  );
   const arrivals = await page
     .locator("tbody tr td:last-child time")
     .allTextContents();
   expect(arrivals.length).toBeGreaterThan(0);
-  expect(arrivals.every((t) => t <= "09:00")).toBe(true);
+  expect(arrivals.some((t) => t > "09:00")).toBe(true);
   await page.screenshot({
     path: `work/header-${info.project.name}.png`,
     fullPage: true,
@@ -58,9 +53,6 @@ test("cabecera única e intercambio conserva día, hora y preferencia", async ({
   ).toBe(true);
   await destination.selectOption("");
   await expect(swap).toBeDisabled();
-  await expect(page.locator(".route-filter-summary")).not.toContainText(
-    "Llegar antes",
-  );
   await destination.selectOption("13101");
   await expect(
     page.getByText(/No hay trenes que coincidan con esta consulta/),

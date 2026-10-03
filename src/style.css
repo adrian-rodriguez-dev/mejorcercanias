@@ -1437,3 +1437,7 @@ time {
 }
 
 .onboarding h1:focus {outline:none;}
+
+.timetable .date-picker {margin:0 0 10px;align-items:center;}
+.timetable .date-picker label {max-width:none;}
+.timetable .date-picker input {min-height:44px;}

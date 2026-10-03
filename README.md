@@ -119,3 +119,5 @@ La campana de incidencias está en la barra superior: neutra sin avisos verifica
 
 ## Núcleos y asistente
 Ocho núcleos y 329 estaciones. Sin núcleo guardado se abre siempre el asistente (núcleo, origen y destino opcional). El núcleo se cambia tocando su nombre en la cabecera. [Catálogo, exclusiones, datos y cómo añadir núcleos](docs/networks.md).
+
+Horario completo muestra siempre todos los trenes de la fecha elegida: selector y flechas de día junto a la tabla. Los filtros de origen, destino y líneas se comparten con próximas salidas. Se retiraron los límites de hora y los atajos de mañana.
