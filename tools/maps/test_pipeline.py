@@ -135,6 +135,19 @@ class MapPipelineTests(unittest.TestCase):
         self.assertFalse((destination / "data/routing-corrections.proposed.json").exists())
         self.assertEqual((run.REPO / "data/routing-corrections.json").read_bytes(), production)
 
+    def test_download_rejects_html_disguised_as_pdf(self):
+        import acquire
+        from unittest.mock import MagicMock
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b"<html>Temporarily unavailable</html>"
+        response.geturl.return_value = "https://www.renfe.com/map.pdf"
+        response.headers = {"Content-Type": "text/html"}
+        with patch.object(acquire.urllib.request, "urlopen", return_value=response) as fetch, patch.object(acquire.time, "sleep"):
+            with self.assertRaisesRegex(ValueError, "Expected PDF, got text/html"):
+                acquire.fetch(response.geturl(), expected=".pdf")
+            self.assertEqual(fetch.call_count, 3)
+
     def test_existing_output_is_never_reused(self):
         from argparse import Namespace
         with self.assertRaisesRegex(ValueError, "already exists"):
