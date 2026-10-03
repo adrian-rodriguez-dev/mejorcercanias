@@ -5,7 +5,7 @@ test("luna y sol alternan, conservan preferencia y contraste", async ({
 }, info) => {
   await page.clock.install({ time: new Date("2026-10-03T10:00:00+02:00") });
   await page.goto("/");
-  await expect(page.locator(".departures > li")).toHaveCount(8);
+  await expect(page.locator(".departures > li")).toHaveCount(20);
   const moon = page.getByRole("button", { name: "Activar modo oscuro" });
   await expect(moon).toBeVisible();
   const themeBox = await moon.boundingBox();

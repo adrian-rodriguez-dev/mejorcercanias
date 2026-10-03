@@ -25,7 +25,7 @@ The system SHALL restaurar núcleo, origen, destino y líneas compatibles entre 
 - **AND** si guardar falla, se avisa de que la selección solo dura esta visita.
 
 ### Requirement: Próximas salidas
-The system SHALL mostrar hasta ocho salidas no pasadas, ordenadas por instante, con línea, destino, hora Europe/Madrid y minutos restantes redondeados hacia arriba cuando falten menos de 60 minutos, u hora de salida grande cuando falten 60 minutos o más; SHALL actualizar el panel al menos cada 30 segundos y al volver a la pestaña.
+The system SHALL mostrar hasta veinte salidas no pasadas, ordenadas por instante, con línea, destino, hora Europe/Madrid y minutos restantes redondeados hacia arriba cuando falten menos de 60 minutos, u hora de salida grande cuando falten 60 minutos o más; SHALL actualizar el panel al menos cada 30 segundos y al volver a la pestaña.
 
 #### Scenario: Cuenta atrás
 - **WHEN** faltan 61 segundos para una salida

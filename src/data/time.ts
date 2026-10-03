@@ -13,7 +13,7 @@ export const dayLabel = (at: number, now: number) => {
     ? "Mañana"
     : date.toFormat("dd/LL");
 };
-export function upcoming(departures: Departure[], now: number, limit = 8) {
+export function upcoming(departures: Departure[], now: number, limit = 20) {
   return departures
     .filter((d) => Date.parse(d.scheduledAt) >= now)
     .sort((a, b) => Date.parse(a.scheduledAt) - Date.parse(b.scheduledAt))

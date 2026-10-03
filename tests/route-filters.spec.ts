@@ -6,7 +6,7 @@ test("multiselección, botón completo y ninguna equivale a todas", async ({
   await page.clock.install({ time: new Date("2026-10-02T10:00:00+02:00") });
   await page.goto("/");
   await page.getByLabel("¿Desde dónde sales?").fill(optionName("13400"));
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   const bar = page.getByRole("group", { name: /Filtrar por líneas/ });
   const b = (name: string) => bar.getByRole("button", { name, exact: true });
   await expect(bar.getByRole("button")).toHaveCount(2);
@@ -21,7 +21,7 @@ test("multiselección, botón completo y ninguna equivale a todas", async ({
   expect(await bg()).not.toBe(dark);
   await page.getByLabel("Destino", { exact: true }).fill(optionName("13200"));
   expect(await page.locator(".departures .line").allTextContents()).toEqual(
-    Array(8).fill("C2"),
+    Array(20).fill("C2"),
   );
   await b("C1").click();
   await expect(bar.locator('[aria-pressed="true"]')).toHaveCount(2);
@@ -74,7 +74,7 @@ test("multiselección, botón completo y ninguna equivale a todas", async ({
     .getByRole("button", { name: "Intercambiar origen y destino" })
     .click();
   await expect(bar).toHaveCount(0);
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

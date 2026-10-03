@@ -22,12 +22,12 @@ test("reapertura offline, horarios por fecha, ausencia de estación y caducidad"
   context,
 }) => {
   await page.goto("./");
-  await expect(page.locator(".departures li")).toHaveCount(8);
+  await expect(page.locator(".departures li")).toHaveCount(20);
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.waitForFunction(() => !!navigator.serviceWorker.controller);
   await context.setOffline(true);
   await page.reload();
-  await expect(page.locator(".departures li")).toHaveCount(8);
+  await expect(page.locator(".departures li")).toHaveCount(20);
   await expect(page.locator(".offline-status")).toContainText("Sin conexión");
   expect(
     await page.evaluate(async () => {
@@ -61,14 +61,14 @@ test("reapertura offline, horarios por fecha, ausencia de estación y caducidad"
   ).toBeVisible();
   await expect(page.locator(".departures li")).toHaveCount(0);
   await context.setOffline(false);
-  await expect(page.locator(".departures li")).toHaveCount(8);
+  await expect(page.locator(".departures li")).toHaveCount(20);
 });
 test("worker nuevo espera el gesto y conserva preferencias al actualizar", async ({
   page,
   request,
 }) => {
   await page.goto("./");
-  await expect(page.locator(".departures li")).toHaveCount(8);
+  await expect(page.locator(".departures li")).toHaveCount(20);
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.waitForFunction(() => !!navigator.serviceWorker.controller);
   await page.evaluate(() => {
@@ -125,7 +125,8 @@ test("ruta real con transbordo, detalle y recálculo offline en app instalada", 
   await detail.locator("summary").click();
   await expect(detail).toContainText("C1");
   await expect(detail).toContainText("C2");
-  await expect(detail).toContainText("Cambio en");
+  await expect(detail.locator(".journey-change")).toContainText("Espera");
+  await expect(detail.locator(".journey-stop time")).toHaveCount(4);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

@@ -29,9 +29,9 @@ test("recuerda destino, multiselección, inversión y vaciado", async ({
   await expect(
     bar.getByRole("button", { name: "C2", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   expect(await page.locator(".departures .line").allTextContents()).toEqual(
-    Array(8).fill("C2"),
+    Array(20).fill("C2"),
   );
   await destination.fill(optionName(""));
   await bar.getByRole("button", { name: "C2", exact: true }).click();

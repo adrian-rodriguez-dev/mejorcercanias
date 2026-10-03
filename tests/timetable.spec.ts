@@ -6,7 +6,7 @@ test("tabla de todo el día compacta y cambio de fecha", async ({
   await page.clock.install({ time: new Date("2026-10-02T18:00:00+02:00") });
   await page.goto("/");
   await page.getByLabel("¿Desde dónde sales?").fill(optionName("13400"));
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();
@@ -46,5 +46,5 @@ test("tabla de todo el día compacta y cambio de fecha", async ({
   await page
     .getByRole("button", { name: "Próximos trenes", exact: true })
     .click();
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
 });

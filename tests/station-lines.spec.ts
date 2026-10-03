@@ -13,9 +13,9 @@ test("barra solo con varias líneas compatibles y sin filtros ocultos", async ({
   await bar.getByRole("button", { name: "C2", exact: true }).click();
   await destination.fill(optionName("13405"));
   await expect(bar).toHaveCount(0);
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   expect(await page.locator(".departures .line").allTextContents()).toEqual(
-    Array(8).fill("C1"),
+    Array(20).fill("C1"),
   );
   await page.screenshot({
     path: `work/station-lines-${info.project.name}.png`,
@@ -39,7 +39,7 @@ test("barra solo con varias líneas compatibles y sin filtros ocultos", async ({
   await expect(page.getByRole("listitem")).toHaveCount(0);
   await origin.fill(optionName("13405"));
   await expect(bar).toHaveCount(0);
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   await origin.fill(optionName("13200"));
   await expect(bar.getByRole("button")).toHaveCount(3);
   expect(

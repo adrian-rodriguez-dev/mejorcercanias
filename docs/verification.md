@@ -163,3 +163,16 @@ Dirección visual final con libertad de criterio: blanco neutro, grafito y rojo
 #c92f40 en marca/acciones. Variables de tema consolidadas; filtros con subrayado
 de color oficial. Modo oscuro coherente. Build y ocho pruebas de tema/accesibilidad
 correctos; verificación visual de la pestaña local, sin publicación.
+
+### Veinte próximos trenes (2026-10-03)
+
+El límite visible pasa de 8 a 20. El cálculo ya obtiene los itinerarios de los días consultados antes de recortar resultados; el worker y sus peticiones no cambian.
+
+Comparación local de producción contra 8e8dcbb, snapshot 227d8748274b9442, Chromium a 360 × 800, reloj fijado a 2026-10-03 06:00 Europe/Madrid. Tres contextos nuevos por caso y límite; tiempo desde navegación hasta primeras filas visibles, incluida carga local de grafo y cálculo. No es una medición en hardware de teléfono ni de latencia pública.
+
+| Consulta                          | Filas antes → después      | Transbordos | Media antes → después |
+| --------------------------------- | -------------------------- | ----------- | --------------------- |
+| El Prat Aeroport → Puigcerdà      | 8 → 14 (todas disponibles) | 3           | 1.424 → 1.436 ms      |
+| Altafulla-Tamarit → Arenys de Mar | 8 → 20                     | 1           | 938 → 924 ms          |
+
+Cada consulta ejecutó un solo worker en ambos límites. Las diferencias observadas son pequeñas frente a la variación entre ejecuciones; no muestran un coste perceptible adicional del cambio. El DOM aumenta con las filas, incluidos los detalles plegados: 612 → 1.081 nodos y 368 → 920 nodos respectivamente. Los escenarios de navegador y offline se actualizan para comprobar el límite de 20.

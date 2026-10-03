@@ -26,7 +26,7 @@ test("volver a ahora mantiene trayecto y líneas y recupera el foco", async ({
   await expect(
     page.getByRole("button", { name: "Próximos trenes", exact: true }),
   ).toBeFocused();
-  await expect(page.locator(".departures li")).toHaveCount(8);
+  await expect(page.locator(".departures li")).toHaveCount(20);
   expect(
     await page.evaluate(() =>
       localStorage.getItem("mejorcercanias.journey.v1"),

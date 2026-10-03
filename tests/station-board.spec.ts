@@ -20,18 +20,18 @@ test("elegir estación, recordar y cambiar sin formularios adicionales", async (
   ).toBeVisible();
   await page.getByLabel("¿Desde dónde sales?").fill(optionName("13400"));
   await expect(page.getByLabel("¿Desde dónde sales?")).toBeVisible();
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   await expect(page.locator(".board-top, .clock")).toHaveCount(0);
   await page.reload();
   await expect(page.getByLabel("¿Desde dónde sales?")).toHaveValue(
     optionName("13400"),
   );
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   await page.getByLabel("¿Desde dónde sales?").fill(optionName("13101"));
   await expect(page.getByLabel("¿Desde dónde sales?")).toBeVisible();
   await expect(page.locator(".departures .line").first()).toHaveText("C3");
   await page.getByLabel("¿Desde dónde sales?").fill(optionName("13400"));
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   const sizes = await page.evaluate(() => ({
     scroll: document.documentElement.scrollWidth,
     width: innerWidth,
@@ -56,5 +56,5 @@ test("error de red y reintento en el navegador", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Reintentar" })).toBeVisible();
   await page.unroute("**/data/renfe/*/13400.json");
   await page.getByRole("button", { name: "Reintentar" }).click();
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
 });

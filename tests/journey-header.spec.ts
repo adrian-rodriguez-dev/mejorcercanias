@@ -15,15 +15,15 @@ test("cabecera única e intercambio conserva día, hora y preferencia", async ({
   await expect(swap).toBeDisabled();
   await origin.fill(optionName("13405"));
   await destination.fill(optionName("13200"));
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   await swap.focus();
   await page.keyboard.press("Enter");
   await expect(origin).toHaveValue(optionName("13200"));
   await expect(destination).toHaveValue(optionName("13405"));
-  await expect(page.getByRole("listitem")).toHaveCount(8);
+  await expect(page.getByRole("listitem")).toHaveCount(20);
   expect(
     await page.locator(".departures .destination strong").allTextContents(),
-  ).toEqual(Array(8).fill("Santurtzi"));
+  ).toEqual(Array(20).fill("Santurtzi"));
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();
