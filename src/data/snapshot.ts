@@ -1,3 +1,4 @@
+import { stationLabel } from "./text";
 import initial from "./renfe-manifest.json";
 import type { Station } from "./types";
 export interface Network {
@@ -30,7 +31,7 @@ export let manifest: Manifest = initial as Manifest;
 const catalog = (m: Manifest): Station[] =>
   m.stations.map((s) => ({
     ...s,
-    name: s.id === "13200" ? "Bilbao-Abando" : s.name,
+    name: s.id === "13200" ? "Bilbao-Abando" : stationLabel(s.name),
   }));
 export let stations = catalog(manifest);
 let revision = 0,

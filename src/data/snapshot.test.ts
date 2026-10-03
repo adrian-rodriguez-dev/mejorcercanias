@@ -5,7 +5,13 @@ const response = (body: unknown) =>
   ({ ok: true, json: async () => body }) as Response;
 it("adopta catálogo y estación juntos, respeta intervalo y no descarga estación con igual hash", async () => {
   const s = await import("./snapshot");
-  const candidate = { ...fixture, version: "aaaaaaaaaaaaaaaa" };
+  const candidate = {
+    ...fixture,
+    version: "aaaaaaaaaaaaaaaa",
+    stations: fixture.stations.map((s) =>
+      s.id === "13400" ? { ...s, name: "San MamÃ©s" } : s,
+    ),
+  };
   let finish!: (r: Response) => void;
   const fetcher = vi
     .fn()
@@ -31,6 +37,7 @@ it("adopta catálogo y estación juntos, respeta intervalo y no descarga estaci�
   );
   await checking;
   expect(s.manifest.version).toBe(candidate.version);
+  expect(s.stations.find((x) => x.id === "13400")?.name).toBe("San Mamés");
   await s.checkSnapshot("13400", 2000, fetcher);
   expect(fetcher).toHaveBeenCalledTimes(3);
   fetcher.mockResolvedValueOnce(
@@ -80,9 +87,24 @@ it("rechaza catálogo inválido y permite avisar de estaciones retiradas", async
   expect(fetcher).toHaveBeenCalledTimes(2);
 });
 
-it('rechaza núcleos sin colores y más de seis líneas',async()=>{
- const {validManifest}=await import('./snapshot');
- expect(validManifest(fixture)).toBe(true);
- expect(validManifest({...fixture,networks:[{...fixture.networks[0],lines:['C1','C2','C3','C4','C5','C6','C7']}]})).toBe(false);
- expect(validManifest({...fixture,networks:[{...fixture.networks[0],colors:{}}]})).toBe(false);
+it("rechaza núcleos sin colores y más de seis líneas", async () => {
+  const { validManifest } = await import("./snapshot");
+  expect(validManifest(fixture)).toBe(true);
+  expect(
+    validManifest({
+      ...fixture,
+      networks: [
+        {
+          ...fixture.networks[0],
+          lines: ["C1", "C2", "C3", "C4", "C5", "C6", "C7"],
+        },
+      ],
+    }),
+  ).toBe(false);
+  expect(
+    validManifest({
+      ...fixture,
+      networks: [{ ...fixture.networks[0], colors: {} }],
+    }),
+  ).toBe(false);
 });

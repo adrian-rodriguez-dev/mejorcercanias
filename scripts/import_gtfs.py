@@ -57,6 +57,8 @@ def compile_feed(archive, route_ids=None):
     if not routes or set(route_ids) - routes.keys():
         raise ValueError('Expected Bilbao routes missing; review network selection')
     stops = {s['stop_id']: s for s in rows(archive, 'stops.txt')}
+    if any(any(marker in s['stop_name'] for marker in ('Ã', 'Â', '\ufffd')) for s in stops.values()):
+        raise ValueError('Invalid station name encoding')
     dates = service_dates(rows(archive, 'calendar.txt'), rows(archive, 'calendar_dates.txt'))
     trips = {t['trip_id']: t for t in rows(archive, 'trips.txt') if t['route_id'] in routes}
     if not trips:

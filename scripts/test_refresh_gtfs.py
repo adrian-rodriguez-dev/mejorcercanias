@@ -40,7 +40,7 @@ class RefreshTests(unittest.TestCase):
    localzip=root/'local.zip';localzip.write_bytes(raw)
    with patch('import_gtfs.compile_feed',return_value=(m,data)),patch.object(sys,'argv',['import_gtfs','--zip',str(localzip),'--output',str(root/'local')]):
     import_gtfs.main()
-   local=json.loads((root/'local/src/data/renfe-manifest.json').read_text())
+   local=json.loads((root/'local/src/data/renfe-manifest.json').read_text(encoding="utf-8"))
    self.assertIsNone(local['downloadedAt']);self.assertIsNone(local['checkedAt'])
    stale=root/'public/data/renfe'/'cccccccccccccccc';stale.mkdir();(stale/'manifest.json').write_text(json.dumps({'publishedAt':'2026-09-01T00:00:00+00:00'}))
    recent=root/'public/data/renfe'/'dddddddddddddddd';recent.mkdir();(recent/'manifest.json').write_text(json.dumps({'publishedAt':'2026-10-02T00:00:00+00:00'}))
