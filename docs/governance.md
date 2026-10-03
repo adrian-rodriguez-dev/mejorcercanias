@@ -23,7 +23,7 @@ Antes de integrar, revisar diff, datos afectados, accesibilidad y documentación
 
 Incrementar TRANSFORM_VERSION cuando cambie la semántica del importador. La versión del snapshot deriva del ZIP, versión de transformación y correcciones; cambiar código Python sin actualizarla podría sobrescribir una ruta que los clientes tratan como inmutable. Si cambia el esquema de JSON, coordinar generador, validadores, fixtures, consumidor y política para clientes antiguos.
 
-El pipeline de mapas investigado en otro espacio no forma parte del runtime ni se ejecuta por Actions en este repositorio. Aquí se consume la configuración revisada de enlaces; incorporar extracción automática de PDF/SVG requiere una propuesta propia, evidencia y revisión humana de resultados ambiguos.
+El pipeline de mapas está integrado en tools/maps y Actions; sus fuentes y decisiones se conservan en data/maps. Genera propuestas auditables, que se promueven explícitamente a la configuración de enlaces después de revisar evidencias y correspondencias. Ver [pipeline de mapas](map-pipeline.md).
 
 ## Privacidad, credenciales y licencia
 

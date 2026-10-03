@@ -48,3 +48,7 @@ Un informe puede no existir si falló npm ci, la compilación o la instalación 
 - Notificaciones de ejecuciones fallidas y responsables de revisar cobertura.
 
 El schedule de GitHub no garantiza ejecución exacta y puede suspenderse por inactividad. Las acciones están fijadas por versión mayor, no por SHA inmutable: endurecimiento pendiente, registrado en la revisión.
+
+## Pipeline cartográfico
+
+`Review official maps` (`maps.yml`) se ejecuta semanalmente, manualmente y al cambiar herramientas/fuentes en main. Instala PyMuPDF fijado, ejecuta pruebas y captura mapas/GTFS. Conserva `map-evidence-<run_id>` 30 días, incluso si cambian fuentes y hace falta revisión. Tiene permisos de lectura y no publica configuración de rutas. El flujo reutilizable de validación ejecuta también las pruebas pequeñas de mapas. [Ejecución y promoción](map-pipeline.md).

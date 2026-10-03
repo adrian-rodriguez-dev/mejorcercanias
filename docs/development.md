@@ -2,7 +2,7 @@
 
 ## Entorno reproducible
 
-Usar Node 24 (`.nvmrc`), npm con `package-lock.json`, Python 3.12+ y Chromium de Playwright. `npm ci` instala las versiones del lock; no sustituirlo por una actualización indiscriminada de dependencias. Los scripts Python solo utilizan biblioteca estándar.
+Usar Node 24 (`.nvmrc`), npm con `package-lock.json`, Python 3.12+ y Chromium de Playwright. `npm ci` instala las versiones del lock; no sustituirlo por una actualización indiscriminada de dependencias. Los scripts de horarios usan biblioteca estándar. El pipeline cartográfico requiere instalar `tools/maps/requirements.txt` (PyMuPDF fijado).
 
 ```sh
 npm ci
@@ -50,3 +50,5 @@ TypeScript está en modo estricto, con variables/parámetros no usados rechazado
 Una corrección pequeña debe pasar las pruebas relevantes y `check`. Antes de integrar a main, CI ejecuta también Python, worker, navegador y offline. Revisar por separado cambios funcionales, movimientos de archivos y formato; Git puede mostrar renombrados. Usar `git diff --check` y evitar mezclar datos generados nuevos con un refactor si no son necesarios.
 
 Para comparar rendimiento del router: `node --experimental-strip-types scripts/benchmark-routing.mjs`. Requiere el commit base e867f10 y los datos locales esperados; genera resultados en `work/`. No es un benchmark universal ni una puerta de CI.
+
+Para cambios de cartografía: `python -m unittest discover -s tools/maps -p 'test_*.py'`. El pipeline en vivo va separado de las pruebas pequeñas para que CI no dependa de Renfe.

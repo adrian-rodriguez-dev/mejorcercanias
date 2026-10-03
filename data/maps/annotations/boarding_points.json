@@ -1,0 +1,28 @@
+[
+  {
+    "observation_id": "sevilla-139",
+    "gtfs_stop_id": "50700",
+    "gtfs_sha256": "b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043",
+    "map_sha256": "17c501d06caa6b69381ddaec8ce4b79c5eee630f827f544357e254ec790a4b54",
+    "nodes": [
+      {
+        "node_id": "mc:50700:c1",
+        "name": "Los Rosales — estación C-1",
+        "route_ids": [
+          "30T0001C1",
+          "30T0002C1"
+        ]
+      },
+      {
+        "node_id": "mc:50700:c3",
+        "name": "Los Rosales Apeadero — C-3",
+        "route_ids": [
+          "30T0005C3",
+          "30T0006C3",
+          "30T0039C3",
+          "30T0041C3"
+        ]
+      }
+    ]
+  }
+]

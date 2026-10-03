@@ -1,0 +1,122 @@
+[
+  {
+    "core": "madrid",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-madrid/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/Mapa_Madrid_Cercanias.pdf",
+    "file": "sources/madrid.pdf",
+    "sha256": "a4a3b24647783eb73c79925d691f6fc60e029c874012b177e109a9706cb8e374",
+    "retrieved_at": "2026-10-03T12:16:11.330931+00:00"
+  },
+  {
+    "core": "barcelona",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-barcelona/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/mapa_de_lineas_rodalia_de_barcelona_y_regionales_de_catalunya.pdf",
+    "file": "sources/barcelona.pdf",
+    "sha256": "2ce504571b07dacefb15f71c87a314c947940b00ff2da532fe5da1eb3e78973c",
+    "retrieved_at": "2026-10-03T12:16:11.351942+00:00"
+  },
+  {
+    "core": "valencia",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-valencia/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/Mapa_Valencia_Cercanias_junio_2025.pdf",
+    "file": "sources/valencia.pdf",
+    "sha256": "070868c035482bf4c70f1337806b4dadb4955c318a7062490f97fe62477feea0",
+    "retrieved_at": "2026-10-03T12:16:11.410264+00:00"
+  },
+  {
+    "core": "sevilla",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-sevilla/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/mapa_sevilla_cercanias_abril_2025.pdf",
+    "file": "sources/sevilla.pdf",
+    "sha256": "17c501d06caa6b69381ddaec8ce4b79c5eee630f827f544357e254ec790a4b54",
+    "retrieved_at": "2026-10-03T12:16:11.294122+00:00"
+  },
+  {
+    "core": "bilbao",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-bilbao/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2026/plano_cercanias_bilbao_mayo-2026-c.pdf",
+    "file": "sources/bilbao.pdf",
+    "sha256": "97b4e04bbd6fcb9722841e87fe44c56d75479802cdfac6eb22823c5e56b35251",
+    "retrieved_at": "2026-10-03T12:16:11.344422+00:00"
+  },
+  {
+    "core": "san-sebastian",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-san-sebastian/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/mapa_san_sebastian_abril_2025.pdf",
+    "file": "sources/san-sebastian.pdf",
+    "sha256": "4976ed738e7eadacc1139a6002377963f6221a459b79bc8047a195f553799513",
+    "retrieved_at": "2026-10-03T12:16:11.462330+00:00"
+  },
+  {
+    "core": "murcia-alicante",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-murcia-alicante/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/mapa_murcia_alicante_agosto_2025.pdf",
+    "file": "sources/murcia-alicante.pdf",
+    "sha256": "4ca77889570d5e2d3339183e2a37f111a44a53be55dae275794654fefa898ea0",
+    "retrieved_at": "2026-10-03T12:16:11.550042+00:00"
+  },
+  {
+    "core": "cadiz",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-cadiz/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/mapa_cadiz_cercanias_abril2025-b.pdf",
+    "file": "sources/cadiz.pdf",
+    "sha256": "93731cde030ec325af69de1529b2b704e3c937c8c8485e861ccc2b7fc8883170",
+    "retrieved_at": "2026-10-03T12:16:11.574575+00:00"
+  },
+  {
+    "core": "zaragoza",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-zaragoza/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/mapa_zaragoza_agosto_2025.pdf",
+    "file": "sources/zaragoza.pdf",
+    "sha256": "b2107d2e79161b9e2f648084fb789330059e6e002ef6b0a6cb6ae00e6cbb8f5f",
+    "retrieved_at": "2026-10-03T12:16:11.536177+00:00"
+  },
+  {
+    "core": "malaga",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-malaga/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/mapa_malaga_abril_2025.pdf",
+    "file": "sources/malaga.pdf",
+    "sha256": "0bbcb1f4728ac522ba7ecdf7dae374a1e666f10a95319bf563b912490f3bd281",
+    "retrieved_at": "2026-10-03T12:16:11.461324+00:00"
+  },
+  {
+    "core": "cantabria",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-cantabria/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/Mapa_Cantabria_Cercanias_julio_2025-b.pdf",
+    "file": "sources/cantabria.pdf",
+    "sha256": "7e5ba205ffda5ac8e074a6b1e50ef6be6c7706850561010966b0aed39f9babfe",
+    "retrieved_at": "2026-10-03T12:16:11.627442+00:00"
+  },
+  {
+    "core": "asturias",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-asturias/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/Mapa_Asturias_Cercanias_enero2026_v2.pdf",
+    "file": "sources/asturias.pdf",
+    "sha256": "23f91900c7b57fa70e387a3b432f62ec0cf3c14c68eaa0571b1c59c2f32c306c",
+    "retrieved_at": "2026-10-03T12:16:11.593114+00:00"
+  },
+  {
+    "core": "cartagena",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-cartagena/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/plano-cercanias-cartagena-sep2025.pdf",
+    "file": "sources/cartagena.pdf",
+    "sha256": "796b4b9b68ccd6ae21d8a73baf823b72a5875218c8978d223c304b7103372c12",
+    "retrieved_at": "2026-10-03T12:16:11.824863+00:00"
+  },
+  {
+    "core": "leon",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-leon/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2026/mapa_leon_cercanias_feb_2026.pdf",
+    "file": "sources/leon.pdf",
+    "sha256": "5c88c9007decac9475d7a7137696a304ab8299bb6c3c966cba08b36b0c38b197",
+    "retrieved_at": "2026-10-03T12:16:11.699756+00:00"
+  },
+  {
+    "core": "ferrol",
+    "page_url": "https://www.renfe.com/es/es/cercanias/cercanias-ferrol/mapas",
+    "url": "https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2026/mapa_ferrol_cercanias_feb_2026.pdf",
+    "file": "sources/ferrol.pdf",
+    "sha256": "dcce78be0323cdcdfbfe16f2dc6822092d047db0c4c840f71751b505f6980d16",
+    "retrieved_at": "2026-10-03T12:16:11.913089+00:00"
+  }
+]

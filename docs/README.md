@@ -16,6 +16,8 @@ Punto de entrada para desarrollar, revisar, publicar y operar la aplicación. De
 | Activar los avisos                               | [Incidencias](service-alerts.md)                             |
 | Consultar pendientes                             | [Hoja de ruta](roadmap.md)                                   |
 
+La extracción cartográfica tiene su propia [guía de pipeline PDF/SVG](map-pipeline.md), con ejecución, artefactos y conservación de Los Rosales.
+
 ## Fuentes de verdad
 
 El comportamiento se contrasta con código, pruebas y `openspec/specs/`; las decisiones en curso están en `openspec/changes/`. El manifiesto `src/data/renfe-manifest.json` contiene cobertura, redes, versiones y exclusiones reales. `.github/workflows/` define la automatización. La ejecución exitosa en Actions y el entorno `github-pages` confirman una publicación; `publishedAt` por sí solo no la confirma.

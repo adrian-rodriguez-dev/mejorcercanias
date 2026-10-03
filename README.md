@@ -45,3 +45,5 @@ Las nuevas funcionalidades se describen con OpenSpec antes de implementar; los r
 ## Fuentes y licencias
 
 GTFS de Renfe Operadora, CC BY 4.0, transformado para esta aplicación independiente. El motor adapta lógica de renfe-cli bajo BSD-3-Clause; atribución en `public/licenses/renfe-cli.txt`. [Contrato y procedencia](docs/data-contract.md). No se ha definido una licencia general para todo el código de la aplicación.
+
+La [extracción de transbordos PDF/SVG](docs/map-pipeline.md) se ejecuta en un pipeline semanal independiente, con fuentes versionadas, JSON/CSV, evidencias y promoción explícita de conexiones revisadas.

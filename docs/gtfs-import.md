@@ -26,7 +26,7 @@ El importador aislado **no genera current.json ni el manifiesto público de publ
 - Patrones de estación agrupan servicios idénticos, mantienen terminal real y llegadas posteriores. Subida/bajada ordinaria exige tipo 0; no se presentan servicios a demanda como libre acceso.
 - Tiempos admitidos: 00:00–47:59:59; secuencias y tiempos se validan. La UI usa mediodía local menos doce horas y segundos GTFS para respetar DST.
 - `routing_data.py` compila grafos de trips, calls, grupos y transfers, combinando transfers.txt con `data/routing-corrections.json`.
-- Correcciones incluyen evidencia y márgenes estimados. Los Rosales está preparado en configuración/pruebas; no implica que Sevilla esté publicado. El pipeline de extracción de mapas de la investigación no se ejecuta aquí.
+- Correcciones incluyen evidencia y márgenes estimados. Los Rosales está preparado en configuración/pruebas; no implica que Sevilla esté publicado. El [pipeline de mapas](map-pipeline.md) se ejecuta por separado y propone correcciones para revisión.
 - Madrid y Rodalies admiten explícitamente viajes excluidos por menos de dos paradas, auditados y visibles en la UI. Las otras redes mantienen validación estricta. Ver [núcleos](networks.md).
 
 ## Versionado y retención

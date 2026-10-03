@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MejorCercanías: relaciones observadas en mapas Renfe",
+  "description": "Página desde 1; bbox en puntos PDF, origen arriba a la izquierda. stop_ids son cadenas, conservan ceros iniciales. Una relación no equivale a una arista utilizable por el router.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "core", "kind", "map_label", "stop_ids", "page", "bbox", "source_sha256", "gtfs_source_sha256", "review_status", "gtfs_match_status", "routing_ready"],
+    "properties": {
+      "id": {"type": "string"},
+      "core": {"enum": ["madrid", "barcelona", "valencia", "sevilla", "bilbao", "san-sebastian", "murcia-alicante", "cadiz", "zaragoza", "malaga", "cantabria", "asturias", "cartagena", "leon", "ferrol"]},
+      "kind": {"enum": ["internal_interchange", "walking_connection", "interchange_unspecified", "mode_connection", "station_restriction", "service_interruption", "replacement_bus", "directional_service", "no_passenger_service"]},
+      "map_label": {"type": "string"},
+      "stop_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+      "page": {"type": "integer", "minimum": 1},
+      "bbox": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4},
+      "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+      "gtfs_source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+      "review_status": {"enum": ["visual_reviewed"]},
+      "gtfs_match_status": {"enum": ["reviewed", "not_found_in_feed"]},
+      "routing_ready": {"const": false},
+      "min_transfer_time_seconds": {"type": ["integer", "null"], "minimum": 0},
+      "walk_time_upper_bound_seconds": {"type": "integer", "minimum": 1},
+      "walk_time_upper_bound_exclusive": {"type": "boolean"}
+    },
+    "allOf": [{"if": {"properties": {"kind": {"const": "walking_connection"}}}, "then": {"properties": {"stop_ids": {"minItems": 2, "maxItems": 2}, "min_transfer_time_seconds": {"const": null}, "walk_time_upper_bound_seconds": {"const": 600}, "walk_time_upper_bound_exclusive": {"const": true}}, "required": ["min_transfer_time_seconds", "walk_time_upper_bound_seconds", "walk_time_upper_bound_exclusive"]}}]
+  }
+}

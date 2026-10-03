@@ -1,0 +1,502 @@
+{
+  "bilbao": {
+    "map_bottom": 1250,
+    "icons": {
+      "other_train": [
+        65,
+        1294
+      ],
+      "parking": [
+        65,
+        1330
+      ],
+      "bus": [
+        65,
+        1350
+      ],
+      "metro": [
+        65,
+        1370
+      ],
+      "tram": [
+        65,
+        1390
+      ],
+      "bicycle_parking": [
+        65,
+        1411
+      ],
+      "station_accessible_check_trains": [
+        551,
+        1293
+      ],
+      "station_and_trains_accessible": [
+        551,
+        1315
+      ],
+      "walk_under_10_min": [
+        551,
+        1336
+      ],
+      "fare_boundary": [
+        551,
+        1358
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "97b4e04bbd6fcb9722841e87fe44c56d75479802cdfac6eb22823c5e56b35251"
+  },
+  "cantabria": {
+    "map_bottom": 1170,
+    "icons": {
+      "other_train": [
+        62,
+        1235
+      ],
+      "parking": [
+        62,
+        1257
+      ],
+      "bus": [
+        62,
+        1282
+      ],
+      "bicycle_parking": [
+        62,
+        1305
+      ],
+      "walk_under_10_min": [
+        62,
+        1330
+      ],
+      "station_and_trains_accessible": [
+        62,
+        1352
+      ],
+      "fare_boundary": [
+        62,
+        1375
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "7e5ba205ffda5ac8e074a6b1e50ef6be6c7706850561010966b0aed39f9babfe"
+  },
+  "asturias": {
+    "map_bottom": 1315,
+    "icons": {
+      "other_train": [
+        66,
+        1341
+      ],
+      "parking": [
+        66,
+        1365
+      ],
+      "bus": [
+        66,
+        1389
+      ],
+      "bicycle_parking": [
+        66,
+        1414
+      ],
+      "walk_under_10_min": [
+        66,
+        1440
+      ],
+      "station_accessible_check_trains": [
+        660,
+        1341
+      ],
+      "station_and_trains_accessible": [
+        660,
+        1365
+      ],
+      "fare_boundary": [
+        660,
+        1390
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "23f91900c7b57fa70e387a3b432f62ec0cf3c14c68eaa0571b1c59c2f32c306c"
+  },
+  "madrid": {
+    "map_bottom": 1230,
+    "icons": {
+      "airport": [
+        89,
+        1261
+      ],
+      "other_train": [
+        89,
+        1281
+      ],
+      "parking": [
+        89,
+        1301
+      ],
+      "bus": [
+        89,
+        1321
+      ],
+      "metro": [
+        560,
+        1261
+      ],
+      "light_rail": [
+        560,
+        1281
+      ],
+      "bicycle_parking": [
+        560,
+        1301
+      ],
+      "station_and_trains_accessible": [
+        1038,
+        1261
+      ],
+      "station_accessible_check_trains": [
+        1038,
+        1281
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "a4a3b24647783eb73c79925d691f6fc60e029c874012b177e109a9706cb8e374"
+  },
+  "valencia": {
+    "map_bottom": 1295,
+    "icons": {
+      "other_train": [
+        66,
+        1315
+      ],
+      "parking": [
+        66,
+        1335
+      ],
+      "bus": [
+        66,
+        1355
+      ],
+      "metro": [
+        66,
+        1376
+      ],
+      "bicycle_parking": [
+        66,
+        1397
+      ],
+      "station_accessible_check_trains": [
+        66,
+        1417
+      ],
+      "station_and_trains_accessible": [
+        66,
+        1438
+      ],
+      "fare_boundary": [
+        707,
+        1316
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "070868c035482bf4c70f1337806b4dadb4955c318a7062490f97fe62477feea0"
+  },
+  "sevilla": {
+    "map_bottom": 1195,
+    "icons": {
+      "other_train": [
+        64,
+        1231
+      ],
+      "parking": [
+        64,
+        1256
+      ],
+      "bus": [
+        64,
+        1282
+      ],
+      "walk_under_10_min": [
+        64,
+        1336
+      ],
+      "fare_boundary": [
+        64,
+        1363
+      ],
+      "tram": [
+        588,
+        1231
+      ],
+      "metro": [
+        588,
+        1256
+      ],
+      "bicycle_parking": [
+        588,
+        1282
+      ],
+      "station_accessible_check_trains": [
+        989,
+        1231
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "17c501d06caa6b69381ddaec8ce4b79c5eee630f827f544357e254ec790a4b54"
+  },
+  "cadiz": {
+    "map_bottom": 1235,
+    "icons": {
+      "airport": [
+        79,
+        1265
+      ],
+      "other_train": [
+        79,
+        1289
+      ],
+      "parking": [
+        79,
+        1313
+      ],
+      "station_and_trains_accessible": [
+        79,
+        1345
+      ],
+      "fare_boundary": [
+        79,
+        1373
+      ],
+      "no_street_access": [
+        79,
+        1399
+      ],
+      "bus": [
+        606,
+        1265
+      ],
+      "bicycle_parking": [
+        606,
+        1313
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "93731cde030ec325af69de1529b2b704e3c937c8c8485e861ccc2b7fc8883170"
+  },
+  "malaga": {
+    "map_bottom": 1217,
+    "icons": {
+      "airport": [
+        64,
+        1243
+      ],
+      "other_train": [
+        64,
+        1267
+      ],
+      "bus": [
+        64,
+        1291
+      ],
+      "parking": [
+        64,
+        1315
+      ],
+      "metro": [
+        64,
+        1338
+      ],
+      "bicycle_parking": [
+        64,
+        1363
+      ],
+      "station_and_trains_accessible": [
+        64,
+        1387
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "0bbcb1f4728ac522ba7ecdf7dae374a1e666f10a95319bf563b912490f3bd281"
+  },
+  "murcia-alicante": {
+    "map_bottom": 1163,
+    "icons": {
+      "other_train": [
+        58,
+        1201
+      ],
+      "parking": [
+        58,
+        1227
+      ],
+      "bus": [
+        58,
+        1255
+      ],
+      "bicycle_parking": [
+        58,
+        1282
+      ],
+      "station_accessible_check_trains": [
+        58,
+        1308
+      ],
+      "fare_boundary": [
+        58,
+        1335
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "4ca77889570d5e2d3339183e2a37f111a44a53be55dae275794654fefa898ea0"
+  },
+  "san-sebastian": {
+    "map_bottom": 1185,
+    "icons": {
+      "other_train": [
+        64,
+        1223
+      ],
+      "parking": [
+        64,
+        1247
+      ],
+      "bus": [
+        64,
+        1271
+      ],
+      "tram": [
+        64,
+        1294
+      ],
+      "bicycle_parking": [
+        64,
+        1319
+      ],
+      "fare_boundary": [
+        64,
+        1346
+      ],
+      "station_accessible_check_trains": [
+        64,
+        1383
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "4976ed738e7eadacc1139a6002377963f6221a459b79bc8047a195f553799513"
+  },
+  "zaragoza": {
+    "map_bottom": 1088,
+    "icons": {
+      "other_train": [
+        74,
+        1165
+      ],
+      "parking": [
+        74,
+        1209
+      ],
+      "bus": [
+        74,
+        1253
+      ],
+      "tram": [
+        74,
+        1297
+      ],
+      "bicycle_parking": [
+        74,
+        1341
+      ],
+      "station_accessible_check_trains": [
+        74,
+        1385
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "b2107d2e79161b9e2f648084fb789330059e6e002ef6b0a6cb6ae00e6cbb8f5f"
+  },
+  "cartagena": {
+    "map_bottom": 1145,
+    "icons": {
+      "other_train": [
+        74,
+        1205
+      ],
+      "parking": [
+        74,
+        1251
+      ],
+      "bus": [
+        74,
+        1295
+      ],
+      "bicycle_parking": [
+        74,
+        1343
+      ],
+      "station_and_trains_accessible": [
+        74,
+        1391
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "796b4b9b68ccd6ae21d8a73baf823b72a5875218c8978d223c304b7103372c12"
+  },
+  "leon": {
+    "map_bottom": 1157,
+    "icons": {
+      "parking": [
+        64,
+        1225
+      ],
+      "shuttle_bus": [
+        64,
+        1258
+      ],
+      "fare_boundary": [
+        64,
+        1291
+      ],
+      "station_and_trains_accessible": [
+        64,
+        1324
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "5c88c9007decac9475d7a7137696a304ab8299bb6c3c966cba08b36b0c38b197"
+  },
+  "ferrol": {
+    "map_bottom": 1168,
+    "icons": {
+      "other_train": [
+        56,
+        1219
+      ],
+      "parking": [
+        56,
+        1252
+      ],
+      "bus": [
+        56,
+        1285
+      ],
+      "station_and_trains_accessible": [
+        56,
+        1317
+      ],
+      "fare_boundary": [
+        56,
+        1352
+      ]
+    },
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "dcce78be0323cdcdfbfe16f2dc6822092d047db0c4c840f71751b505f6980d16"
+  },
+  "barcelona": {
+    "map_bottom": 1008,
+    "icons": {},
+    "coordinate_reference": "1500px page width; origin top-left",
+    "source_sha256": "2ce504571b07dacefb15f71c87a314c947940b00ff2da532fe5da1eb3e78973c"
+  }
+}

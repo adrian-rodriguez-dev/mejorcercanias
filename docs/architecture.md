@@ -61,3 +61,5 @@ La penalización de 15 minutos por cambio ordena alternativas con la misma salid
 **Datos:** `current.json` apunta al manifiesto de un snapshot. El cliente valida la versión y adopta los datos coherentemente. Cache Storage conserva hasta doce archivos de datos de las dos últimas versiones consultadas, incluyendo grafos; no son doce redes completas. Los fallos o la falta de almacenamiento no impiden consultar online.
 
 El grafo también se guarda en memoria durante la visita. Esa caché de grafos aún no tiene límite explícito; no confundirla con la LRU de resultados ni con Cache Storage.
+
+El [pipeline cartográfico](map-pipeline.md) vive en `tools/maps/`, usa fuentes/anotaciones de `data/maps/` y genera artefactos en `work/`. Su propuesta se promueve al contrato de `routing-corrections.json`; el router no lee PDF/SVG ni anotaciones gráficas.
