@@ -36,7 +36,7 @@ The system SHALL usar el diálogo nativo únicamente tras un gesto explícito y 
 - **THEN** se muestra una guía de Compartir y Añadir a pantalla de inicio que se puede cerrar, sin simular un diálogo nativo.
 #### Scenario: Navegador sin soporte detectable
 - **WHEN** no hay evento nativo ni guía aplicable
-- **THEN** no se muestra una invitación automática ni un botón que prometa instalación; la ayuda manual explica la compatibilidad.
+- **THEN** no se muestra una invitación automática; el acceso manual Instalar abre ayuda que explica la compatibilidad sin afirmar instalación directa.
 
 ### Requirement: Supresión tras instalación
 The system SHALL ocultar la invitación en modo standalone y al recibir confirmación de instalación en la sesión; no solicitará permisos de notificación ni anunciará funcionamiento offline.
@@ -46,3 +46,15 @@ The system SHALL ocultar la invitación en modo standalone y al recibir confirma
 #### Scenario: Comprobación no disponible
 - **WHEN** se abre una pestaña y no se puede detectar si existe una instalación externa
 - **THEN** se respetan los rechazos guardados sin afirmar que la aplicación no está instalada.
+
+### Requirement: Acceso compacto desde cabecera
+The system SHALL ofrecer en la barra superior un botón con icono de instalación y texto Instalar, área táctil de al menos 44 px y nombre accesible Instalar app. SHALL abrir la instalación disponible o su ayuda manual, incluso tras descartar la invitación, y ocultarse en modo standalone o tras appinstalled.
+#### Scenario: Instalación desde arriba
+- **WHEN** se pulsa el acceso con evento nativo disponible
+- **THEN** se solicita instalación una sola vez mediante ese evento.
+#### Scenario: Ayuda sin evento nativo
+- **WHEN** se pulsa el acceso sin evento nativo
+- **THEN** aparece ayuda modal según plataforma, se puede cerrar con botón o Escape y el foco vuelve al acceso.
+#### Scenario: Pantalla móvil
+- **WHEN** se consulta a 360 px de ancho
+- **THEN** el acceso cabe en cabecera sin desbordamiento horizontal ni tapar los controles.
