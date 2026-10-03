@@ -67,3 +67,5 @@ Campana superior: 37 pruebas unitarias y 26 de navegador correctas; build/OpenSp
 Franja Renfe retirada completamente del panel: Actions 37073555578 correcto (22ec923), web pública verificada a 360 px sin demo-notice y con procedencia en el pie exterior.
 
 Encabezados compactos: build, OpenSpec estricto y cuatro pruebas de navegador correctos. Actions 37074137055 comprobación y despliegue correctos (b194209). Web pública verificada a 360 px: encabezados 10 px, separación superior 8 px, margen bajo líneas 4 px y sin desbordamiento.
+
+Filas compactas y hora grande: 37 pruebas unitarias, build y validación estricta correctos; cuatro pruebas específicas de navegador cubren 59/60/61 minutos, transición automática y medianoche en ambos husos. Capturas de panel y tabla móvil inspeccionadas. Actions 37107065088 correcto (8c2a844), incluida batería completa. Web pública a 360 px: margen vertical 7 px, nombre y horas 16 px, ocho horas grandes a las 04:00 Europe/Madrid y sin desbordamiento.
