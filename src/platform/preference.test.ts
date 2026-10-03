@@ -4,7 +4,10 @@ import {
   STORAGE_KEY,
   readJourney,
   saveJourney,
+  linesForStations,
+  normalizeJourney,
 } from "./preference";
+import { manifest } from "../data/snapshot";
 beforeEach(() => localStorage.clear());
 afterEach(() => vi.restoreAllMocks());
 it("restaura trayecto completo y selecciones vacías", () => {
@@ -66,4 +69,26 @@ it("un núcleo inexistente no se restaura", async () => {
   const { readNetwork, NETWORK_KEY } = await import("./preference");
   localStorage.setItem(NETWORK_KEY, "inexistente");
   expect(readNetwork()).toBe("");
+});
+
+it("con routing conserva las líneas compartidas y elimina filtros ocultos", () => {
+  const previous = manifest.routingNetworks;
+  manifest.routingNetworks = ["bilbao"];
+  try {
+    expect(linesForStations("13400", "13405")).toEqual(["C1"]);
+    expect(linesForStations("13400", "13200")).toEqual(["C1", "C2"]);
+    expect(linesForStations("13400", "")).toEqual(["C1", "C2"]);
+    expect(
+      normalizeJourney({
+        stationId: "13400",
+        destination: "13405",
+        lines: ["C2"],
+      }).lines,
+    ).toEqual([]);
+    // No shared line: the journey needs a change, so keep first-leg choices.
+    expect(linesForStations("13400", "13101")).toEqual(["C1", "C2"]);
+    expect(linesForStations("13405", "13101")).toEqual(["C1"]);
+  } finally {
+    manifest.routingNetworks = previous;
+  }
 });

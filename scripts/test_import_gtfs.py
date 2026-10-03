@@ -1,9 +1,13 @@
 import unittest
 import io
 import zipfile
-from import_gtfs import service_dates, seconds, compile_feed
+from import_gtfs import service_dates, seconds, compile_feed, NETWORKS
 
 class CalendarTests(unittest.TestCase):
+    def test_network_names_are_unicode(self):
+        self.assertEqual([NETWORKS[k][1] for k in ('31', '32', '40', '47', '61')],
+                         ['Cádiz', 'Málaga', 'València', 'León', 'San Sebastián'])
+
     def test_weekend_and_holiday_override(self):
         def calendar(id, weekdays):
             return dict(service_id=id, start_date='20261002', end_date='20261012', **dict(zip(['monday','tuesday','wednesday','thursday','friday','saturday','sunday'], weekdays)))

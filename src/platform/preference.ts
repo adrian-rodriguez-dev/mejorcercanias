@@ -33,12 +33,11 @@ export function linesForStations(
   const originLines = stations.find((s) => s.id === origin)?.lines ?? [];
   const destinationLines =
     stations.find((s) => s.id === destination)?.lines ?? [];
-  return originLines.filter(
-    (line) =>
-      !destination ||
-      routingAvailable(origin) ||
-      destinationLines.includes(line),
-  );
+  if (!destination) return originLines;
+  const shared = originLines.filter((line) => destinationLines.includes(line));
+  // Keep the direct-line choices when present. Transfer-only journeys can
+  // start on another line; an empty selection still searches every first leg.
+  return shared.length || !routingAvailable(origin) ? shared : originLines;
 }
 export function normalizeJourney(value: unknown): Journey {
   const data =

@@ -118,8 +118,8 @@ def compile_feed(archive, route_ids=None, allow_incomplete=False):
     return manifest, dict(by_station)
 
 
-TRANSFORM_VERSION = 'networks-routing-v2'
-NETWORKS = {'10':('madrid','Madrid'), '51':('rodalies','Rodalies de Catalunya'), '30':('sevilla','Sevilla'), '31':('cadiz','CÃ¡diz'), '32':('malaga','MÃ¡laga'), '40':('valencia','ValÃ¨ncia'), '41':('murcia-alicante','Murcia/Alicante'), '45':('cartagena','Cartagena'), '46':('ferrol','Ferrol'), '47':('leon','LeÃ³n'), '60':('bilbao','Bilbao'), '61':('san-sebastian','San SebastiÃ¡n'), '62':('cantabria','Cantabria'), '70':('zaragoza','Zaragoza')}
+TRANSFORM_VERSION = 'networks-routing-v3'
+NETWORKS = {'10':('madrid','Madrid'), '51':('rodalies','Rodalies de Catalunya'), '30':('sevilla','Sevilla'), '31':('cadiz','Cádiz'), '32':('malaga','Málaga'), '40':('valencia','València'), '41':('murcia-alicante','Murcia/Alicante'), '45':('cartagena','Cartagena'), '46':('ferrol','Ferrol'), '47':('leon','León'), '60':('bilbao','Bilbao'), '61':('san-sebastian','San Sebastián'), '62':('cantabria','Cantabria'), '70':('zaragoza','Zaragoza')}
 def snapshot_version(raw):
     return hashlib.sha256(raw + TRANSFORM_VERSION.encode() + (Path(__file__).resolve().parents[1]/'data/routing-corrections.json').read_bytes()).hexdigest()[:16]
 def compile_networks(archive):

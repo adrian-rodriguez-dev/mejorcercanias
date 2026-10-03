@@ -1,4 +1,5 @@
 import { manifest, type Network } from "./snapshot";
+import { stationLabel } from "./text";
 export function networks(): Network[] {
   return (
     manifest.networks ?? [
@@ -12,7 +13,7 @@ export function networks(): Network[] {
         validTo: manifest.validTo,
       },
     ]
-  );
+  ).map((network) => ({ ...network, name: stationLabel(network.name) }));
 }
 export const networkForStation = (id: string) =>
   networks().find(
