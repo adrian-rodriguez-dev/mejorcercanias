@@ -148,3 +148,7 @@ Revisión final solicitada: recuperado panel verde original, lima sustituido por
 naranja vivo #ff850a; tren centrado por límites visibles del SVG, incluidos raíles.
 Ambos temas revisados; corregido contraste del campo Fecha en oscuro.
 Cuatro pruebas de tema correctas tras el ajuste y cuatro de accesibilidad en claro.
+
+Fondos cálidos: subtonos verdes sustituidos por carbón marrón, marfil y bordes
+cálidos, manteniendo naranja y colores oficiales. Verificado visualmente en la
+pestaña local y con ocho pruebas de tema/contraste móvil y escritorio.

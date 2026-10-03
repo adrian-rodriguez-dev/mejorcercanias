@@ -24,7 +24,7 @@ The system SHALL mantener colores oficiales y elegir texto legible de al menos 4
 - **THEN** el texto usa contraste suficiente en el chip y en el botón activo.
 
 ### Requirement: Paleta clara sobria
-The system SHALL presentar fondo claro cálido, paneles verde oscuro, texto claro en el panel y acentos naranja vivo en sustitución del lima, manteniendo colores oficiales de línea y contraste accesible en panel, tabla, selectores y estados activos.
+The system SHALL presentar fondo marfil cálido, paneles marrón carbón, texto claro en el panel y acentos naranja vivo, sin subtonos verdes en las superficies, manteniendo colores oficiales de línea y contraste accesible en panel, tabla, selectores y estados activos.
 #### Scenario: Consulta en móvil
 - **WHEN** se consulta el panel o tabla
 - **THEN** textos, controles y foco conservan contraste y las líneas sus colores oficiales.

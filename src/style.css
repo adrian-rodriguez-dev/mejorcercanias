@@ -84,7 +84,7 @@ select:focus-visible {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #73894a;
+  background: #887e76;
 }
 .intro {
   padding: 48px 0 34px;
@@ -103,7 +103,7 @@ select:focus-visible {
   margin: 0;
 }
 .intro h1 span {
-  color: #6d8075;
+  color: #837971;
 }
 .intro > p:last-child {
   color: var(--theme-secondary);
@@ -118,12 +118,12 @@ select:focus-visible {
 }
 .station-card {
   background: #fffef8;
-  border: 1px solid #dddfd4;
+  border: 1px solid #e6dcd4;
   border-radius: 18px;
   padding: 27px 24px;
 }
 .station-card .eyebrow {
-  color: #758074;
+  color: #857b73;
   font-size: 0.5625rem;
 }
 .station-card label {
@@ -137,7 +137,7 @@ select {
   width: 100%;
   min-height: 52px;
   background: var(--theme-popover);
-  border: 1px solid #c6cec0;
+  border: 1px solid #d3c9c1;
   border-radius: 8px;
   padding: 0 12px;
   color: var(--theme-popover-ink);
@@ -145,7 +145,7 @@ select {
 }
 .preference {
   font-size: 0.75rem;
-  color: #617167;
+  color: #756b63;
   line-height: 1.65;
   margin: 14px 0 26px;
   min-height: 40px;
@@ -155,10 +155,10 @@ select {
   align-items: center;
   margin: 26px 0 22px;
   padding-top: 24px;
-  border-top: 1px solid #e4e6da;
+  border-top: 1px solid #ede3db;
 }
 .route-art span {
-  border: 1px solid #becbad;
+  border: 1px solid #cec4bc;
   border-radius: 50%;
   font-size: 0.625rem;
   width: 30px;
@@ -169,7 +169,7 @@ select {
 }
 .route-art i {
   height: 3px;
-  background: #dae4ca;
+  background: #e8ded6;
   flex: 1;
 }
 .station-card h2 {
@@ -179,14 +179,14 @@ select {
 }
 .aside-copy {
   font-size: 0.8125rem;
-  color: #6c786e;
+  color: #7d736b;
   line-height: 1.7;
   margin: 0;
 }
 .network-note {
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid #e4e6da;
+  border-top: 1px solid #ede3db;
   font-size: 0.625rem;
   letter-spacing: 1px;
   font-weight: 700;
@@ -197,14 +197,14 @@ select {
   font-size: 0.625rem;
   font-weight: 400;
   letter-spacing: 0;
-  color: #6d796f;
+  color: #7e746c;
 }
 .board {
   background: var(--theme-panel);
   border-radius: 18px;
-  color: #f4f6ee;
+  color: #f7f0e7;
   overflow: hidden;
-  box-shadow: 0 12px 28px #102c2910;
+  box-shadow: 0 12px 28px #30261f10;
 }
 .board-top {
   padding: 28px 28px 24px;
@@ -214,7 +214,7 @@ select {
   gap: 16px;
 }
 .board .eyebrow {
-  color: #a2b6a5;
+  color: #b9afa7;
   font-size: 0.5625rem;
   margin-bottom: 12px;
 }
@@ -237,11 +237,11 @@ select {
 }
 .clock span {
   font-size: 0.5625rem;
-  color: #a2b6a5;
+  color: #b9afa7;
 }
 .demo-notice {
-  background: #253d31;
-  color: #e2ebbe;
+  background: #3f352d;
+  color: #eee4dc;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -265,7 +265,7 @@ select {
   font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 1px;
-  color: #a3b5aa;
+  color: #b8aea6;
 }
 .table-heading span:last-child {
   text-align: right;
@@ -288,8 +288,8 @@ select {
   border: 0;
 }
 .departures .next-train {
-  background: #203e32;
-  border: 1px solid #506b41;
+  background: #3b3028;
+  border: 1px solid #6a6058;
   border-radius: 9px;
   margin-bottom: 2px;
 }
@@ -311,7 +311,7 @@ select {
 }
 .destination div > span {
   font-size: 0.5625rem;
-  color: #b0c0b1;
+  color: #c4bab2;
   display: block;
   margin-top: 5px;
 }
@@ -336,7 +336,7 @@ select {
 }
 time {
   font-size: 0.875rem;
-  color: #cfdbcf;
+  color: #e0d6ce;
   font-variant-numeric: tabular-nums;
 }
 .countdown {
@@ -351,7 +351,7 @@ time {
 }
 .countdown span {
   font-size: 0.625rem;
-  color: #b8c7b9;
+  color: #cbc1b9;
 }
 .next-train .countdown {
   color: #ff850a;
@@ -364,7 +364,7 @@ time {
   padding: 18px 28px;
   border-top: 1px solid #ffffff14;
   font-size: 0.5625rem;
-  color: #a8bbaa;
+  color: #beb4ac;
 }
 .board-footer .dot {
   background: #ff850a;
@@ -391,13 +391,13 @@ time {
 .empty p {
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: #b6c6b7;
+  color: #cac0b8;
   max-width: 280px;
   margin: 0 0 24px;
 }
 .light-button {
   background: #ff850a;
-  color: #1f3928;
+  color: #3a3028;
   border: 0;
   padding: 13px 20px;
   border-radius: 7px;
@@ -429,7 +429,7 @@ time {
   color: var(--theme-secondary);
 }
 .site-footer strong {
-  color: #273e33;
+  color: #40362e;
 }
 @media (min-width: 1400px) {
   .intro {
@@ -648,10 +648,10 @@ time {
 }
 .board-tabs button,
 .timetable button {
-  border: 1px solid #6a8374;
+  border: 1px solid #857b73;
   border-radius: 7px;
   background: transparent;
-  color: #eaf2df;
+  color: #f7ede5;
   padding: 10px 13px;
   font: inherit;
   font-size: 0.75rem;
@@ -661,7 +661,7 @@ time {
 .date-actions button[aria-pressed="true"] {
   background: #ff850a;
   border-color: #ff850a;
-  color: #17392d;
+  color: #392f27;
   font-weight: 700;
 }
 .timetable {
@@ -692,16 +692,16 @@ time {
   flex-direction: column;
   gap: 7px;
   font-size: 0.6875rem;
-  color: #cfdbc9;
+  color: #dfd5cd;
   min-width: 0;
 }
 .timetable input,
 .timetable select {
   font: inherit;
   font-size: 0.8125rem;
-  background: #f6f8f0;
+  background: #fff5ed;
   color: var(--theme-ink);
-  border: 1px solid #b7c3a7;
+  border: 1px solid #c6bcb4;
   padding: 10px;
   border-radius: 7px;
   min-height: 42px;
@@ -718,7 +718,7 @@ time {
   margin: 23px 0 8px;
 }
 .calendar-help {
-  color: #bed0bc;
+  color: #d3c9c1;
   font-size: 0.6875rem;
   line-height: 1.7;
   margin: 0 0 22px;
@@ -734,7 +734,7 @@ time {
   justify-content: space-between;
   margin: 20px 0;
   font-size: 0.75rem;
-  color: #c2d1be;
+  color: #d4cac2;
   gap: 10px;
 }
 .filter-summary button {
@@ -745,7 +745,7 @@ time {
 }
 .recommendation {
   background: #ff850a;
-  color: #183328;
+  color: #342a22;
   border-radius: 9px;
   padding: 16px;
   margin-bottom: 20px;
@@ -769,13 +769,13 @@ time {
 .schedule-table caption {
   text-align: left;
   font-size: 0.6875rem;
-  color: #bbcbb8;
+  color: #cec4bc;
   line-height: 1.7;
   margin-bottom: 16px;
 }
 .schedule-table th {
   text-align: left;
-  color: #bbceb5;
+  color: #d0c6be;
   font-size: 0.625rem;
   font-weight: 500;
   padding: 12px 6px;
@@ -802,7 +802,7 @@ time {
   margin-top: 5px;
 }
 .recommended-row {
-  background: #294735;
+  background: #473d35;
 }
 .schedule-message {
   padding: 25px 0;
@@ -870,10 +870,10 @@ time {
   margin: 12px 16px 0;
 }
 .route-filters {
-  border: 1px solid #536d60;
+  border: 1px solid #6f655d;
   border-radius: 9px;
-  background: #18352f;
-  color: #f1f5e8;
+  background: #362c24;
+  color: #fbf1e9;
   min-width: 0;
 }
 .route-filters.is-active {
@@ -928,7 +928,7 @@ time {
   flex-direction: column;
   gap: 6px;
   font-size: 0.6875rem;
-  color: #d0dfcb;
+  color: #e2d8d0;
   min-width: 0;
 }
 .route-filters select,
@@ -936,9 +936,9 @@ time {
   width: 100%;
   min-width: 0;
   min-height: 44px;
-  background: #f6f8f0;
-  border: 1px solid #bbc9a9;
-  color: #17372c;
+  background: #fff5ed;
+  border: 1px solid #ccc2ba;
+  color: #372d25;
   padding: 10px;
   border-radius: 7px;
   font: inherit;
@@ -960,16 +960,16 @@ time {
 .route-filter-actions button {
   min-height: 44px;
   padding: 10px 13px;
-  border: 1px solid #708c76;
+  border: 1px solid #8c827a;
   border-radius: 7px;
   background: transparent;
-  color: #edf5dc;
+  color: #f9efe7;
   font: inherit;
   font-size: 0.75rem;
 }
 .route-filter-actions .apply-route-filters {
   background: #ff850a;
-  color: #17392d;
+  color: #392f27;
   border-color: #ff850a;
   font-weight: 700;
 }
@@ -1025,13 +1025,13 @@ time {
 }
 .journey-header label > span {
   font-size: 0.625rem;
-  color: #acbfaf;
+  color: #c2b8b0;
   margin-left: 9px;
 }
 .journey-header select {
   background: transparent;
-  color: #f4f6ee;
-  border: 1px solid #49675a;
+  color: #f7f0e7;
+  border: 1px solid #685e56;
   font-size: 1.25rem;
   letter-spacing: -0.5px;
   min-height: 44px;
@@ -1133,9 +1133,9 @@ time {
   justify-content: center;
   align-items: center;
   gap: 8px;
-  background: color-mix(in srgb, var(--line-color) 32%, #10201c);
+  background: color-mix(in srgb, var(--line-color) 32%, #2b211b);
   color: #fff;
-  border: 2px solid color-mix(in srgb, var(--line-color) 65%, #10201c);
+  border: 2px solid color-mix(in srgb, var(--line-color) 65%, #2b211b);
   border-radius: 8px;
   font: inherit;
   font-size: 0.9375rem;
@@ -1145,7 +1145,7 @@ time {
 .line-bar button[aria-pressed="true"] {
   background: var(--line-color);
   color: #000;
-  border-color: #eaf4d7;
+  border-color: #f8eee6;
 }
 .line-bar button:focus-visible {
   outline: 3px solid #ff850a;
@@ -1177,7 +1177,7 @@ time {
 .train-times small {
   font-size: 0.6875rem;
   line-height: 1.4;
-  color: #bacabb;
+  color: #cec4bc;
 }
 .train-times time {
   font-size: 1rem;
@@ -1186,12 +1186,12 @@ time {
   white-space: nowrap;
 }
 .train-arrival time {
-  color: #e4f2c8;
+  color: #f4eae2;
 }
 .train-times .arrival-day,
 .train-times .departure-day {
   font-size: 0.625rem;
-  color: #e4f2c8;
+  color: #f4eae2;
   white-space: nowrap;
 }
 
@@ -1205,10 +1205,10 @@ time {
   margin-top: 8px;
   padding: 0 4px 0 12px;
   min-height: 46px;
-  border: 1px solid #a4c899;
+  border: 1px solid #c5bbb3;
   border-radius: 9px;
-  background: #e2f1da;
-  color: #234a32;
+  background: #f4eae2;
+  color: #483e36;
   font-size: 0.875rem;
 }
 .install-invitation > span {
@@ -1237,7 +1237,7 @@ time {
 }
 .install-action:focus-visible,
 .install-dismiss:focus-visible {
-  outline: 3px solid #4d7c43;
+  outline: 3px solid #766c64;
   outline-offset: -3px;
   border-radius: 6px;
 }
@@ -1256,7 +1256,7 @@ time {
   padding: 20px;
   background: var(--theme-popover);
   color: var(--theme-panel);
-  border: 1px solid #859a78;
+  border: 1px solid #9b9189;
   border-radius: 12px;
 }
 .install-help::backdrop {
@@ -1272,9 +1272,9 @@ time {
   gap: 8px;
   margin-top: 8px;
   padding: 0 12px;
-  background: #e2f1da;
-  color: #234a32;
-  border: 1px solid #a4c899;
+  background: #f4eae2;
+  color: #483e36;
+  border: 1px solid #c5bbb3;
   border-radius: 9px;
   font-size: 0.875rem;
 }
@@ -1317,10 +1317,10 @@ time {
   flex-shrink: 0;
   width: 44px;
   height: 44px;
-  border: 1px solid #c9d1c4;
+  border: 1px solid #d6ccc4;
   border-radius: 50%;
   background: transparent;
-  color: #50685d;
+  color: #6a6058;
   cursor: pointer;
 }
 .alert-indicator:disabled {
@@ -1348,7 +1348,7 @@ time {
   font-weight: 700;
 }
 .alert-indicator:focus-visible {
-  outline: 3px solid #73894a;
+  outline: 3px solid #887e76;
   outline-offset: 3px;
 }
 .workspace,
@@ -1401,7 +1401,7 @@ time {
   font-size: 1.1875rem;
 }
 .alerts-dialog article + article {
-  border-top: 1px solid #99aa99;
+  border-top: 1px solid #ada39b;
 }
 .alert-source-status {
   font: inherit;
@@ -1423,7 +1423,7 @@ time {
 .network-switch {
   border: 0;
   background: none;
-  color: #12342e;
+  color: #342a22;
   font: inherit;
   font-size: 1.125rem;
   font-weight: 650;
@@ -1443,7 +1443,7 @@ time {
   padding: 24px;
   max-width: 650px;
   margin: auto;
-  color: #eaf2de;
+  color: #f7ede5;
 }
 .onboarding h1 {
   font-size: 1.625rem;
@@ -1453,7 +1453,7 @@ time {
 .onboarding p {
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: #bed0c4;
+  color: #d3c9c1;
 }
 .onboarding label {
   display: block;
@@ -1525,7 +1525,7 @@ time {
   padding: 6px;
 }
 .timetable .return-now {
-  color: #e4f2c8;
+  color: #f4eae2;
   text-decoration: underline;
 }
 
@@ -1540,15 +1540,15 @@ time {
   min-width: 0;
   min-height: 44px;
   padding: 8px 44px 8px 10px;
-  border: 1px solid #49675a;
+  border: 1px solid #685e56;
   border-radius: 8px;
   background: transparent;
-  color: #f4f6ee;
+  color: #f7f0e7;
   font: inherit;
   font-size: 1.0625rem;
 }
 .editable-select input::placeholder {
-  color: #acbfaf;
+  color: #c2b8b0;
   font-size: 0.875rem;
 }
 .editable-select .clear-selection {
@@ -1560,7 +1560,7 @@ time {
   min-height: 44px;
   border: 0;
   background: transparent;
-  color: #cfdbc9;
+  color: #dfd5cd;
   font-size: 1.5625rem;
   cursor: pointer;
   padding: 0;
@@ -1583,7 +1583,7 @@ time {
   z-index: 10;
   max-height: 240px;
   overflow: auto;
-  border: 1px solid #7f9984;
+  border: 1px solid #9a9088;
   border-radius: 8px;
   background: var(--theme-popover);
   box-shadow: 0 8px 18px #0004;
@@ -1657,7 +1657,7 @@ button:focus-visible,
 a:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid #52692d;
+  outline: 3px solid #685e56;
   outline-offset: 2px;
 }
 .board input:focus-visible,
@@ -1675,8 +1675,8 @@ summary:focus-visible,
   z-index: 100;
   transform: translateY(-120%);
   padding: 12px;
-  background: #e2f1da;
-  color: #17392d;
+  background: #f4eae2;
+  color: #392f27;
 }
 .skip-link:focus {
   transform: translateY(0);
@@ -1762,7 +1762,7 @@ summary:focus-visible,
   }
 }
 
-.journey-status,.journey-detail { display:block; font-size:.8rem; margin:.35rem 0; color:#c9e4d8; }
+.journey-status,.journey-detail { display:block; font-size:.8rem; margin:.35rem 0; color:#e5dbd3; }
 .journey-detail summary { cursor:pointer; min-height:28px; padding:6px 0; }
 .journey-detail ol { padding-left:1rem; margin:0; }
 .departures .journey-detail li { display:block; padding:.4rem 0; border:0; background:none; }
@@ -1778,26 +1778,26 @@ summary:focus-visible,
 /* Larger networks keep every line available on narrow screens. */
 .line-bar { grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); }
 
-/* Original forest-green palette, with vivid orange replacing lime. */
+/* Warm charcoal palette, with vivid orange replacing lime. */
 :root {
   color-scheme: light;
-  --theme-page: #f5f5ee;
-  --theme-ink: #172f2d;
-  --theme-panel: #102c29;
-  --theme-secondary: #617068;
-  --theme-outer-border: #daddd3;
-  --theme-popover: #f4f5ed;
-  --theme-popover-ink: #173731;
+  --theme-page: #f6f1e9;
+  --theme-ink: #30261f;
+  --theme-panel: #30261f;
+  --theme-secondary: #756557;
+  --theme-outer-border: #e4dad2;
+  --theme-popover: #f5eee5;
+  --theme-popover-ink: #382b21;
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --theme-page: #101917;
-  --theme-ink: #f0f4ef;
-  --theme-panel: #17352f;
-  --theme-secondary: #b0c0b1;
-  --theme-outer-border: #42534d;
-  --theme-popover: #203e32;
-  --theme-popover-ink: #f4f6ee;
+  --theme-page: #1c1713;
+  --theme-ink: #f7f0e7;
+  --theme-panel: #30261f;
+  --theme-secondary: #c4bab2;
+  --theme-outer-border: #635144;
+  --theme-popover: #3b3028;
+  --theme-popover-ink: #f7f0e7;
 }
 .board { color-scheme: dark; }
 .board select, .board input, .select-options { color-scheme: light; }
@@ -1816,12 +1816,12 @@ summary:focus-visible,
   background: transparent;
   color: var(--theme-ink);
 }
-.theme-toggle:hover { background: #ff850a; color: #102c29; }
+.theme-toggle:hover { background: #ff850a; color: #30261f; }
 :root[data-theme="dark"] .network-switch,
 :root[data-theme="dark"] .site-footer strong { color: var(--theme-ink); }
-:root[data-theme="dark"] .alert-indicator { color: #b0c0b1; border-color: var(--theme-outer-border); }
+:root[data-theme="dark"] .alert-indicator { color: #c4bab2; border-color: var(--theme-outer-border); }
 :root[data-theme="dark"] .select-options button[aria-selected="true"],
-:root[data-theme="dark"] .select-options button:hover { background: #ff850a; color: #102c29; }
+:root[data-theme="dark"] .select-options button:hover { background: #ff850a; color: #30261f; }
 .board input:focus-visible, .board button:focus-visible,
 .board summary:focus-visible, .onboarding input:focus-visible,
 .onboarding button:focus-visible { outline-color: #ff850a; }
@@ -1831,4 +1831,4 @@ summary:focus-visible,
 :root[data-theme="dark"] .route-filters input,
 :root[data-theme="dark"] .route-filters select { background: var(--theme-popover); color: var(--theme-popover-ink); }
 
-.swap-stations { color: #102c29; }
+.swap-stations { color: #30261f; }
