@@ -7,8 +7,8 @@
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  color: #172f2d;
-  background: #f5f5ee;
+  color: #24292f;
+  background: #f6f5f1;
   font-synthesis: none;
   font-weight: 400;
 }
@@ -49,7 +49,7 @@ select:focus-visible {
   justify-content: space-between;
   align-items: center;
   padding: 30px 0;
-  border-bottom: 1px solid #daddd3;
+  border-bottom: 1px solid #d5d9dd;
 }
 .brand {
   display: flex;
@@ -84,7 +84,7 @@ select:focus-visible {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #73894a;
+  background: #edf2f6;
 }
 .intro {
   padding: 48px 0 34px;
@@ -103,10 +103,10 @@ select:focus-visible {
   margin: 0;
 }
 .intro h1 span {
-  color: #6d8075;
+  color: #59616a;
 }
 .intro > p:last-child {
-  color: #617068;
+  color: #59616a;
   margin: 20px 0 0;
   font-size: 0.9375rem;
 }
@@ -117,13 +117,13 @@ select:focus-visible {
   align-items: start;
 }
 .station-card {
-  background: #fffef8;
-  border: 1px solid #dddfd4;
+  background: #f6f5f1;
+  border: 1px solid #d5d9dd;
   border-radius: 18px;
   padding: 27px 24px;
 }
 .station-card .eyebrow {
-  color: #758074;
+  color: #59616a;
   font-size: 0.5625rem;
 }
 .station-card label {
@@ -136,16 +136,16 @@ select:focus-visible {
 select {
   width: 100%;
   min-height: 52px;
-  background: #f4f5ed;
-  border: 1px solid #c6cec0;
+  background: #f6f5f1;
+  border: 1px solid #d5d9dd;
   border-radius: 8px;
   padding: 0 12px;
-  color: #173731;
+  color: #24292f;
   font-weight: 600;
 }
 .preference {
   font-size: 0.75rem;
-  color: #617167;
+  color: #59616a;
   line-height: 1.65;
   margin: 14px 0 26px;
   min-height: 40px;
@@ -155,10 +155,10 @@ select {
   align-items: center;
   margin: 26px 0 22px;
   padding-top: 24px;
-  border-top: 1px solid #e4e6da;
+  border-top: 1px solid #d5d9dd;
 }
 .route-art span {
-  border: 1px solid #becbad;
+  border: 1px solid #d5d9dd;
   border-radius: 50%;
   font-size: 0.625rem;
   width: 30px;
@@ -169,7 +169,7 @@ select {
 }
 .route-art i {
   height: 3px;
-  background: #dae4ca;
+  background: #edf2f6;
   flex: 1;
 }
 .station-card h2 {
@@ -179,14 +179,14 @@ select {
 }
 .aside-copy {
   font-size: 0.8125rem;
-  color: #6c786e;
+  color: #59616a;
   line-height: 1.7;
   margin: 0;
 }
 .network-note {
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid #e4e6da;
+  border-top: 1px solid #d5d9dd;
   font-size: 0.625rem;
   letter-spacing: 1px;
   font-weight: 700;
@@ -197,12 +197,12 @@ select {
   font-size: 0.625rem;
   font-weight: 400;
   letter-spacing: 0;
-  color: #6d796f;
+  color: #59616a;
 }
 .board {
-  background: #102c29;
+  background: #ffffff;
   border-radius: 18px;
-  color: #f4f6ee;
+  color: #24292f;
   overflow: hidden;
   box-shadow: 0 12px 28px #102c2910;
 }
@@ -214,7 +214,7 @@ select {
   gap: 16px;
 }
 .board .eyebrow {
-  color: #a2b6a5;
+  color: #59616a;
   font-size: 0.5625rem;
   margin-bottom: 12px;
 }
@@ -237,11 +237,11 @@ select {
 }
 .clock span {
   font-size: 0.5625rem;
-  color: #a2b6a5;
+  color: #59616a;
 }
 .demo-notice {
-  background: #253d31;
-  color: #e2ebbe;
+  background: #ffffff;
+  color: #24292f;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -250,7 +250,7 @@ select {
   line-height: 1.5;
 }
 .demo-tag {
-  border: 1px solid #8d9d65;
+  border: 1px solid #d5d9dd;
   border-radius: 4px;
   font-size: 0.5rem;
   letter-spacing: 1px;
@@ -265,7 +265,7 @@ select {
   font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 1px;
-  color: #a3b5aa;
+  color: #59616a;
 }
 .table-heading span:last-child {
   text-align: right;
@@ -281,15 +281,15 @@ select {
   gap: 10px;
   align-items: center;
   min-height: 56px;
-  border-bottom: 1px solid #ffffff10;
+  border-bottom: 1px solid #dfe3e7;
   padding: 7px 14px;
 }
 .departures li:last-child {
   border: 0;
 }
 .departures .next-train {
-  background: #203e32;
-  border: 1px solid #506b41;
+  background: #ffffff;
+  border: 1px solid #d5d9dd;
   border-radius: 9px;
   margin-bottom: 2px;
 }
@@ -311,7 +311,7 @@ select {
 }
 .destination div > span {
   font-size: 0.5625rem;
-  color: #b0c0b1;
+  color: #59616a;
   display: block;
   margin-top: 5px;
 }
@@ -336,7 +336,7 @@ select {
 }
 time {
   font-size: 0.875rem;
-  color: #cfdbcf;
+  color: #24292f;
   font-variant-numeric: tabular-nums;
 }
 .countdown {
@@ -351,10 +351,10 @@ time {
 }
 .countdown span {
   font-size: 0.625rem;
-  color: #b8c7b9;
+  color: #59616a;
 }
 .next-train .countdown {
-  color: #def387;
+  color: #234f73;
 }
 .board-footer {
   display: flex;
@@ -362,12 +362,12 @@ time {
   gap: 10px;
   margin-top: 18px;
   padding: 18px 28px;
-  border-top: 1px solid #ffffff14;
+  border-top: 1px solid #dfe3e7;
   font-size: 0.5625rem;
-  color: #a8bbaa;
+  color: #59616a;
 }
 .board-footer .dot {
-  background: #c5d995;
+  background: #edf2f6;
   margin-right: 5px;
 }
 .empty {
@@ -381,7 +381,7 @@ time {
 }
 .empty-icon {
   font-size: 2.625rem;
-  color: #d9ed9b;
+  color: #234f73;
 }
 .empty h3 {
   font-size: 1.375rem;
@@ -391,13 +391,13 @@ time {
 .empty p {
   font-size: 0.8125rem;
   line-height: 1.7;
-  color: #b6c6b7;
+  color: #59616a;
   max-width: 280px;
   margin: 0 0 24px;
 }
 .light-button {
-  background: #dcee9f;
-  color: #1f3928;
+  background: #edf2f6;
+  color: #24292f;
   border: 0;
   padding: 13px 20px;
   border-radius: 7px;
@@ -414,22 +414,22 @@ time {
   padding: 20px 0 54px;
   font-size: 0.625rem;
   line-height: 1.6;
-  color: #536451;
+  color: #59616a;
 }
 .below-board a {
   text-underline-offset: 4px;
 }
 .site-footer {
-  border-top: 1px solid #daddd3;
+  border-top: 1px solid #d5d9dd;
   display: flex;
   justify-content: space-between;
   gap: 20px;
   padding: 25px 0;
   font-size: 0.625rem;
-  color: #536451;
+  color: #59616a;
 }
 .site-footer strong {
-  color: #273e33;
+  color: #24292f;
 }
 @media (min-width: 1400px) {
   .intro {
@@ -648,10 +648,10 @@ time {
 }
 .board-tabs button,
 .timetable button {
-  border: 1px solid #6a8374;
+  border: 1px solid #d5d9dd;
   border-radius: 7px;
   background: transparent;
-  color: #eaf2df;
+  color: #24292f;
   padding: 10px 13px;
   font: inherit;
   font-size: 0.75rem;
@@ -659,9 +659,9 @@ time {
 }
 .board-tabs button[aria-pressed="true"],
 .date-actions button[aria-pressed="true"] {
-  background: #dcee9f;
-  border-color: #dcee9f;
-  color: #17392d;
+  background: #edf2f6;
+  border-color: #d5d9dd;
+  color: #24292f;
   font-weight: 700;
 }
 .timetable {
@@ -675,8 +675,8 @@ time {
 }
 .date-actions .quick-plan {
   margin-left: auto;
-  border-color: #b6cb85;
-  color: #dcee9f;
+  border-color: #d5d9dd;
+  color: #234f73;
 }
 .timetable button:disabled {
   opacity: 0.5;
@@ -692,16 +692,16 @@ time {
   flex-direction: column;
   gap: 7px;
   font-size: 0.6875rem;
-  color: #cfdbc9;
+  color: #24292f;
   min-width: 0;
 }
 .timetable input,
 .timetable select {
   font: inherit;
   font-size: 0.8125rem;
-  background: #f6f8f0;
-  color: #172f2d;
-  border: 1px solid #b7c3a7;
+  background: #f6f5f1;
+  color: #24292f;
+  border: 1px solid #d5d9dd;
   padding: 10px;
   border-radius: 7px;
   min-height: 42px;
@@ -718,7 +718,7 @@ time {
   margin: 23px 0 8px;
 }
 .calendar-help {
-  color: #bed0bc;
+  color: #59616a;
   font-size: 0.6875rem;
   line-height: 1.7;
   margin: 0 0 22px;
@@ -734,7 +734,7 @@ time {
   justify-content: space-between;
   margin: 20px 0;
   font-size: 0.75rem;
-  color: #c2d1be;
+  color: #59616a;
   gap: 10px;
 }
 .filter-summary button {
@@ -744,8 +744,8 @@ time {
   padding: 0;
 }
 .recommendation {
-  background: #dcee9f;
-  color: #183328;
+  background: #edf2f6;
+  color: #24292f;
   border-radius: 9px;
   padding: 16px;
   margin-bottom: 20px;
@@ -769,17 +769,17 @@ time {
 .schedule-table caption {
   text-align: left;
   font-size: 0.6875rem;
-  color: #bbcbb8;
+  color: #59616a;
   line-height: 1.7;
   margin-bottom: 16px;
 }
 .schedule-table th {
   text-align: left;
-  color: #bbceb5;
+  color: #59616a;
   font-size: 0.625rem;
   font-weight: 500;
   padding: 12px 6px;
-  border-bottom: 1px solid #ffffff30;
+  border-bottom: 1px solid #dfe3e7;
 }
 .schedule-table th:first-child {
   width: 48px;
@@ -789,7 +789,7 @@ time {
 }
 .schedule-table td {
   padding: 7px 6px;
-  border-bottom: 1px solid #ffffff16;
+  border-bottom: 1px solid #dfe3e7;
   overflow-wrap: anywhere;
 }
 .schedule-table .line {
@@ -798,11 +798,11 @@ time {
 .schedule-table small {
   display: block;
   font-size: 0.625rem;
-  color: #dcee9f;
+  color: #234f73;
   margin-top: 5px;
 }
 .recommended-row {
-  background: #294735;
+  background: #ffffff;
 }
 .schedule-message {
   padding: 25px 0;
@@ -870,14 +870,14 @@ time {
   margin: 12px 16px 0;
 }
 .route-filters {
-  border: 1px solid #536d60;
+  border: 1px solid #d5d9dd;
   border-radius: 9px;
-  background: #18352f;
-  color: #f1f5e8;
+  background: #ffffff;
+  color: #24292f;
   min-width: 0;
 }
 .route-filters.is-active {
-  border-color: #acbf79;
+  border-color: #d5d9dd;
 }
 .route-filters summary {
   display: flex;
@@ -893,7 +893,7 @@ time {
   display: none;
 }
 .route-filters summary:focus-visible {
-  outline: 3px solid #def387;
+  outline: 3px solid #235f90;
   outline-offset: 3px;
   border-radius: 8px;
 }
@@ -905,7 +905,7 @@ time {
   min-width: 0;
 }
 .filter-icon {
-  color: #dcee9f;
+  color: #234f73;
   font-size: 1.125rem;
   line-height: 1;
 }
@@ -928,7 +928,7 @@ time {
   flex-direction: column;
   gap: 6px;
   font-size: 0.6875rem;
-  color: #d0dfcb;
+  color: #24292f;
   min-width: 0;
 }
 .route-filters select,
@@ -936,9 +936,9 @@ time {
   width: 100%;
   min-width: 0;
   min-height: 44px;
-  background: #f6f8f0;
-  border: 1px solid #bbc9a9;
-  color: #17372c;
+  background: #f6f5f1;
+  border: 1px solid #d5d9dd;
+  color: #24292f;
   padding: 10px;
   border-radius: 7px;
   font: inherit;
@@ -960,17 +960,17 @@ time {
 .route-filter-actions button {
   min-height: 44px;
   padding: 10px 13px;
-  border: 1px solid #708c76;
+  border: 1px solid #d5d9dd;
   border-radius: 7px;
   background: transparent;
-  color: #edf5dc;
+  color: #24292f;
   font: inherit;
   font-size: 0.75rem;
 }
 .route-filter-actions .apply-route-filters {
-  background: #dcee9f;
-  color: #17392d;
-  border-color: #dcee9f;
+  background: #edf2f6;
+  color: #24292f;
+  border-color: #d5d9dd;
   font-weight: 700;
 }
 .timetable .date-actions button,
@@ -1025,21 +1025,21 @@ time {
 }
 .journey-header label > span {
   font-size: 0.625rem;
-  color: #acbfaf;
+  color: #59616a;
   margin-left: 9px;
 }
 .journey-header select {
   background: transparent;
-  color: #f4f6ee;
-  border: 1px solid #49675a;
+  color: #24292f;
+  border: 1px solid #d5d9dd;
   font-size: 1.25rem;
   letter-spacing: -0.5px;
   min-height: 44px;
   padding: 5px 8px;
 }
 .journey-header option {
-  color: #173731;
-  background: #f4f5ed;
+  color: #24292f;
+  background: #f6f5f1;
 }
 .origin-field {
   grid-column: 1;
@@ -1059,9 +1059,9 @@ time {
   min-height: 44px;
   width: 44px;
   border-radius: 50%;
-  border: 1px solid #afc580;
-  background: #dcee9f;
-  color: #173731;
+  border: 1px solid #d5d9dd;
+  background: #edf2f6;
+  color: #24292f;
   font-size: 1.5rem;
   cursor: pointer;
 }
@@ -1070,12 +1070,12 @@ time {
   cursor: default;
 }
 .journey-header :focus-visible {
-  outline: 3px solid #def387;
+  outline: 3px solid #235f90;
   outline-offset: 2px;
 }
 .storage-warning {
   font-size: 0.75rem;
-  color: #dcee9f;
+  color: #234f73;
   margin: 0 20px 12px;
 }
 .route-selectors {
@@ -1177,7 +1177,7 @@ time {
 .train-times small {
   font-size: 0.6875rem;
   line-height: 1.4;
-  color: #bacabb;
+  color: #59616a;
 }
 .train-times time {
   font-size: 1rem;
@@ -1186,12 +1186,12 @@ time {
   white-space: nowrap;
 }
 .train-arrival time {
-  color: #e4f2c8;
+  color: #234f73;
 }
 .train-times .arrival-day,
 .train-times .departure-day {
   font-size: 0.625rem;
-  color: #e4f2c8;
+  color: #234f73;
   white-space: nowrap;
 }
 
@@ -1205,10 +1205,10 @@ time {
   margin-top: 8px;
   padding: 0 4px 0 12px;
   min-height: 46px;
-  border: 1px solid #a4c899;
+  border: 1px solid #d5d9dd;
   border-radius: 9px;
-  background: #e2f1da;
-  color: #234a32;
+  background: #edf2f6;
+  color: #24292f;
   font-size: 0.875rem;
 }
 .install-invitation > span {
@@ -1237,7 +1237,7 @@ time {
 }
 .install-action:focus-visible,
 .install-dismiss:focus-visible {
-  outline: 3px solid #4d7c43;
+  outline: 3px solid #235f90;
   outline-offset: -3px;
   border-radius: 6px;
 }
@@ -1254,9 +1254,9 @@ time {
   max-width: min(480px, calc(100vw - 32px));
   max-height: 80dvh;
   padding: 20px;
-  background: #f4f5ed;
-  color: #102c29;
-  border: 1px solid #859a78;
+  background: #f6f5f1;
+  color: #24292f;
+  border: 1px solid #d5d9dd;
   border-radius: 12px;
 }
 .install-help::backdrop {
@@ -1272,9 +1272,9 @@ time {
   gap: 8px;
   margin-top: 8px;
   padding: 0 12px;
-  background: #e2f1da;
-  color: #234a32;
-  border: 1px solid #a4c899;
+  background: #edf2f6;
+  color: #24292f;
+  border: 1px solid #d5d9dd;
   border-radius: 9px;
   font-size: 0.875rem;
 }
@@ -1317,10 +1317,10 @@ time {
   flex-shrink: 0;
   width: 44px;
   height: 44px;
-  border: 1px solid #c9d1c4;
+  border: 1px solid #d5d9dd;
   border-radius: 50%;
   background: transparent;
-  color: #50685d;
+  color: #59616a;
   cursor: pointer;
 }
 .alert-indicator:disabled {
@@ -1328,9 +1328,9 @@ time {
   opacity: 0.6;
 }
 .alert-indicator.has-incidents {
-  color: #102c29;
-  background: #f4da88;
-  border-color: #c7a64f;
+  color: #24292f;
+  background: #edf2f6;
+  border-color: #d5d9dd;
 }
 .alert-count {
   position: absolute;
@@ -1348,7 +1348,7 @@ time {
   font-weight: 700;
 }
 .alert-indicator:focus-visible {
-  outline: 3px solid #73894a;
+  outline: 3px solid #235f90;
   outline-offset: 3px;
 }
 .workspace,
@@ -1382,8 +1382,8 @@ time {
   max-height: 80dvh;
   border: 0;
   border-radius: 16px;
-  background: #f4f5ed;
-  color: #102c29;
+  background: #f6f5f1;
+  color: #24292f;
   padding: 18px;
   overflow: auto;
   overflow-wrap: anywhere;
@@ -1401,7 +1401,7 @@ time {
   font-size: 1.1875rem;
 }
 .alerts-dialog article + article {
-  border-top: 1px solid #99aa99;
+  border-top: 1px solid #d5d9dd;
 }
 .alert-source-status {
   font: inherit;
@@ -1423,7 +1423,7 @@ time {
 .network-switch {
   border: 0;
   background: none;
-  color: #12342e;
+  color: #24292f;
   font: inherit;
   font-size: 1.125rem;
   font-weight: 650;
@@ -1443,7 +1443,7 @@ time {
   padding: 24px;
   max-width: 650px;
   margin: auto;
-  color: #eaf2de;
+  color: #24292f;
 }
 .onboarding h1 {
   font-size: 1.625rem;
@@ -1453,7 +1453,7 @@ time {
 .onboarding p {
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: #bed0c4;
+  color: #59616a;
 }
 .onboarding label {
   display: block;
@@ -1525,7 +1525,7 @@ time {
   padding: 6px;
 }
 .timetable .return-now {
-  color: #e4f2c8;
+  color: #234f73;
   text-decoration: underline;
 }
 
@@ -1540,15 +1540,15 @@ time {
   min-width: 0;
   min-height: 44px;
   padding: 8px 44px 8px 10px;
-  border: 1px solid #49675a;
+  border: 1px solid #d5d9dd;
   border-radius: 8px;
   background: transparent;
-  color: #f4f6ee;
+  color: #24292f;
   font: inherit;
   font-size: 1.0625rem;
 }
 .editable-select input::placeholder {
-  color: #acbfaf;
+  color: #59616a;
   font-size: 0.875rem;
 }
 .editable-select .clear-selection {
@@ -1560,7 +1560,7 @@ time {
   min-height: 44px;
   border: 0;
   background: transparent;
-  color: #cfdbc9;
+  color: #24292f;
   font-size: 1.5625rem;
   cursor: pointer;
   padding: 0;
@@ -1583,9 +1583,9 @@ time {
   z-index: 10;
   max-height: 240px;
   overflow: auto;
-  border: 1px solid #7f9984;
+  border: 1px solid #d5d9dd;
   border-radius: 8px;
-  background: #f4f5ed;
+  background: #f6f5f1;
   box-shadow: 0 8px 18px #0004;
 }
 .select-options button {
@@ -1596,7 +1596,7 @@ time {
   text-align: left;
   font: inherit;
   font-size: 0.9375rem;
-  color: #173731;
+  color: #24292f;
   background: transparent;
   border: 0;
   border-radius: 0;
@@ -1604,11 +1604,11 @@ time {
 }
 .select-options button[aria-selected="true"],
 .select-options button:hover {
-  background: #dceaaf;
+  background: #edf2f6;
 }
 .select-options [role="status"] {
   padding: 12px;
-  color: #173731;
+  color: #24292f;
 }
 
 .onboarding {
@@ -1657,7 +1657,7 @@ button:focus-visible,
 a:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid #52692d;
+  outline: 3px solid #235f90;
   outline-offset: 2px;
 }
 .board input:focus-visible,
@@ -1665,7 +1665,7 @@ summary:focus-visible,
 .board summary:focus-visible,
 .onboarding input:focus-visible,
 .onboarding button:focus-visible {
-  outline: 3px solid #e4f2a0;
+  outline: 3px solid #235f90;
   outline-offset: -3px;
 }
 .skip-link {
@@ -1675,8 +1675,8 @@ summary:focus-visible,
   z-index: 100;
   transform: translateY(-120%);
   padding: 12px;
-  background: #e2f1da;
-  color: #17392d;
+  background: #edf2f6;
+  color: #24292f;
 }
 .skip-link:focus {
   transform: translateY(0);
@@ -1762,7 +1762,7 @@ summary:focus-visible,
   }
 }
 
-.journey-status,.journey-detail { display:block; font-size:.8rem; margin:.35rem 0; color:#c9e4d8; }
+.journey-status,.journey-detail { display:block; font-size:.8rem; margin:.35rem 0; color:#234f73; }
 .journey-detail summary { cursor:pointer; min-height:28px; padding:6px 0; }
 .journey-detail ol { padding-left:1rem; margin:0; }
 .departures .journey-detail li { display:block; padding:.4rem 0; border:0; background:none; }
@@ -1777,3 +1777,19 @@ summary:focus-visible,
 
 /* Larger networks keep every line available on narrow screens. */
 .line-bar { grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); }
+
+/* Core palette: warm paper, white surfaces, ink-blue interaction. */
+:root { color: #24292f; background: #f6f5f1; }
+.board { background: #ffffff; color: #24292f; border: 1px solid #d5d9dd; box-shadow: 0 2px 8px #18212b06; }
+.departures .next-train { background: #edf2f6; border-color: #c6d5e1; }
+.board-tabs button[aria-pressed="true"],
+.date-actions button[aria-pressed="true"],
+.route-filter-actions .apply-route-filters,
+.light-button { background: #234f73; color: #ffffff; border-color: #234f73; }
+.swap-stations { background: #edf2f6; color: #234f73; border-color: #c6d5e1; }
+.line-bar button { background: color-mix(in srgb, var(--line-color) 8%, white); color: #24292f; border-color: color-mix(in srgb, var(--line-color) 55%, #87929c); }
+.line-bar button[aria-pressed="true"] { background: var(--line-color); color: var(--line-ink, #000); border-color: #465465; }
+.line-bar button:focus-visible { outline-color: #235f90; }
+.select-options button[aria-selected="true"], .select-options button:hover { background: #e5edf4; }
+.dot, .board-footer .dot { background: #234f73; }
+.install-banner, .update-notice { background: #edf2f6; color: #234f73; border-color: #c6d5e1; }

@@ -129,3 +129,10 @@ mostrado en prueba de enlace tren/bus. Regeneración audita 178/26 viajes sin
 paradas suficientes, excluidos de ambos formatos y advertidos en pantalla.
 Transferencias oficiales Madrid 1140/1080 segundos y Montcada 300 segundos
 conservadas. Madrid hasta 30/10; Rodalies hasta 04/10. No publicado remotamente.
+
+
+Paleta clara (local, 2026-10-03): fondo cálido, panel blanco, carbón y azul tinta.
+Colores oficiales conservados. Ocho pruebas específicas correctas: contraste axe
+en panel, tabla, desplegable y asistente, texto al 200 %, transbordos y probador ASE
+en escritorio y móvil. Capturas normales a 390 y 1280 px inspeccionadas. Iconos
+SVG/PNG y color de navegador/app instalada actualizados. Sin publicación remota.
