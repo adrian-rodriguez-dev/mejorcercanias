@@ -12,7 +12,7 @@ export function ThemeToggle() {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", dark ? "#29292e" : "#e6e6eb");
+      ?.setAttribute("content", dark ? "#17191b" : "#f4f4f2");
   }, [dark]);
   const label = dark ? "Activar modo claro" : "Activar modo oscuro";
   return (

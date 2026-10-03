@@ -160,3 +160,8 @@ conservados. Ocho pruebas de contraste/tema correctas; revisión en pestaña loc
 Paleta más clara: gris perla y panel claro, rosa chicle en acciones y rosa profundo
 en texto sobre claro. Alternativa oscura aclarada a gris pizarra. Ocho pruebas
 de accesibilidad y tema correctas, captura local inspeccionada.
+
+Dirección visual final con libertad de criterio: blanco neutro, grafito y rojo
+#c92f40 en marca/acciones. Variables de tema consolidadas; filtros con subrayado
+de color oficial. Modo oscuro coherente. Build y ocho pruebas de tema/accesibilidad
+correctos; verificación visual de la pestaña local, sin publicación.
