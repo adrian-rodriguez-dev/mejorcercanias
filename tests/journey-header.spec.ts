@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./configured-test";
 test("cabecera única e intercambio conserva día, hora y preferencia", async ({
   page,
 }, info) => {

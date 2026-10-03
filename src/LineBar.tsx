@@ -1,8 +1,12 @@
+import { networks } from "./data/networks";
+import type { CSSProperties } from "react";
 export function LineBar({
+  networkId,
   value,
   available,
   onChange,
 }: {
+  networkId?: string;
   value: string[];
   available: string[];
   onChange: (lines: string[]) => void;
@@ -19,6 +23,14 @@ export function LineBar({
         return (
           <button
             key={line}
+            style={
+              {
+                "--line-color":
+                  "#" +
+                  (networks().find((n) => n.id === networkId)?.colors[line] ??
+                    "789B88"),
+              } as CSSProperties
+            }
             className={`toggle-${line.toLowerCase()}`}
             type="button"
             aria-pressed={active}

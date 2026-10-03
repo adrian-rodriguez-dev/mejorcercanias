@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./configured-test";
 test("multiselección, botón completo y ninguna equivale a todas", async ({
   page,
 }, info) => {

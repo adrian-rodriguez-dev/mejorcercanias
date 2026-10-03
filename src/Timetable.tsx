@@ -1,3 +1,4 @@
+import { networkForStation, lineStyle } from "./data/networks";
 import { subscribeSnapshot, snapshotRevision } from "./data/snapshot";
 import { arrivalDayLabel } from "./data/arrival";
 import { useEffect, useState, useSyncExternalStore } from "react";
@@ -93,13 +94,15 @@ export function Timetable({
         >
           Mañana
         </button>
-        <button
-          className="quick-plan"
-          onClick={shortcut}
-          disabled={stationId === "13200"}
-        >
-          Mañana a Bilbao antes de las 09:00 ↗
-        </button>
+        {networkForStation(stationId)?.id === "bilbao" && (
+          <button
+            className="quick-plan"
+            onClick={shortcut}
+            disabled={stationId === "13200"}
+          >
+            Mañana a Bilbao antes de las 09:00 ↗
+          </button>
+        )}
       </div>
       <div className="date-picker">
         <button
@@ -192,7 +195,8 @@ export function Timetable({
       ) : current.data?.availability === "unpublished" ? (
         <p role="status" className="schedule-message">
           Horario aún no publicado para esta fecha. Datos disponibles del{" "}
-          {manifest.validFrom} al {manifest.validTo}.
+          {networkForStation(stationId)?.validFrom ?? manifest.validFrom} al{" "}
+          {networkForStation(stationId)?.validTo ?? manifest.validTo}.
         </p>
       ) : !rows.length ? (
         <p role="status" className="schedule-message">
@@ -243,7 +247,13 @@ export function Timetable({
                   }
                 >
                   <td>
-                    <span className={`line line-${row.line.toLowerCase()}`}>
+                    <span
+                      style={lineStyle(
+                        networkForStation(stationId)?.id ?? "",
+                        row.line,
+                      )}
+                      className={`line line-${row.line.toLowerCase()}`}
+                    >
                       {row.line}
                     </span>
                   </td>

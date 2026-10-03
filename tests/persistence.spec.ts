@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./configured-test";
 test("recuerda destino, multiselección, inversión y vaciado", async ({
   page,
 }) => {

@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./configured-test";
 import fixture from "./fixtures/manifest.json" with { type: "json" };
 import station from "./fixtures/stations/13400.json" with { type: "json" };
 test("adopta nueva versión conservando trayecto, fecha y hora", async ({

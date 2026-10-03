@@ -1,3 +1,4 @@
+import { networks } from "./data/networks";
 import { stations, demoStationIds } from "./data/stations";
 export const STORAGE_KEY = "mejorcercanias.station.v1";
 export function readStation(): string {
@@ -49,7 +50,11 @@ export function normalizeJourney(value: unknown): Journey {
     stationId &&
     data.destination !== stationId &&
     typeof data.destination === "string" &&
-    stations.some((s) => s.id === data.destination)
+    stations.some(
+      (s) =>
+        s.id === data.destination &&
+        s.network === stations.find((o) => o.id === stationId)?.network,
+    )
       ? data.destination
       : "";
   const available = linesForStations(stationId, destination);
@@ -85,6 +90,24 @@ export function saveJourney(journey: Journey): boolean {
       JSON.stringify(normalizeJourney(journey)),
     );
     return saveStation(journey.stationId);
+  } catch {
+    return false;
+  }
+}
+
+export const NETWORK_KEY = "mejorcercanias.network.v1";
+export function readNetwork(): string {
+  try {
+    const id = localStorage.getItem(NETWORK_KEY);
+    return networks().some((n) => n.id === id) ? id! : "";
+  } catch {
+    return "";
+  }
+}
+export function saveNetwork(id: string): boolean {
+  try {
+    localStorage.setItem(NETWORK_KEY, id);
+    return true;
   } catch {
     return false;
   }

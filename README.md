@@ -116,3 +116,6 @@ Incidencias: indicador compacto y detalle accesible implementados. La fuente dir
 En próximas salidas, las horas de salida y llegada aparecen bajo el nombre del destino; solo se indica el día cuando es distinto de hoy o la llegada cruza medianoche.
 
 La campana de incidencias está en la barra superior: neutra sin avisos verificables y marcada con contador al haberlos. Se oculta el texto de error de fuente mientras la integración está pendiente. El panel queda a 8 px de la cabecera.
+
+## Núcleos y asistente
+Ocho núcleos y 329 estaciones. Sin núcleo guardado se abre siempre el asistente (núcleo, origen y destino opcional). El núcleo se cambia tocando su nombre en la cabecera. [Catálogo, exclusiones, datos y cómo añadir núcleos](docs/networks.md).

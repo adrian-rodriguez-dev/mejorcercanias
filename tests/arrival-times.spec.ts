@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./configured-test";
 import manifest from "./fixtures/manifest.json" with { type: "json" };
 test("llegada intermedia, medianoche, cambio, inversión y eliminación", async ({
   page,

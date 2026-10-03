@@ -1,4 +1,4 @@
-import {test,expect} from "@playwright/test";
+import {test,expect} from "./configured-test";
 test("instalación nativa a petición, descarte y ayuda",async({page})=>{
  await page.clock.install({time:new Date("2026-10-02T10:00:00+02:00")});
  await page.goto("/");await page.getByLabel("¿Desde dónde sales?").selectOption("13400");

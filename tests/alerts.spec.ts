@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./configured-test";
 const now = Date.parse("2026-10-02T10:00:00+02:00");
 test("indicador condicional, detalle accesible, retirada y fallo", async ({
   page,

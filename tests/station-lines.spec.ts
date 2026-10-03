@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./configured-test";
 test("barra solo con varias líneas compatibles y sin filtros ocultos", async ({
   page,
 }, info) => {

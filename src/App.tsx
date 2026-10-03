@@ -1,3 +1,6 @@
+import { Onboarding } from "./Onboarding";
+import { networks, lineStyle } from "./data/networks";
+import { readNetwork, saveNetwork } from "./preference";
 import { useAlerts, AlertIndicator } from "./Alerts";
 import { relevantAlerts, alertPriority } from "./data/alerts";
 import {
@@ -48,8 +51,14 @@ export function App({
 }) {
   useSyncExternalStore(subscribeSnapshot, snapshotRevision);
   const version = manifest.version;
+  const [networkId, setNetworkId] = useState(readNetwork);
+  const [editingNetwork, setEditingNetwork] = useState(false);
+
   const [initialJourney] = useState(readJourney);
   const [stationId, setStationId] = useState(initialJourney.stationId);
+  const needsSetup =
+    !networks().some((n) => n.id === networkId) ||
+    !stations.some((s) => s.id === stationId && s.network === networkId);
   const [saved, setSaved] = useState(true);
   const [now, setNow] = useState(clock);
   const [retry, setRetry] = useState(0);
@@ -71,8 +80,13 @@ export function App({
     storeRouteFilter({ destination, lines });
   };
   useEffect(() => {
-    if (stationId) setSaved(saveJourney({ stationId, ...routeFilter }));
-  }, [stationId, routeFilter]);
+    if (stationId && !needsSetup)
+      setSaved(
+        saveJourney({ stationId, ...routeFilter }) && saveNetwork(networkId),
+      );
+  }, [stationId, routeFilter, needsSetup, networkId]);
+  const selectedNetwork = networks().find((n) => n.id === networkId);
+  const networkStations = stations.filter((s) => s.network === networkId);
   const availableLines = linesForStations(stationId, routeFilter.destination);
   const [load, setLoad] = useState<LoadState>({
     stationId: "",
@@ -92,7 +106,9 @@ export function App({
       document.removeEventListener("visibilitychange", check);
     };
   }, [stationId, provider]);
-  const station = stations.find((s) => s.id === stationId);
+  const station = stations.find(
+    (s) => s.id === stationId && s.network === networkId,
+  );
 
   useEffect(() => {
     const tick = () => setNow(clock());
@@ -105,7 +121,7 @@ export function App({
   }, [clock]);
 
   useEffect(() => {
-    if (!stationId) return;
+    if (!stationId || needsSetup) return;
     const controller = new AbortController();
     setLoad({ version, stationId, status: "loading" });
     provider
@@ -121,7 +137,7 @@ export function App({
           setLoad({ version, stationId, status: "error" });
       });
     return () => controller.abort();
-  }, [stationId, day, retry, provider, clock, version]);
+  }, [stationId, day, retry, provider, clock, version, needsSetup]);
 
   const current =
     load.stationId === stationId && load.version === version ? load : undefined;
@@ -156,9 +172,15 @@ export function App({
           </span>
         </a>
         <div className="masthead-actions">
-          <span className="region">
-            <span className="dot" /> Cercanías Bilbao
-          </span>
+          <button
+            className="network-switch"
+            aria-label="Cambiar núcleo"
+            onClick={() => setEditingNetwork(true)}
+          >
+            <small>Cercanías</small>
+            {selectedNetwork?.name ?? "Núcleo"}{" "}
+            <span aria-hidden="true">⌄</span>
+          </button>
           <AlertIndicator
             alerts={[...alerts].sort(
               (a, b) => alertPriority(a) - alertPriority(b),
@@ -169,286 +191,321 @@ export function App({
       </header>
       <main>
         <div className="workspace">
-          <section className="board" aria-label="Panel de trenes">
-            <div className="journey-header">
-              <label className="origin-field" htmlFor="station">
-                <span>Origen</span>
-                <select
-                  id="station"
-                  aria-label="¿Desde dónde sales?"
-                  value={stationId}
-                  onChange={(e) => choose(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Elige tu estación
-                  </option>
-                  {stations.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
+          {needsSetup || editingNetwork ? (
+            <Onboarding
+              onCancel={
+                !needsSetup ? () => setEditingNetwork(false) : undefined
+              }
+              onComplete={(network, origin, destination) => {
+                setNetworkId(network);
+                setStationId(origin);
+                storeRouteFilter({ destination, lines: [] });
+                setView("next");
+                setEditingNetwork(false);
+                setNow(clock());
+                setSaved(
+                  saveJourney({ stationId: origin, destination, lines: [] }) &&
+                    saveNetwork(network),
+                );
+              }}
+            />
+          ) : (
+            <section className="board" aria-label="Panel de trenes">
+              <div className="journey-header">
+                <label className="origin-field" htmlFor="station">
+                  <span>Origen</span>
+                  <select
+                    id="station"
+                    aria-label="¿Desde dónde sales?"
+                    value={stationId}
+                    onChange={(e) => choose(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Elige tu estación
                     </option>
-                  ))}
-                </select>
-              </label>
-              <button
-                className="swap-stations"
-                type="button"
-                aria-label="Intercambiar origen y destino"
-                title="Intercambiar origen y destino"
-                disabled={!stationId || !routeFilter.destination}
-                onClick={() => {
-                  const nextOrigin = routeFilter.destination;
-                  if (!nextOrigin || nextOrigin === stationId) return;
-                  setRouteFilter(
-                    { ...routeFilter, destination: stationId },
-                    nextOrigin,
-                  );
-                  setStationId(nextOrigin);
-                  setNow(clock());
-                }}
-              >
-                ⇅
-              </button>
-              <label className="destination-field" htmlFor="destination">
-                <span>Destino · opcional</span>
-                <select
-                  id="destination"
-                  aria-label="Destino directo"
-                  value={routeFilter.destination}
-                  disabled={!stationId}
-                  onChange={(e) =>
-                    setRouteFilter({
-                      ...routeFilter,
-                      destination: e.target.value,
-                    })
-                  }
-                >
-                  <option value="">Todos los destinos</option>
-                  {stations
-                    .filter((s) => s.id !== stationId)
-                    .map((s) => (
+                    {networkStations.map((s) => (
                       <option key={s.id} value={s.id}>
                         {s.name}
                       </option>
                     ))}
-                </select>
-              </label>
-            </div>
-            {!saved && (
-              <p className="storage-warning" role="status">
-                No podemos guardar tu selección. Se mantendrá durante esta
-                visita.
-              </p>
-            )}
-            {station && (
-              <nav className="board-tabs" aria-label="Vista de horarios">
+                  </select>
+                </label>
                 <button
-                  aria-pressed={view === "next"}
-                  onClick={() => setView("next")}
+                  className="swap-stations"
+                  type="button"
+                  aria-label="Intercambiar origen y destino"
+                  title="Intercambiar origen y destino"
+                  disabled={!stationId || !routeFilter.destination}
+                  onClick={() => {
+                    const nextOrigin = routeFilter.destination;
+                    if (!nextOrigin || nextOrigin === stationId) return;
+                    setRouteFilter(
+                      { ...routeFilter, destination: stationId },
+                      nextOrigin,
+                    );
+                    setStationId(nextOrigin);
+                    setNow(clock());
+                  }}
                 >
-                  Próximos trenes
+                  ⇅
                 </button>
-                <button
-                  aria-pressed={view === "day"}
-                  onClick={() => setView("day")}
-                >
-                  Horario completo
-                </button>
-              </nav>
-            )}
-            {station && (
-              <LineBar
-                value={routeFilter.lines}
-                available={availableLines}
-                onChange={(lines) => setRouteFilter({ ...routeFilter, lines })}
-              />
-            )}
-
-            {station &&
-              routeFilter.destination &&
-              !stations.some((s) => s.id === routeFilter.destination) && (
-                <p role="status">
-                  El destino ya no está en los datos actuales. Elige otro
-                  destino.
+                <label className="destination-field" htmlFor="destination">
+                  <span>Destino · opcional</span>
+                  <select
+                    id="destination"
+                    aria-label="Destino directo"
+                    value={routeFilter.destination}
+                    disabled={!stationId}
+                    onChange={(e) =>
+                      setRouteFilter({
+                        ...routeFilter,
+                        destination: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="">Todos los destinos</option>
+                    {networkStations
+                      .filter((s) => s.id !== stationId)
+                      .map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {s.name}
+                        </option>
+                      ))}
+                  </select>
+                </label>
+              </div>
+              {!saved && (
+                <p className="storage-warning" role="status">
+                  No podemos guardar tu selección. Se mantendrá durante esta
+                  visita.
                 </p>
               )}
-            {day > manifest.validTo && (
-              <p className="storage-warning" role="status">
-                Horario caducado · Actualización pendiente
-              </p>
-            )}
-            {!station ? (
-              <div className="empty">
-                <span className="empty-icon" aria-hidden="true">
-                  ↗
-                </span>
-                <h3>
-                  {stationId
-                    ? "Tu estación ya no está en los datos actuales. Elige otra."
-                    : "Una estación. Todo a mano."}
-                </h3>
-                <p>Elige tu estación para ver cómo será tu panel de salidas.</p>
-                <button
-                  className="light-button"
-                  onClick={() => document.getElementById("station")?.focus()}
-                >
-                  Elegir mi estación <span aria-hidden="true">→</span>
-                </button>
-              </div>
-            ) : view === "day" ? (
-              <Timetable
-                stationId={stationId}
-                now={now}
-                routeFilter={routeFilter}
-                onRouteFilterChange={setRouteFilter}
-                onScheduleChange={setDayContext}
-              />
-            ) : !current || current.status === "loading" ? (
-              <div className="empty" role="status">
-                <h3>Preparando tu panel…</h3>
-                <p>Cargando las salidas de {station.name}.</p>
-              </div>
-            ) : current.status === "error" ? (
-              <div className="empty" role="alert">
-                <h3>No hemos podido cargar las salidas.</h3>
-                <p>
-                  Tu estación sigue seleccionada. Puedes intentarlo otra vez.
+              {station && (
+                <nav className="board-tabs" aria-label="Vista de horarios">
+                  <button
+                    aria-pressed={view === "next"}
+                    onClick={() => setView("next")}
+                  >
+                    Próximos trenes
+                  </button>
+                  <button
+                    aria-pressed={view === "day"}
+                    onClick={() => setView("day")}
+                  >
+                    Horario completo
+                  </button>
+                </nav>
+              )}
+              {station && (
+                <LineBar
+                  networkId={networkId}
+                  value={routeFilter.lines}
+                  available={availableLines}
+                  onChange={(lines) =>
+                    setRouteFilter({ ...routeFilter, lines })
+                  }
+                />
+              )}
+
+              {station &&
+                routeFilter.destination &&
+                !stations.some((s) => s.id === routeFilter.destination) && (
+                  <p role="status">
+                    El destino ya no está en los datos actuales. Elige otro
+                    destino.
+                  </p>
+                )}
+              {day > (selectedNetwork?.validTo ?? manifest.validTo) && (
+                <p className="storage-warning" role="status">
+                  Horario caducado · Actualización pendiente
                 </p>
-                <button
-                  className="light-button"
-                  onClick={() => setRetry((n) => n + 1)}
-                >
-                  Reintentar
-                </button>
-              </div>
-            ) : current.schedule?.availability === "unpublished" ? (
-              <div className="empty" role="status">
-                <h3>Horario aún no publicado para hoy.</h3>
-                <p>
-                  Consulta las fechas disponibles en Horario completo. No
-                  reutilizamos horarios caducados.
-                </p>
-              </div>
-            ) : rows.length === 0 ? (
-              <div className="empty" role="status">
-                <h3>No hay próximas salidas.</h3>
-                <p>
-                  {routeFilter.lines.length > 0 || routeFilter.destination
-                    ? "No hay trenes que coincidan con estos filtros. Prueba otra línea o destino."
-                    : "No hay más trenes en el horario disponible."}
-                </p>
-                {(routeFilter.lines.length > 0 || routeFilter.destination) && (
+              )}
+              {!station ? (
+                <div className="empty">
+                  <span className="empty-icon" aria-hidden="true">
+                    ↗
+                  </span>
+                  <h3>
+                    {stationId
+                      ? "Tu estación ya no está en los datos actuales. Elige otra."
+                      : "Una estación. Todo a mano."}
+                  </h3>
+                  <p>
+                    Elige tu estación para ver cómo será tu panel de salidas.
+                  </p>
                   <button
                     className="light-button"
-                    onClick={() => setRouteFilter(emptyRouteFilter)}
+                    onClick={() => document.getElementById("station")?.focus()}
                   >
-                    Mostrar todos los trenes
+                    Elegir mi estación <span aria-hidden="true">→</span>
                   </button>
-                )}
-              </div>
-            ) : (
-              <>
-                <div className="table-heading" aria-hidden="true">
-                  <span>LÍNEA / DESTINO</span>
-                  <span>SALE EN</span>
                 </div>
-                <ol className="departures" aria-label="Próximos trenes">
-                  {rows.map((d, index) => {
-                    const arrival = arrivalAt(d, routeFilter.destination);
-                    return (
-                      <li
-                        key={d.id}
-                        className={index === 0 ? "next-train" : ""}
-                      >
-                        <div className="destination">
-                          <span className={`line line-${d.line.toLowerCase()}`}>
-                            {d.line}
-                          </span>
-                          <div>
-                            <strong>{d.destination}</strong>
-                            <div className="train-times">
-                              <div className="train-departure">
-                                <small>Salida</small>
-                                <time dateTime={d.scheduledAt}>
-                                  {clockTime(Date.parse(d.scheduledAt))}
-                                </time>
-                                {localDay(Date.parse(d.scheduledAt)) !==
-                                  day && (
-                                  <small className="departure-day">
-                                    {dayLabel(Date.parse(d.scheduledAt), now)}
-                                  </small>
-                                )}
-                              </div>
-                              {arrival && (
-                                <div
-                                  className="train-arrival"
-                                  aria-label={`Llegada a ${stations.find((s) => s.id === routeFilter.destination)?.name}`}
-                                >
-                                  <small>Llegada</small>
-                                  <time dateTime={arrival}>
-                                    {clockTime(Date.parse(arrival))}
+              ) : view === "day" ? (
+                <Timetable
+                  stationId={stationId}
+                  now={now}
+                  routeFilter={routeFilter}
+                  onRouteFilterChange={setRouteFilter}
+                  onScheduleChange={setDayContext}
+                />
+              ) : !current || current.status === "loading" ? (
+                <div className="empty" role="status">
+                  <h3>Preparando tu panel…</h3>
+                  <p>Cargando las salidas de {station.name}.</p>
+                </div>
+              ) : current.status === "error" ? (
+                <div className="empty" role="alert">
+                  <h3>No hemos podido cargar las salidas.</h3>
+                  <p>
+                    Tu estación sigue seleccionada. Puedes intentarlo otra vez.
+                  </p>
+                  <button
+                    className="light-button"
+                    onClick={() => setRetry((n) => n + 1)}
+                  >
+                    Reintentar
+                  </button>
+                </div>
+              ) : current.schedule?.availability === "unpublished" ? (
+                <div className="empty" role="status">
+                  <h3>Horario aún no publicado para hoy.</h3>
+                  <p>
+                    Consulta las fechas disponibles en Horario completo. No
+                    reutilizamos horarios caducados.
+                  </p>
+                </div>
+              ) : rows.length === 0 ? (
+                <div className="empty" role="status">
+                  <h3>No hay próximas salidas.</h3>
+                  <p>
+                    {routeFilter.lines.length > 0 || routeFilter.destination
+                      ? "No hay trenes que coincidan con estos filtros. Prueba otra línea o destino."
+                      : "No hay más trenes en el horario disponible."}
+                  </p>
+                  {(routeFilter.lines.length > 0 ||
+                    routeFilter.destination) && (
+                    <button
+                      className="light-button"
+                      onClick={() => setRouteFilter(emptyRouteFilter)}
+                    >
+                      Mostrar todos los trenes
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <div className="table-heading" aria-hidden="true">
+                    <span>LÍNEA / DESTINO</span>
+                    <span>SALE EN</span>
+                  </div>
+                  <ol className="departures" aria-label="Próximos trenes">
+                    {rows.map((d, index) => {
+                      const arrival = arrivalAt(d, routeFilter.destination);
+                      return (
+                        <li
+                          key={d.id}
+                          className={index === 0 ? "next-train" : ""}
+                        >
+                          <div className="destination">
+                            <span
+                              style={lineStyle(networkId, d.line)}
+                              className={`line line-${d.line.toLowerCase()}`}
+                            >
+                              {d.line}
+                            </span>
+                            <div>
+                              <strong>{d.destination}</strong>
+                              <div className="train-times">
+                                <div className="train-departure">
+                                  <small>Salida</small>
+                                  <time dateTime={d.scheduledAt}>
+                                    {clockTime(Date.parse(d.scheduledAt))}
                                   </time>
-                                  {arrivalDayLabel(d.scheduledAt, arrival) && (
-                                    <small className="arrival-day">
-                                      {arrivalDayLabel(d.scheduledAt, arrival)}
+                                  {localDay(Date.parse(d.scheduledAt)) !==
+                                    day && (
+                                    <small className="departure-day">
+                                      {dayLabel(Date.parse(d.scheduledAt), now)}
                                     </small>
                                   )}
                                 </div>
-                              )}
+                                {arrival && (
+                                  <div
+                                    className="train-arrival"
+                                    aria-label={`Llegada a ${stations.find((s) => s.id === routeFilter.destination)?.name}`}
+                                  >
+                                    <small>Llegada</small>
+                                    <time dateTime={arrival}>
+                                      {clockTime(Date.parse(arrival))}
+                                    </time>
+                                    {arrivalDayLabel(
+                                      d.scheduledAt,
+                                      arrival,
+                                    ) && (
+                                      <small className="arrival-day">
+                                        {arrivalDayLabel(
+                                          d.scheduledAt,
+                                          arrival,
+                                        )}
+                                      </small>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="countdown">
-                          <strong>
-                            {Date.parse(d.scheduledAt) - now >=
-                            60 * 60 * 1000 ? (
-                              <time dateTime={d.scheduledAt}>
-                                {clockTime(Date.parse(d.scheduledAt))}
-                              </time>
-                            ) : d.minutes === 0 ? (
-                              "Ahora"
-                            ) : (
-                              d.minutes
-                            )}
-                          </strong>
-                          {d.minutes > 0 &&
-                            Date.parse(d.scheduledAt) - now <
-                              60 * 60 * 1000 && <span> min</span>}
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ol>
-              </>
-            )}
-            <details className="data-status">
-              <summary>Datos y actualización</summary>
-              <p>
-                Última comprobación de Renfe:{" "}
-                {manifest.checkedAt
-                  ? new Date(manifest.checkedAt).toLocaleString("es", {
-                      timeZone: "Europe/Madrid",
-                    })
-                  : "No registrada"}
-                .{" "}
-                {refreshError
-                  ? "No se pudo comprobar una nueva versión; se conserva la cargada."
-                  : "El móvil recibe JSON compactos, nunca el GTFS completo."}
-              </p>
-            </details>
-            <div className="board-footer">
-              <span>
-                <span className="dot" />{" "}
-                {view === "next"
-                  ? "Cuenta atrás automática"
-                  : "Servicios según fecha"}
-              </span>
-              <span>
-                {current?.schedule?.source === "demo"
-                  ? "Datos de demostración"
-                  : `Datos: ${manifest.validFrom} → ${manifest.validTo}`}
-              </span>
-            </div>
-          </section>
+                          <div className="countdown">
+                            <strong>
+                              {Date.parse(d.scheduledAt) - now >=
+                              60 * 60 * 1000 ? (
+                                <time dateTime={d.scheduledAt}>
+                                  {clockTime(Date.parse(d.scheduledAt))}
+                                </time>
+                              ) : d.minutes === 0 ? (
+                                "Ahora"
+                              ) : (
+                                d.minutes
+                              )}
+                            </strong>
+                            {d.minutes > 0 &&
+                              Date.parse(d.scheduledAt) - now <
+                                60 * 60 * 1000 && <span> min</span>}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </>
+              )}
+              <details className="data-status">
+                <summary>Datos y actualización</summary>
+                <p>
+                  Última comprobación de Renfe:{" "}
+                  {manifest.checkedAt
+                    ? new Date(manifest.checkedAt).toLocaleString("es", {
+                        timeZone: "Europe/Madrid",
+                      })
+                    : "No registrada"}
+                  .{" "}
+                  {refreshError
+                    ? "No se pudo comprobar una nueva versión; se conserva la cargada."
+                    : "El móvil recibe JSON compactos, nunca el GTFS completo."}
+                </p>
+              </details>
+              <div className="board-footer">
+                <span>
+                  <span className="dot" />{" "}
+                  {view === "next"
+                    ? "Cuenta atrás automática"
+                    : "Servicios según fecha"}
+                </span>
+                <span>
+                  {current?.schedule?.source === "demo"
+                    ? "Datos de demostración"
+                    : `Datos: ${selectedNetwork?.validFrom ?? manifest.validFrom} → ${selectedNetwork?.validTo ?? manifest.validTo}`}
+                </span>
+              </div>
+            </section>
+          )}
         </div>
         <InstallPrompt
           ready={Boolean(station && current?.status === "ready")}

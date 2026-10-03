@@ -1,0 +1,15 @@
+# Núcleos y configuración inicial
+
+Se activan ocho núcleos, 329 estaciones, a partir del GTFS oficial procesado: Bilbao (C1, C2, C3, C4, C4A, C5), Cádiz (C1, C1a, T1), València (C1–C6), Cartagena, Ferrol, León, San Sebastián y Zaragoza (C1). El límite es seis denominaciones comerciales, nunca seis sentidos/rutas GTFS. Se preservan los colores `route_color` por núcleo.
+
+Fuentes: [catálogo de Renfe](https://www.renfe.com/es/es/cercanias), [mapa de Cádiz con T1](https://www.renfe.com/content/dam/renfe/es/Viajeros/Secciones/Cercanias/Mapas/2025/mapa_cadiz_cercanias_abril2025-b.pdf), [líneas de Bilbao](https://grupo.renfe.com/es/es/sala-de-prensa/noticias/2026/08/renfe-refuerzo-cercanias-aste-nagusia-bilbao-2026). El catálogo de rutas se mantiene en `scripts/import_gtfs.py`, NETWORKS; la variante C4A se conserva tal como llega en el GTFS.
+
+No publicados: Madrid, Asturias y Catalunya superan el límite. Sevilla, Málaga, Murcia/Alicante y Cantabria tienen viajes sin secuencia válida en el ZIP inicial (3002V23603C4, 3201J00301C2, 4101J30770C3 y 6274S71831C2). `excludedNetworks` registra estas exclusiones; no se inventan paradas ni se borran trenes aislados para hacer pasar el núcleo. Se reevaluarán con una futura descarga válida.
+
+Para añadir un núcleo: contrastar rutas comerciales y colores con Renfe, registrar su prefijo/ID/nombre, comprobar un máximo de seis líneas, incrementar TRANSFORM_VERSION y ejecutar el importador/renovador y las pruebas Python. Verificar calendario, festivos, referencias de paradas y ausencia de regionales. Los IDs fuera de Bilbao llevan prefijo de núcleo. La versión combina ZIP y transformador, manteniendo archivos anteriores inmutables.
+
+El navegador recibe el catálogo/calendarios compactos con la app y JSON de horarios solo de la estación consultada. No descarga el ZIP. Cada núcleo tiene vigencia independiente; la actualización comprueba todos y rechaza un candidato si desaparece un núcleo antes publicado. Ante fallo mantiene el snapshot anterior entero; reintentar Refresh GTFS tras corregir la fuente o el catálogo. Los clientes antiguos rechazan el esquema ampliado y conservan su versión hasta recargar la app.
+
+Si falta el núcleo guardado, SIEMPRE se abre el asistente, incluso con favorita antigua de Bilbao. Tres pasos: núcleo, origen, destino opcional. Solo al finalizar se guarda el núcleo explícito (`mejorcercanias.network.v1`) junto al trayecto existente (`journey.v1`). No hay migración silenciosa a Bilbao. Si guardar está bloqueado, se puede usar la visita actual; al volver se configura otra vez. Un núcleo inválido o estación retirada abre de nuevo el asistente.
+
+El nombre del núcleo es un botón mayor en la cabecera, accesible con teclado. Cancelar conserva el trayecto anterior. El cambio confirmado limpia filtros incompatibles y limita estaciones al nuevo núcleo. El atajo a Bilbao solo existe en Bilbao. La conexión de incidencias sigue pendiente y el adaptador actual no atribuye avisos de Bilbao a otros núcleos.

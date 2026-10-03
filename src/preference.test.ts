@@ -61,3 +61,9 @@ it("tolera almacenamiento bloqueado", () => {
     false,
   );
 });
+
+it('un núcleo inexistente no se restaura',async()=>{
+ const {readNetwork,NETWORK_KEY}=await import('./preference');
+ localStorage.setItem(NETWORK_KEY,'inexistente');
+ expect(readNetwork()).toBe('');
+});

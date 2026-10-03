@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./configured-test";
 test("mañana a Bilbao antes de las nueve y cambio de fecha", async ({
   page,
 }, testInfo) => {
