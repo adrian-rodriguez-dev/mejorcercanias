@@ -156,3 +156,7 @@ pestaña local y con ocho pruebas de tema/contraste móvil y escritorio.
 Alternativa grafito + rosa chicle (#ff70b5), solicitada tras descartar los fondos
 cálidos: grises neutros en ambos modos, iconos actualizados y colores de líneas
 conservados. Ocho pruebas de contraste/tema correctas; revisión en pestaña local.
+
+Paleta más clara: gris perla y panel claro, rosa chicle en acciones y rosa profundo
+en texto sobre claro. Alternativa oscura aclarada a gris pizarra. Ocho pruebas
+de accesibilidad y tema correctas, captura local inspeccionada.
