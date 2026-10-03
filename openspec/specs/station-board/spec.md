@@ -178,3 +178,9 @@ The system SHALL permitir escribir y elegir opciones desplegables en núcleo, or
 #### Scenario: Escribir y desplegar
 - **WHEN** se edita un campo
 - **THEN** se ofrecen opciones del núcleo correspondiente y puede confirmarse una opción con teclado o puntero.
+
+### Requirement: Campos sin flecha adicional
+The system SHALL mostrar los campos editables sin botón de flecha, conservando la × y el acceso a opciones al tocar, escribir o usar teclado.
+#### Scenario: Abrir opciones
+- **WHEN** se toca el campo
+- **THEN** se abre la lista sin necesitar un botón de flecha ni reservarle espacio.
