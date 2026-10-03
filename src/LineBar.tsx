@@ -1,4 +1,4 @@
-import { networks } from "./data/networks";
+import { networks, lineInk } from "./data/networks";
 import type { CSSProperties } from "react";
 export function LineBar({
   networkId,
@@ -20,11 +20,14 @@ export function LineBar({
     >
       {available.map((line) => {
         const active = value.includes(line);
+        const color =
+          networks().find((n) => n.id === networkId)?.colors[line] ?? "789B88";
         return (
           <button
             key={line}
             style={
               {
+                "--line-ink": lineInk(color),
                 "--line-color":
                   "#" +
                   (networks().find((n) => n.id === networkId)?.colors[line] ??

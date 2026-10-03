@@ -179,6 +179,9 @@ export function App({
 
   return (
     <div className={`app${station ? " has-station" : ""}`}>
+      <a className="skip-link" href="#main-content">
+        Saltar a horarios
+      </a>
       <header className="masthead">
         <a href="./" className="brand" aria-label="mejorcercanías, inicio">
           <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" />
@@ -207,7 +210,7 @@ export function App({
       </header>
       <UpdateNotice />
       <div className="install-slot" ref={setInstallTarget} />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <div className="workspace">
           {needsSetup || editingNetwork ? (
             <Onboarding
@@ -289,7 +292,10 @@ export function App({
                   <button
                     id="next-trains-tab"
                     aria-pressed={view === "next"}
-                    onClick={() => { setNow(clock()); setView("next"); }}
+                    onClick={() => {
+                      setNow(clock());
+                      setView("next");
+                    }}
                   >
                     Próximos trenes
                   </button>

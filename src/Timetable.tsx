@@ -91,7 +91,15 @@ export function Timetable({
         >
           →
         </button>
-        {date !== today && onReturnNow && <button className="return-now" aria-label="Volver a ahora" onClick={onReturnNow}>Ahora</button>}
+        {date !== today && onReturnNow && (
+          <button
+            className="return-now"
+            aria-label="Volver a ahora"
+            onClick={onReturnNow}
+          >
+            Ahora
+          </button>
+        )}
       </div>
       <OfflineStatus
         validTo={networkForStation(stationId)?.validTo ?? manifest.validTo}
@@ -123,68 +131,75 @@ export function Timetable({
         </p>
       ) : (
         <>
-          <table className="schedule-table">
-            <caption className="sr-only">
-              Horario del {dateTitle(date)} desde {stationName(stationId)}
-            </caption>
-            <thead>
-              <tr>
-                <th>Línea</th>
-                <th>Llegada a</th>
-                <th>Salida</th>
-                <th>Hora de llegada</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={row.id}>
-                  <td>
-                    <span
-                      style={lineStyle(
-                        networkForStation(stationId)?.id ?? "",
-                        row.line,
-                      )}
-                      className={`line line-${row.line.toLowerCase()}`}
-                    >
-                      {row.line}
-                    </span>
-                  </td>
-                  <td
-                    title={`Tren con destino final ${row.destination}`}
-                    aria-label={`${destination ? stationName(destination) : row.destination}; tren con destino final ${row.destination}`}
-                  >
-                    {destination ? stationName(destination) : row.destination}
-                  </td>
-                  <td>
-                    <time dateTime={row.scheduledAt}>
-                      {clockTime(Date.parse(row.scheduledAt))}
-                    </time>
-                  </td>
-                  {
-                    <td>
-                      {row.arrivalAt ? (
-                        <time dateTime={row.arrivalAt}>
-                          {clockTime(Date.parse(row.arrivalAt!))}
-                        </time>
-                      ) : (
-                        <span aria-label="Hora de llegada no disponible">
-                          —
-                        </span>
-                      )}
-                      {row.arrivalAt &&
-                        Boolean(
-                          arrivalDayLabel(row.scheduledAt, row.arrivalAt!),
-                        ) && (
-                          <small>
-                            {arrivalDayLabel(row.scheduledAt, row.arrivalAt!)}
-                          </small>
-                        )}
-                    </td>
-                  }
+          <div
+            className="table-scroll"
+            role="region"
+            aria-label="Tabla de horarios"
+            tabIndex={0}
+          >
+            <table className="schedule-table">
+              <caption className="sr-only">
+                Horario del {dateTitle(date)} desde {stationName(stationId)}
+              </caption>
+              <thead>
+                <tr>
+                  <th>Línea</th>
+                  <th>Llegada a</th>
+                  <th>Salida</th>
+                  <th>Hora de llegada</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.id}>
+                    <td>
+                      <span
+                        style={lineStyle(
+                          networkForStation(stationId)?.id ?? "",
+                          row.line,
+                        )}
+                        className={`line line-${row.line.toLowerCase()}`}
+                      >
+                        {row.line}
+                      </span>
+                    </td>
+                    <td
+                      title={`Tren con destino final ${row.destination}`}
+                      aria-label={`${destination ? stationName(destination) : row.destination}; tren con destino final ${row.destination}`}
+                    >
+                      {destination ? stationName(destination) : row.destination}
+                    </td>
+                    <td>
+                      <time dateTime={row.scheduledAt}>
+                        {clockTime(Date.parse(row.scheduledAt))}
+                      </time>
+                    </td>
+                    {
+                      <td>
+                        {row.arrivalAt ? (
+                          <time dateTime={row.arrivalAt}>
+                            {clockTime(Date.parse(row.arrivalAt!))}
+                          </time>
+                        ) : (
+                          <span aria-label="Hora de llegada no disponible">
+                            —
+                          </span>
+                        )}
+                        {row.arrivalAt &&
+                          Boolean(
+                            arrivalDayLabel(row.scheduledAt, row.arrivalAt!),
+                          ) && (
+                            <small>
+                              {arrivalDayLabel(row.scheduledAt, row.arrivalAt!)}
+                            </small>
+                          )}
+                      </td>
+                    }
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
     </div>

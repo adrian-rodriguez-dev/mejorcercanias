@@ -133,3 +133,10 @@ El navegador puede borrar el almacenamiento local; no es una garantía de dispon
 Prueba de producción: `npm run build && npm run test:offline`, incluyendo subcarpeta de Pages, corte de conexión, reapertura, fecha fuera de cobertura y activación voluntaria de un nuevo service worker. Basado en la [documentación de service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
 
 Sin destino elegido, la llegada corresponde a la terminal real de cada tren. Con destino intermedio se muestra ese nombre y su hora; la terminal del tren se conserva en el título y nombre accesible. Una hora terminal ausente se muestra como —. No se deducen tiempos de viaje ni finales teóricos de línea.
+
+## Navegación rápida y accesibilidad
+Al consultar otra fecha aparece Ahora: vuelve al panel actual y conserva estaciones y líneas. Las horas de llegada se refieren al destino elegido o, sin filtro, a la terminal real de ese tren.
+
+La tipografía respeta el tamaño de texto del usuario; se comprobó al 200 % a 360 px. La tabla puede desplazarse dentro de su propia región al ampliar texto, sin desplazar toda la página. Los controles principales conservan 44 px, foco visible y nombres accesibles; Saltar a horarios permite omitir la cabecera. Los colores oficiales se conservan y el texto de cada línea se elige con contraste mínimo de 4.5:1.
+
+Validación automática con axe en asistente, selectores, panel y tabla, más pruebas de teclado, texto ampliado y contraste de todos los colores del catálogo. No constituye una certificación completa de WCAG; no se ha probado con un lector de pantalla físico Android/iOS.

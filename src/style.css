@@ -56,7 +56,7 @@ select:focus-visible {
   gap: 12px;
   align-items: center;
   text-decoration: none;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -1px;
 }
@@ -69,12 +69,12 @@ select:focus-visible {
 }
 .brand small {
   display: block;
-  font-size: 8px;
+  font-size: 0.5rem;
   letter-spacing: 2px;
   margin-top: 4px;
 }
 .region {
-  font-size: 13px;
+  font-size: 0.8125rem;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -90,7 +90,7 @@ select:focus-visible {
   padding: 48px 0 34px;
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 2px;
   font-weight: 700;
   margin: 0 0 18px;
@@ -108,7 +108,7 @@ select:focus-visible {
 .intro > p:last-child {
   color: #617068;
   margin: 20px 0 0;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .workspace {
   display: grid;
@@ -124,10 +124,10 @@ select:focus-visible {
 }
 .station-card .eyebrow {
   color: #758074;
-  font-size: 9px;
+  font-size: 0.5625rem;
 }
 .station-card label {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 650;
   letter-spacing: -0.6px;
   display: block;
@@ -144,7 +144,7 @@ select {
   font-weight: 600;
 }
 .preference {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #617167;
   line-height: 1.65;
   margin: 14px 0 26px;
@@ -160,7 +160,7 @@ select {
 .route-art span {
   border: 1px solid #becbad;
   border-radius: 50%;
-  font-size: 10px;
+  font-size: 0.625rem;
   width: 30px;
   height: 30px;
   display: grid;
@@ -173,12 +173,12 @@ select {
   flex: 1;
 }
 .station-card h2 {
-  font-size: 18px;
+  font-size: 1.125rem;
   letter-spacing: -0.5px;
   margin: 0 0 10px;
 }
 .aside-copy {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #6c786e;
   line-height: 1.7;
   margin: 0;
@@ -187,14 +187,14 @@ select {
   margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid #e4e6da;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 1px;
   font-weight: 700;
 }
 .network-note span {
   display: block;
   margin-top: 8px;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 400;
   letter-spacing: 0;
   color: #6d796f;
@@ -215,11 +215,11 @@ select {
 }
 .board .eyebrow {
   color: #a2b6a5;
-  font-size: 9px;
+  font-size: 0.5625rem;
   margin-bottom: 12px;
 }
 .board h2 {
-  font-size: 28px;
+  font-size: 1.75rem;
   letter-spacing: -1px;
   line-height: 1.2;
   margin: 0;
@@ -231,12 +231,12 @@ select {
 }
 .clock strong {
   display: block;
-  font-size: 23px;
+  font-size: 1.4375rem;
   font-weight: 400;
   font-variant-numeric: tabular-nums;
 }
 .clock span {
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: #a2b6a5;
 }
 .demo-notice {
@@ -246,13 +246,13 @@ select {
   gap: 10px;
   align-items: center;
   padding: 12px 28px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.5;
 }
 .demo-tag {
   border: 1px solid #8d9d65;
   border-radius: 4px;
-  font-size: 8px;
+  font-size: 0.5rem;
   letter-spacing: 1px;
   padding: 2px 5px;
   font-weight: 700;
@@ -262,7 +262,7 @@ select {
   grid-template-columns: minmax(0, 1fr) 80px;
   gap: 10px;
   padding: 8px 28px 6px;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 1px;
   color: #a3b5aa;
@@ -304,13 +304,13 @@ select {
 }
 .destination strong {
   display: block;
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.2;
   font-weight: 550;
   overflow-wrap: anywhere;
 }
 .destination div > span {
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: #b0c0b1;
   display: block;
   margin-top: 5px;
@@ -321,7 +321,7 @@ select {
   display: grid;
   place-items: center;
   border-radius: 5px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 800;
   background: #eec681;
   color: #272718;
@@ -335,7 +335,7 @@ select {
   color: #392344;
 }
 time {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #cfdbcf;
   font-variant-numeric: tabular-nums;
 }
@@ -345,12 +345,12 @@ time {
   font-variant-numeric: tabular-nums;
 }
 .countdown strong {
-  font-size: 25px;
+  font-size: 1.5625rem;
   font-weight: 550;
   letter-spacing: -1px;
 }
 .countdown span {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #b8c7b9;
 }
 .next-train .countdown {
@@ -363,7 +363,7 @@ time {
   margin-top: 18px;
   padding: 18px 28px;
   border-top: 1px solid #ffffff14;
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: #a8bbaa;
 }
 .board-footer .dot {
@@ -380,16 +380,16 @@ time {
   padding: 32px;
 }
 .empty-icon {
-  font-size: 42px;
+  font-size: 2.625rem;
   color: #d9ed9b;
 }
 .empty h3 {
-  font-size: 22px;
+  font-size: 1.375rem;
   letter-spacing: -0.5px;
   margin: 14px 0 8px;
 }
 .empty p {
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.7;
   color: #b6c6b7;
   max-width: 280px;
@@ -401,7 +401,7 @@ time {
   border: 0;
   padding: 13px 20px;
   border-radius: 7px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 700;
 }
 .light-button span {
@@ -412,9 +412,9 @@ time {
   justify-content: space-between;
   gap: 16px;
   padding: 20px 0 54px;
-  font-size: 10px;
+  font-size: 0.625rem;
   line-height: 1.6;
-  color: #687769;
+  color: #536451;
 }
 .below-board a {
   text-underline-offset: 4px;
@@ -425,8 +425,8 @@ time {
   justify-content: space-between;
   gap: 20px;
   padding: 25px 0;
-  font-size: 10px;
-  color: #687769;
+  font-size: 0.625rem;
+  color: #536451;
 }
 .site-footer strong {
   color: #273e33;
@@ -454,7 +454,7 @@ time {
     padding: 24px 20px;
   }
   .board h2 {
-    font-size: 23px;
+    font-size: 1.4375rem;
   }
   .demo-notice {
     padding: 12px 20px;
@@ -475,10 +475,10 @@ time {
     gap: 8px;
   }
   .destination strong {
-    font-size: 16px;
+    font-size: 1rem;
   }
   .countdown strong {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
   .board-footer {
     padding: 16px 20px;
@@ -495,7 +495,7 @@ time {
     padding: 22px 0;
   }
   .brand {
-    font-size: 19px;
+    font-size: 1.1875rem;
     gap: 8px;
   }
   .brand img {
@@ -503,11 +503,11 @@ time {
     height: 35px;
   }
   .brand small {
-    font-size: 6px;
+    font-size: 0.375rem;
     letter-spacing: 1.5px;
   }
   .region {
-    font-size: 10px;
+    font-size: 0.625rem;
     max-width: 80px;
     line-height: 1.4;
     gap: 6px;
@@ -519,17 +519,17 @@ time {
     padding: 32px 0 28px;
   }
   .intro h1 {
-    font-size: 44px;
+    font-size: 2.75rem;
     letter-spacing: -2px;
   }
   .intro > p:last-child {
-    font-size: 13px;
+    font-size: 0.8125rem;
     line-height: 1.6;
     max-width: 260px;
     margin-top: 16px;
   }
   .eyebrow {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
   .workspace {
     grid-template-columns: 1fr;
@@ -542,13 +542,13 @@ time {
     margin-bottom: 12px;
   }
   .station-card label {
-    font-size: 18px;
+    font-size: 1.125rem;
     margin-bottom: 12px;
   }
   .preference {
     margin: 12px 0 0;
     min-height: 0;
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .route-art,
   .station-card h2,
@@ -560,49 +560,49 @@ time {
     padding: 24px 18px 20px;
   }
   .board h2 {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
   .board .eyebrow {
-    font-size: 8px;
+    font-size: 0.5rem;
     letter-spacing: 1.6px;
   }
   .clock strong {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
   .clock span {
-    font-size: 8px;
+    font-size: 0.5rem;
   }
   .demo-notice {
     padding: 11px 18px;
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .destination strong {
-    font-size: 16px;
+    font-size: 1rem;
   }
   .destination div > span {
-    font-size: 8px;
+    font-size: 0.5rem;
     line-height: 1.5;
   }
   .line {
     min-width: 28px;
     height: 24px;
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .departures li {
     min-height: 56px;
   }
   .table-heading {
-    font-size: 10px;
+    font-size: 0.625rem;
     letter-spacing: 1px;
   }
   .countdown strong {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
   time {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .board-footer {
-    font-size: 8px;
+    font-size: 0.5rem;
     padding: 16px 18px;
   }
   .below-board {
@@ -620,7 +620,7 @@ time {
     padding: 25px;
   }
   .empty h3 {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 }
 @media (max-width: 640px) {
@@ -637,7 +637,7 @@ time {
     padding: 16px 20px;
   }
   .has-station .station-card label {
-    font-size: 15px;
+    font-size: 0.9375rem;
     margin-bottom: 10px;
   }
 }
@@ -654,7 +654,7 @@ time {
   color: #eaf2df;
   padding: 10px 13px;
   font: inherit;
-  font-size: 12px;
+  font-size: 0.75rem;
   min-height: 40px;
 }
 .board-tabs button[aria-pressed="true"],
@@ -691,14 +691,14 @@ time {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #cfdbc9;
   min-width: 0;
 }
 .timetable input,
 .timetable select {
   font: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
   background: #f6f8f0;
   color: #172f2d;
   border: 1px solid #b7c3a7;
@@ -714,12 +714,12 @@ time {
 }
 .date-title {
   text-transform: capitalize;
-  font-size: 21px;
+  font-size: 1.3125rem;
   margin: 23px 0 8px;
 }
 .calendar-help {
   color: #bed0bc;
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.7;
   margin: 0 0 22px;
 }
@@ -733,7 +733,7 @@ time {
   align-items: center;
   justify-content: space-between;
   margin: 20px 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #c2d1be;
   gap: 10px;
 }
@@ -752,11 +752,11 @@ time {
 }
 .recommendation strong {
   display: block;
-  font-size: 16px;
+  font-size: 1rem;
 }
 .recommendation span {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.7;
   margin-top: 8px;
 }
@@ -764,11 +764,11 @@ time {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .schedule-table caption {
   text-align: left;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #bbcbb8;
   line-height: 1.7;
   margin-bottom: 16px;
@@ -776,7 +776,7 @@ time {
 .schedule-table th {
   text-align: left;
   color: #bbceb5;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 500;
   padding: 12px 6px;
   border-bottom: 1px solid #ffffff30;
@@ -797,7 +797,7 @@ time {
 }
 .schedule-table small {
   display: block;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #dcee9f;
   margin-top: 5px;
 }
@@ -806,7 +806,7 @@ time {
 }
 .schedule-message {
   padding: 25px 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.8;
 }
 .sr-only {
@@ -827,7 +827,7 @@ time {
   .board-tabs button {
     flex: 1;
     padding: 10px 6px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .timetable {
     padding: 20px 16px;
@@ -843,10 +843,10 @@ time {
     grid-column: 1/-1;
   }
   .schedule-table {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .schedule-table th {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
   .schedule-table th:first-child {
     width: 39px;
@@ -887,7 +887,7 @@ time {
   padding: 10px 12px;
   cursor: pointer;
   list-style: none;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .route-filters summary::-webkit-details-marker {
   display: none;
@@ -906,11 +906,11 @@ time {
 }
 .filter-icon {
   color: #dcee9f;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1;
 }
 .filter-chevron {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 .route-filters[open] .filter-chevron {
   transform: rotate(180deg);
@@ -927,7 +927,7 @@ time {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: #d0dfcb;
   min-width: 0;
 }
@@ -942,7 +942,7 @@ time {
   padding: 10px;
   border-radius: 7px;
   font: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .route-filters .schedule-filters {
   margin-top: 12px;
@@ -965,7 +965,7 @@ time {
   background: transparent;
   color: #edf5dc;
   font: inherit;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .route-filter-actions .apply-route-filters {
   background: #dcee9f;
@@ -1009,7 +1009,7 @@ time {
   gap: 7px;
 }
 .compact-top .clock strong {
-  font-size: 16px;
+  font-size: 1rem;
 }
 .journey-header {
   display: grid;
@@ -1024,7 +1024,7 @@ time {
   flex-direction: column;
 }
 .journey-header label > span {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #acbfaf;
   margin-left: 9px;
 }
@@ -1032,7 +1032,7 @@ time {
   background: transparent;
   color: #f4f6ee;
   border: 1px solid #49675a;
-  font-size: 20px;
+  font-size: 1.25rem;
   letter-spacing: -0.5px;
   min-height: 44px;
   padding: 5px 8px;
@@ -1050,7 +1050,7 @@ time {
   grid-row: 2;
 }
 .destination-field select {
-  font-size: 17px;
+  font-size: 1.0625rem;
   font-weight: 400;
 }
 .swap-stations {
@@ -1062,7 +1062,7 @@ time {
   border: 1px solid #afc580;
   background: #dcee9f;
   color: #173731;
-  font-size: 24px;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 .swap-stations:disabled {
@@ -1074,7 +1074,7 @@ time {
   outline-offset: 2px;
 }
 .storage-warning {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #dcee9f;
   margin: 0 20px 12px;
 }
@@ -1138,7 +1138,7 @@ time {
   border: 2px solid color-mix(in srgb, var(--line-color) 65%, #10201c);
   border-radius: 8px;
   font: inherit;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 750;
   cursor: pointer;
 }
@@ -1157,7 +1157,7 @@ time {
 }
 .line-selected {
   width: 12px;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .train-times {
@@ -1175,12 +1175,12 @@ time {
   gap: 3px 5px;
 }
 .train-times small {
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.4;
   color: #bacabb;
 }
 .train-times time {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.2;
   font-weight: 600;
   white-space: nowrap;
@@ -1190,7 +1190,7 @@ time {
 }
 .train-times .arrival-day,
 .train-times .departure-day {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #e4f2c8;
   white-space: nowrap;
 }
@@ -1209,7 +1209,7 @@ time {
   border-radius: 9px;
   background: #e2f1da;
   color: #234a32;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .install-invitation > span {
   flex: 1;
@@ -1232,7 +1232,7 @@ time {
 }
 .install-dismiss {
   min-width: 44px;
-  font-size: 24px;
+  font-size: 1.5rem;
   padding: 0;
 }
 .install-action:focus-visible,
@@ -1276,7 +1276,7 @@ time {
   color: #234a32;
   border: 1px solid #a4c899;
   border-radius: 9px;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .update-notice button {
   min-height: 44px;
@@ -1293,7 +1293,7 @@ time {
 }
 .data-status {
   padding: 8px 20px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .data-status summary {
   cursor: pointer;
@@ -1344,7 +1344,7 @@ time {
   border-radius: 10px;
   background: #a83227;
   color: white;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
 }
 .alert-indicator:focus-visible {
@@ -1363,12 +1363,12 @@ time {
     gap: 6px;
   }
   .masthead-actions .region {
-    font-size: 9px;
+    font-size: 0.5625rem;
     max-width: 60px;
     gap: 4px;
   }
   .masthead .brand {
-    font-size: 18px;
+    font-size: 1.125rem;
     gap: 6px;
   }
   .masthead {
@@ -1398,7 +1398,7 @@ time {
   gap: 12px;
 }
 .alerts-dialog h2 {
-  font-size: 19px;
+  font-size: 1.1875rem;
 }
 .alerts-dialog article + article {
   border-top: 1px solid #99aa99;
@@ -1412,11 +1412,11 @@ time {
   color: inherit;
 }
 .schedule-table td:nth-child(2) {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.2;
 }
 .schedule-table time {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -1425,7 +1425,7 @@ time {
   background: none;
   color: #12342e;
   font: inherit;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 650;
   min-height: 44px;
   cursor: pointer;
@@ -1436,7 +1436,7 @@ time {
 }
 .network-switch small {
   display: block;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 400;
 }
 .onboarding {
@@ -1446,12 +1446,12 @@ time {
   color: #eaf2de;
 }
 .onboarding h1 {
-  font-size: 26px;
+  font-size: 1.625rem;
   line-height: 1.15;
   margin: 12px 0;
 }
 .onboarding p {
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.5;
   color: #bed0c4;
 }
@@ -1488,7 +1488,7 @@ time {
 @media (max-width: 640px) {
   .network-switch {
     max-width: 104px;
-    font-size: 16px;
+    font-size: 1rem;
     padding: 2px;
   }
   .masthead-actions {
@@ -1513,10 +1513,21 @@ time {
 .timetable .date-picker input {
   min-height: 44px;
 }
-.timetable .date-picker { gap:6px; flex-wrap:wrap; }
-.timetable .date-picker label { flex:1 1 120px; }
-.timetable .date-picker button { min-width:44px; padding:6px; }
-.timetable .return-now { color:#e4f2c8; text-decoration:underline; }
+.timetable .date-picker {
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.timetable .date-picker label {
+  flex: 1 1 120px;
+}
+.timetable .date-picker button {
+  min-width: 44px;
+  padding: 6px;
+}
+.timetable .return-now {
+  color: #e4f2c8;
+  text-decoration: underline;
+}
 
 .editable-select {
   position: relative;
@@ -1534,11 +1545,11 @@ time {
   background: transparent;
   color: #f4f6ee;
   font: inherit;
-  font-size: 17px;
+  font-size: 1.0625rem;
 }
 .editable-select input::placeholder {
   color: #acbfaf;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .editable-select .clear-selection {
   position: absolute;
@@ -1550,7 +1561,7 @@ time {
   border: 0;
   background: transparent;
   color: #cfdbc9;
-  font-size: 25px;
+  font-size: 1.5625rem;
   cursor: pointer;
   padding: 0;
 }
@@ -1584,7 +1595,7 @@ time {
   padding: 10px;
   text-align: left;
   font: inherit;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: #173731;
   background: transparent;
   border: 0;
@@ -1604,4 +1615,149 @@ time {
   overflow: visible;
 }
 
-.offline-status { margin:8px 0; padding:8px 12px; border-radius:8px; background:#f3e5b2; color:#493900; font-size:13px; }
+.offline-status {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #f3e5b2;
+  color: #493900;
+  font-size: 0.8125rem;
+}
+
+/* Text scaling and keyboard navigation: no fixed-height text containers. */
+.masthead {
+  flex-wrap: wrap;
+}
+.brand {
+  max-width: 100%;
+  min-width: 0;
+}
+.brand > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.brand img {
+  flex-shrink: 0;
+}
+.masthead-actions {
+  margin-left: auto;
+}
+.network-switch {
+  max-width: 9rem;
+}
+.board-tabs {
+  flex-wrap: wrap;
+}
+.board-tabs button {
+  min-height: 44px;
+  min-width: 44px;
+}
+input:focus-visible,
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #52692d;
+  outline-offset: 2px;
+}
+.board input:focus-visible,
+.board button:focus-visible,
+.board summary:focus-visible,
+.onboarding input:focus-visible,
+.onboarding button:focus-visible {
+  outline: 3px solid #e4f2a0;
+  outline-offset: -3px;
+}
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 12px;
+  z-index: 100;
+  transform: translateY(-120%);
+  padding: 12px;
+  background: #e2f1da;
+  color: #17392d;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+.departures li {
+  display: flex;
+  flex-wrap: wrap;
+}
+.departures .destination {
+  flex: 1 1 10rem;
+}
+.departures .countdown {
+  margin-left: auto;
+}
+.line {
+  min-width: 2rem;
+  width: auto;
+  height: auto;
+  min-height: 2rem;
+  padding: 3px;
+}
+.line-bar {
+  grid-template-columns: repeat(auto-fit, minmax(max(70px, 4.5rem), 1fr));
+}
+.line-bar button[aria-pressed="true"] {
+  color: var(--line-ink, #000);
+}
+.table-scroll {
+  width: 100%;
+  overflow: auto;
+}
+.schedule-table {
+  min-width: 18rem;
+}
+.schedule-table th:first-child {
+  width: 3rem;
+}
+.schedule-table th:nth-child(n + 3) {
+  width: 4.25rem;
+}
+.schedule-table .line {
+  width: auto;
+}
+.schedule-table time {
+  white-space: nowrap;
+}
+.schedule-table th {
+  overflow-wrap: anywhere;
+}
+.install-invitation,
+.update-notice {
+  flex-wrap: wrap;
+}
+.install-invitation > span,
+.update-notice > span {
+  min-width: 0;
+}
+.timetable input {
+  font-size: 1rem;
+}
+.timetable .date-picker label {
+  flex-basis: 9rem;
+}
+.select-options button {
+  overflow-wrap: anywhere;
+}
+.swap-stations {
+  font-size: 28px;
+}
+.editable-select .clear-selection {
+  font-size: 25px;
+}
+.line-selected {
+  width: 0.8em;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
