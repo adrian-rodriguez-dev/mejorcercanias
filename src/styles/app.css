@@ -1443,7 +1443,7 @@ time {
   min-height: 44px;
   cursor: pointer;
   max-width: 150px;
-  text-align: left;
+  text-align: right;
   line-height: 1.15;
   overflow-wrap: anywhere;
 }
