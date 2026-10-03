@@ -243,12 +243,7 @@ export function App({
             <span className="brand-name">
               mejor<span className="brand-light">cercanías</span>
             </span>
-            <small className="brand-tagline" aria-label="Tu tren en segundos">
-              <span aria-hidden="true">Tu</span>{" "}
-              <span aria-hidden="true">tren</span>{" "}
-              <span aria-hidden="true">en</span>{" "}
-              <span aria-hidden="true">segundos</span>
-            </small>
+            <small className="brand-tagline">Tu tren en segundos</small>
           </span>
         </a>
         <div className="masthead-actions">

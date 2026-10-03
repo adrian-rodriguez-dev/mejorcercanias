@@ -1939,22 +1939,22 @@ summary:focus-visible,
   border-color: var(--theme-outer-border);
 }
 
-/* The name sets the width; distribute a larger tagline across that width. */
+/* Center the smaller tagline under the wordmark, independently of the icon. */
 .brand-copy {
-  display: grid;
-  grid-template-columns: minmax(0, max-content);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .brand-name {
   white-space: nowrap;
 }
 .brand .brand-tagline {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+  display: block;
+  text-align: center;
   min-width: 0;
-  font-size: 0.64em;
-  font-weight: 600;
-  letter-spacing: 0;
+  font-size: 0.52em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   line-height: 1.25;
   white-space: nowrap;
 }
