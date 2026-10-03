@@ -8,6 +8,13 @@ Calcular rutas con transbordos al elegir estaciones en el panel existente, mostr
 ### Requirement: Búsqueda interna por rondas
 The system SHALL aplicar un margen estimado de 60 segundos para cambiar de tren en el mismo punto de embarque cuando no haya una regla GTFS aplicable. Las reglas oficiales aplicables SHALL tener prioridad; los enlaces peatonales entre puntos distintos SHALL mantener sus tiempos explícitos.
 The system SHALL buscar hasta tres transbordos usando calendarios, tiempos de embarque y bajada, reglas GTFS y enlaces explícitos; SHALL usar penalización de 15 minutos para preferir itinerarios menos complejos.
+The system SHALL descartar cada conexión cuyo intervalo entre llegada del tren anterior y salida del siguiente supere 60 minutos, incluyendo caminatas y márgenes mínimos. El límite SHALL aplicarse también al cruzar medianoche y no al tiempo a bordo ni a la espera inicial en origen.
+#### Scenario: Espera nocturna excesiva
+- **WHEN** una conexión exige esperar 378 minutos hasta el siguiente tren
+- **THEN** se descarta durante la búsqueda y se siguen buscando salidas posteriores con cambios de hasta 60 minutos.
+#### Scenario: Límite incluido
+- **WHEN** hay 60 minutos exactos entre dos trenes y se respeta el mínimo aplicable
+- **THEN** la conexión es válida; con 60 minutos y un segundo se descarta.
 #### Scenario: Cambio demasiado corto
 - **WHEN** el siguiente tren sale antes del mínimo de transbordo
 - **THEN** se descarta esa conexión y se considera un tren posterior.

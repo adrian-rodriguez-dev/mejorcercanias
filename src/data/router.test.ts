@@ -56,6 +56,107 @@ it("uses one estimated minute only for implicit same-point transfers", () => {
 });
 
 describe("renfe-cli round-based routing adaptation", () => {
+  it.each([3600, 3601, 378 * 60])(
+    "limits overnight changes to one hour: %i seconds",
+    (gap) => {
+      const g = graph([
+        trip("incoming", [
+          ["A", 82800],
+          ["B", 84600],
+        ]),
+        trip("connection", [
+          ["B", 84600 + gap],
+          ["D", 85200 + gap],
+        ]),
+      ]);
+      expect(run(g)).toHaveLength(gap <= 3600 ? 1 : 0);
+    },
+  );
+  it("counts walking time inside the hour and checks each change", () => {
+    const incoming = trip("incoming", [
+      ["A", 1000],
+      ["B", 1600],
+    ]);
+    const walk = [{ from: "B", to: "C", seconds: 600 }];
+    expect(
+      run(
+        graph(
+          [
+            incoming,
+            trip("within", [
+              ["C", 5200],
+              ["D", 5500],
+            ]),
+          ],
+          walk,
+        ),
+      ),
+    ).toHaveLength(1);
+    expect(
+      run(
+        graph(
+          [
+            incoming,
+            trip("over", [
+              ["C", 5201],
+              ["D", 5500],
+            ]),
+          ],
+          walk,
+        ),
+      ),
+    ).toEqual([]);
+    const middle = trip("middle", [
+      ["B", 2000],
+      ["C", 2500],
+    ]);
+    expect(
+      run(
+        graph([
+          incoming,
+          middle,
+          trip("last", [
+            ["C", 6101],
+            ["D", 6500],
+          ]),
+        ]),
+      ),
+    ).toEqual([]);
+    expect(
+      run(
+        graph([
+          incoming,
+          middle,
+          trip("last", [
+            ["C", 6100],
+            ["D", 6500],
+          ]),
+        ]),
+      ),
+    ).toHaveLength(1);
+  });
+  it("keeps a later valid departure instead of an overnight wait, without limiting time aboard", () => {
+    const g = graph([
+      trip("early", [
+        ["A", 1000],
+        ["B", 1600],
+      ]),
+      trip("later", [
+        ["A", 9000],
+        ["B", 9600],
+      ]),
+      trip("connection", [
+        ["B", 10000],
+        ["D", 15000],
+      ]),
+    ]);
+    const results = run(g);
+    expect(results).toHaveLength(1);
+    expect(results[0].legs[0].tripId).toContain("later@");
+    expect(results[0].legs[1].arrival - results[0].legs[1].departure).toBe(
+      5000,
+    );
+  });
   it("finds up to three changes and refuses a fourth", () => {
     const trips = [
       trip("1", [

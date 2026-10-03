@@ -20,6 +20,8 @@ Transfer contiene from, to y seconds; null prohíbe el cambio. Puede incluir est
 
 El resultado contiene legs con tren, línea, origen, destino, salida/llegada y cambio previo. Las caminatas son entre trenes: no se calculan rutas exclusivamente a pie ni acceso/egreso peatonal. La búsqueda admite hasta tres transbordos dentro de una red y filtra líneas solo en la primera etapa.
 
+Cada transbordo admite como máximo 60 minutos desde la llegada del tren anterior hasta la salida del siguiente, incluida cualquier caminata. El máximo es una política de la app, no un dato de Renfe; también se aplica de noche y no limita la duración a bordo ni cuánto falta para salir del origen. Los mínimos oficiales o estimados siguen siendo obligatorios. Las conexiones que exceden el máximo se descartan dentro del motor para poder encontrar alternativas válidas.
+
 ## Validación y compatibilidad
 
 Los datos de red/caché se consideran desconocidos hasta validarse. Manifiesto, archivo de estación y grafo deben coincidir en versión. `graph-validation.ts` comprueba estructura, referencias a nodos, calendarios, tiempos y reglas de transferencia; el importador impone controles adicionales sobre el GTFS original. Las pruebas de JSON malformado protegen frente a entradas nulas sin convertir errores de datos en excepciones del validador.

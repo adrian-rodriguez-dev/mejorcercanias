@@ -49,6 +49,7 @@ type Label = { arrival: number; legs: Leg[] };
 type ActiveTrip = RoutingTrip & { serviceId: string };
 const MAX_LEGS = 4,
   DEFAULT_TRANSFER = 60,
+  MAX_TRANSFER = 3600,
   PENALTY = 900,
   MAX_DURATION = 86400;
 const last = (label: Label) => label.legs.at(-1)!;
@@ -185,7 +186,8 @@ function findOne(
             round > 0 &&
             (!rule ||
               rule.seconds === null ||
-              label.arrival + rule.seconds > dep)
+              label.arrival + rule.seconds > dep ||
+              dep - label.arrival > MAX_TRANSFER)
           )
             continue;
           const leg: Leg = {
