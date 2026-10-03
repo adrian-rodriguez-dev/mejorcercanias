@@ -11,6 +11,7 @@ import {
   refreshError,
 } from "./data/snapshot";
 import { InstallPrompt } from "./InstallPrompt";
+import { UpdateNotice } from "./UpdateNotice";
 import { arrivalAt, arrivalDayLabel } from "./data/arrival";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { renfeProvider, manifest } from "./data/renfe";
@@ -200,6 +201,7 @@ export function App({
           />
         </div>
       </header>
+      <UpdateNotice />
       <div className="install-slot" ref={setInstallTarget} />
       <main>
         <div className="workspace">

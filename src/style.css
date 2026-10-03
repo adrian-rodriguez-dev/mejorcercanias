@@ -1265,6 +1265,29 @@ time {
 .install-slot:empty {
   display: none;
 }
+.update-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 0 12px;
+  background: #e2f1da;
+  color: #234a32;
+  border: 1px solid #a4c899;
+  border-radius: 9px;
+  font-size: 14px;
+}
+.update-notice button {
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
 .install-area button {
   min-height: 44px;
 }

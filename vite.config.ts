@@ -2,9 +2,11 @@ import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { appVersion } from "./build/app-version";
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
+    appVersion(),
     ...(mode === "e2e"
       ? [
           {
