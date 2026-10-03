@@ -1,4 +1,4 @@
-import {optionName} from './option-name';
+import { optionName } from "./option-name";
 import { test, expect } from "./configured-test";
 test("tabla de todo el día compacta y cambio de fecha", async ({
   page,
@@ -11,7 +11,7 @@ test("tabla de todo el día compacta y cambio de fecha", async ({
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();
   await expect(page.getByRole("table")).toBeVisible();
-  await page.getByLabel("Destino", {exact:true}).fill(optionName("13200"));
+  await page.getByLabel("Destino", { exact: true }).fill(optionName("13200"));
   await page.getByRole("button", { name: "Día siguiente" }).click();
   await expect(page.getByLabel("Fecha")).toHaveValue("2026-10-03");
   await expect(page.getByRole("table")).toBeVisible();

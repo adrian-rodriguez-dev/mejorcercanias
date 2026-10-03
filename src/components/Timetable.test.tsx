@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 import { Timetable } from "./Timetable";
-import type { StationSchedule } from "./data/types";
+import type { StationSchedule } from "../data/types";
 const now = Date.parse("2026-10-02T18:00:00+02:00");
 const schedule = (day: string): StationSchedule => ({
   stationId: "13400",

@@ -110,9 +110,34 @@ describe("avisos oficiales", () => {
     expect(() => parseAlerts(feed([]), now + 300001)).toThrow();
   });
 });
-it("mantiene avisos generales explícitos de Bilbao y múltiples avisos de accesibilidad",()=>{
- const general=[{routeId:"60T0001C1"},{routeId:"60T0003C2"},{routeId:"60T0005C3"}];
- const alerts=parseAlerts(feed([entity("general",general),entity("accesibilidad",general)]),now);
- expect(relevantAlerts(alerts,"13101",{lines:[],destination:""},"2026-10-02",[],now).map(a=>a.id)).toEqual(["general","accesibilidad"]);
- expect(relevantAlerts(alerts,"13400",{lines:["C2"],destination:"13200"},"2026-10-02",[],now)).toHaveLength(2);
+it("mantiene avisos generales explícitos de Bilbao y múltiples avisos de accesibilidad", () => {
+  const general = [
+    { routeId: "60T0001C1" },
+    { routeId: "60T0003C2" },
+    { routeId: "60T0005C3" },
+  ];
+  const alerts = parseAlerts(
+    feed([entity("general", general), entity("accesibilidad", general)]),
+    now,
+  );
+  expect(
+    relevantAlerts(
+      alerts,
+      "13101",
+      { lines: [], destination: "" },
+      "2026-10-02",
+      [],
+      now,
+    ).map((a) => a.id),
+  ).toEqual(["general", "accesibilidad"]);
+  expect(
+    relevantAlerts(
+      alerts,
+      "13400",
+      { lines: ["C2"], destination: "13200" },
+      "2026-10-02",
+      [],
+      now,
+    ),
+  ).toHaveLength(2);
 });

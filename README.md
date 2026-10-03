@@ -1,210 +1,47 @@
 # mejorcercanías
 
-**Abrir → mirar → saber cuándo pasa el tren.** SPA estática para Cercanías Bilbao, React + TypeScript + Vite.
+Horarios oficiales de Renfe y cálculo de rutas con hasta tres transbordos. Aplicación estática React + TypeScript + Vite, instalable y con consulta offline de datos guardados.
 
-**Web pública:** https://adrian-rodriguez-dev.github.io/mejorcercanias/
+[Web pública](https://adrian-rodriguez-dev.github.io/mejorcercanias/) · [Manual de mantenimiento y operación](docs/README.md)
 
-## Qué puedes consultar
+## Arrancar
 
-- **Próximos trenes** es la pantalla inicial: estación favorita, línea, destino, hora y cuenta atrás. Al elegir destino muestra salida y llegada a esa parada (aunque no sea la terminal); sin destino la llegada desaparece. La cuenta atrás siempre indica cuánto falta para salir y las llegadas al día siguiente muestran +1 día.
-- **Horario completo** muestra toda la tabla de un día, sin ocultar las salidas anteriores a la hora actual.
-- **Hoy / Mañana / fecha / anterior / siguiente** para cambiar de día fácilmente.
-- **Origen y destino opcional** en la cabecera del panel oscuro. El propio nombre es el selector; el botón ⇅ invierte el trayecto al instante, conservando vista, fecha, hora y línea. La línea se elige en la barra visible **C1 · C2 · C3** (selección múltiple; ninguna marcada muestra todas), con [colores oficiales](docs/line-colors.md); solo los filtros horarios permanecen plegados. La selección se conserva al cambiar de vista durante la visita y se reinicia al cambiar de estación. Incluye paradas intermedias del mismo tren.
-- **Destino directo**, **Salir a partir de** o **Llegar antes de**, con hora de salida y llegada del mismo tren.
-- Atajo **Mañana a Bilbao antes de las 09:00**: configura fecha, destino y hora; destaca la última salida compatible y conserva todas las alternativas anteriores.
-- **Ver todo el día** elimina los filtros. Volver a Próximos trenes recupera el panel inmediato.
-
-Se utilizan **horarios programados oficiales de Renfe**, no tiempo real. Fines de semana y excepciones se resuelven con los calendarios publicados por el operador; no se asume que festivo equivale a domingo. Al elegir destino se calculan rutas de hasta tres transbordos dentro del núcleo. No se incluyen Euskotren o metro. Deja margen si tienes una cita: las llegadas programadas no garantizan puntualidad.
-
-El snapshot inicial cubre **1–30 de octubre de 2026**, 44 estaciones de Bilbao C1/C2/C3. Fuera del horizonte la app indica que no hay datos publicados, sin repetir un horario de otro día. **El refresco aún es manual**; consulta [regeneración de datos](docs/gtfs-import.md) antes de que caduque. Los fixtures demo permanecen solo como soporte de desarrollo.
-
-## Desarrollo
-
-Node **24 LTS** (ver `.nvmrc`):
+Node 24 (ver `.nvmrc`) y npm. Desde la raíz del repositorio:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Abre la URL de Vite (normalmente `http://127.0.0.1:5173`). No requiere base de datos, backend, cuentas, API keys ni .NET. La estación se guarda solo en este navegador. Las cinco favoritas de la demo se migran a IDs oficiales.
+Vite indica la URL local. No se necesitan base de datos, cuentas ni claves para consultar horarios. Python 3.12+ se necesita para el pipeline y sus pruebas.
 
 ```sh
-npm test
-npm run build
-npm run preview
 npm run check
+python -m unittest discover -s scripts -p 'test_*.py'
+npm run test:worker
 npx playwright install chromium
 npm run test:e2e
-python -m unittest discover -s scripts -p 'test_*.py'
-npm run format
+npm run test:offline
 ```
 
-Python 3.12+ solo se necesita para regenerar/probar el importador, no para ejecutar la aplicación. `dist/` contiene archivos estáticos y admite hosting en subcarpeta. GitHub Actions comprueba pruebas, build y OpenSpec y publica `dist/` en GitHub Pages tras cada push válido a `main`. Los pull requests solo validan. Pages utiliza GitHub Actions como origen y el entorno `github-pages`. El dominio propio mejorcercanias.es y la renovación automática de datos siguen pendientes.
+`check` comprueba formato, dependencias entre capas, pruebas unitarias, tipos, build y OpenSpec. La suite offline utiliza el `dist/` producido por el build. [Guía de desarrollo](docs/development.md).
 
-## Arquitectura
+## Qué hace
 
-```text
-GTFS Renfe ZIP -> preprocesador Python -> manifiesto + JSON versionado por estación
-                                                      |
-preferencia local -> estación -> proveedor -> próximas salidas / horario por fecha
-```
+- Origen y destino opcional, próximos trenes y horario completo por fecha.
+- Con destino: llegada final, número de cambios y detalle desplegable de trenes, esperas y caminatas documentadas. El filtro de líneas se aplica al primer tren.
+- Sin destino: salidas y llegada a la terminal real de cada tren.
+- Catálogo de diez redes en el snapshot revisado el 3 de octubre de 2026, incluyendo Madrid y Rodalies. La vigencia y las exclusiones se consultan por red en el manifiesto; no son constantes del producto.
+- Preferencias locales, modo oscuro, instalación y recuperación offline de archivos consultados.
 
-- `scripts/import_gtfs.py`: calendarios semanales y excepciones, selección explícita de Bilbao, tiempos y paradas. CSV en streaming; no se envía el GTFS bruto al navegador.
-- `src/data/renfe-manifest.json`: fuente, hash del ZIP, vigencia, catálogo y fechas efectivas.
-- `public/data/renfe/<versión>/`: JSON compacto por estación, aproximadamente 1,3 MB en total para este snapshot.
-- `src/data/renfe.ts`: materializa horarios del día civil en Europe/Madrid, también desde servicios anteriores con horas >24.
-- `src/data/timetable.ts`: filtros de salida y llegada para viajes directos.
-- `src/App.tsx`: panel inmediato, preferencia y cambio de vista.
-- `src/Timetable.tsx`: tabla por fecha y consulta de llegada.
+Son horarios programados, sin garantía de puntualidad. El minuto para cambios dentro del mismo punto y los diez minutos de ciertos enlaces peatonales son estimaciones; las reglas explícitas de GTFS prevalecen. No se inventan conexiones por proximidad. Los avisos no modifican las rutas. La integración en vivo de incidencias sigue pendiente: [estado y activación](docs/service-alerts.md).
 
-Los tiempos GTFS se calculan desde mediodía local menos doce horas, respetando DST. Cargas antiguas no pueden reemplazar una nueva fecha/estación. Ver [contrato](docs/data-contract.md), [importador](docs/gtfs-import.md) y [comprobaciones](docs/verification.md).
+## Mantener y publicar
 
-## OpenSpec antes de desarrollar
+La CI valida pushes y pull requests. Un push válido a `main` publica en Pages; un PR genera un artefacto de previsualización. `Refresh GTFS` comprueba cobertura cada hora y renueva cuando caduca una red, conservando el snapshot previo ante errores. Un refresco sin cambios no publica. [Actions y artefactos](docs/actions.md) · [Operación y recuperación](docs/operations.md).
 
-Configurado con **OpenSpec 1.14.0**, `openspec init --tools=codex`, esquema oficial `spec-driven`. Skills generadas en `.agents/skills/`. Se siguió la [documentación oficial](https://openspec.dev/docs/cli).
+Las nuevas funcionalidades se describen con OpenSpec antes de implementar; los refactors y herramientas sin cambio de requisitos pueden declarar `skip_specs`. [Convenciones y decisiones](docs/governance.md).
 
-La [primera vertical](openspec/changes/archive/2026-10-02-bootstrap-app-and-station-board/proposal.md) está archivada y consolidada en `openspec/specs/station-board/spec.md`. Su [exploración](openspec/changes/archive/2026-10-02-bootstrap-app-and-station-board/exploration.md) conserva las decisiones iniciales.
+## Fuentes y licencias
 
-El cambio [date-aware-timetable](openspec/changes/archive/2026-10-02-date-aware-timetable/proposal.md) añade calendario oficial, horario diario y llegada antes de una hora. Tiene propuesta, diseño, deltas de especificación y tareas. Está archivado y sus requisitos consolidados en las specs. El cambio [compact-line-destination-filters](openspec/changes/archive/2026-10-02-compact-line-destination-filters/proposal.md) documenta los filtros móviles compartidos; su propuesta se creó antes de implementar.
-
-Para una nueva feature en Codex:
-
-1. `$openspec-explore` para investigar alcance y alternativas.
-2. `$openspec-propose nombre-del-cambio` para preparar propuesta, specs, diseño y tareas.
-3. Revisar los artefactos y pedir `$openspec-apply-change nombre-del-cambio`.
-4. Probar, validar, sincronizar specs y cerrar con `$openspec-archive-change`.
-
-Estos son nombres de skills, no comandos de terminal. La autorización expresa del usuario para implementar se conserva durante la sesión; no se vuelve a pedir por cada paso.
-
-```sh
-npm run spec -- list --json
-npm run spec -- list --specs
-npm run spec -- new change nombre-del-cambio
-npm run spec -- status --change nombre-del-cambio --json
-npm run spec -- instructions proposal --change nombre-del-cambio --json
-npm run spec -- validate --all --strict
-```
-
-Seguir el orden de dependencias que devuelve OpenSpec y obtener `instructions` para cada artefacto; no crear carpetas de cambios manualmente. Explore no es un comando CLI. No especificar el backlog entero por adelantado.
-
-## Fuente y siguientes pasos
-
-[Datos oficiales de Renfe](https://data.renfe.com/dataset/horarios-cercanias), **Renfe Operadora · CC BY 4.0**. Se han filtrado y transformado para esta aplicación independiente, sin afiliación con Renfe.
-
-Pendiente: activación del adaptador de tiempo real. Ver [roadmap](docs/roadmap.md) y [estudio de CORS](docs/renfe-data.md).
-
-Cambio de UX: [cabecera compacta e intercambio](openspec/changes/archive/2026-10-02-compact-station-header/proposal.md).
-
-Las líneas se marcan de forma independiente: el recuadro completo se ilumina al activarlas y queda oscuro al desmarcarlas.
-
-El panel empieza directamente en origen y destino: no incluye rótulo de vista ni reloj redundantes. Se conservan las pestañas y las cuentas atrás de cada tren.
-
-La barra de líneas muestra solo las que pasan por origen y destino; con cero o una opción se oculta por completo. Sin destino se usa el origen. Cambiar estaciones elimina selecciones incompatibles; la disponibilidad no depende de los próximos ocho trenes ni de una fecha sin servicio.
-
-Se recuerdan origen, destino y líneas en localStorage (`mejorcercanias.journey.v1`), incluidas selecciones vacías. Al abrir se valida el catálogo y se migra la antigua preferencia de estación. Si no se puede guardar, la selección funciona durante la visita.
-
-## Instalación
-Manifiesto e iconos permiten instalación en navegadores compatibles. La invitación verde aparece bajo la cabecera y se oculta en modo instalado. «Ahora no» y descartar el diálogo silencian 30 días; la ayuda del pie sigue accesible. Sin almacenamiento, el cierre dura la sesión. Un service worker guarda los recursos de la app tras una visita online; los horarios consultados se guardan por estación y versión. Referencia: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable
-
-Validación: eventos nativos simulados, guía iOS, rechazo, teclado, modo instalado y recursos en HTTPS. No hay dispositivo Android/iOS físico conectado: instalación real y relanzamiento en esos sistemas no verificados.
-
-Renovación automática por caducidad: [contrato, pruebas y recuperación](docs/data-freshness.md). El móvil consulta metadatos de versión y JSON compactos; no descarga el GTFS bruto.
-
-Incidencias: indicador compacto y detalle accesible implementados. La fuente directa de Renfe bloquea CORS; la activación en vivo requiere desplegar [la pasarela de avisos](docs/service-alerts.md). Hasta entonces la campana queda neutra, sin aviso visible ni afirmación de ausencia de incidencias.
-
-En próximas salidas, las horas de salida y llegada aparecen bajo el nombre del destino; solo se indica el día cuando es distinto de hoy o la llegada cruza medianoche.
-
-La campana de incidencias está en la barra superior: neutra sin avisos verificables y marcada con contador al haberlos. Se oculta el texto de error de fuente mientras la integración está pendiente. El panel queda a 8 px de la cabecera.
-
-## Núcleos y asistente
-Diez redes y 634 estaciones. Sin núcleo guardado se abre siempre el asistente (núcleo, origen y destino opcional). El núcleo se cambia tocando su nombre en la cabecera. [Catálogo, exclusiones, datos y cómo añadir núcleos](docs/networks.md).
-
-Horario completo muestra siempre todos los trenes de la fecha elegida: selector y flechas de día junto a la tabla. Los filtros de origen, destino y líneas se comparten con próximas salidas. Se retiraron los límites de hora y los atajos de mañana.
-
-## Actualizaciones de la aplicación
-Cada build publica app-version.json. Se comprueba al abrir, volver a primer plano, recuperar conexión y cada cinco minutos visible, con límite de una solicitud por minuto. Si cambia, se ofrece Actualizar sin recargas automáticas ni pérdida de preferencias. Los fallos de comprobación no bloquean los horarios.
-
-## Consulta sin conexión
-Tras una primera carga online completada, el service worker permite reabrir la app. Se guardan hasta doce archivos de estación de las dos últimas versiones consultadas, con catálogo y calendario coherentes. Solo se guardan JSON validados; nunca el GTFS bruto. Se pueden consultar otros días incluidos en el calendario guardado, sin extrapolar horarios caducados. Una estación no guardada requiere conexión. El aviso offline muestra la fecha de vigencia; no hay información de retrasos en tiempo real.
-
-El navegador puede borrar el almacenamiento local; no es una garantía de disponibilidad permanente. Si Cache Storage falla, la consulta online sigue funcionando. El shell conserva como máximo dos versiones. Los metadatos de app y de datos siempre se consultan por red. Las actualizaciones del service worker esperan a Actualizar o al cierre de las ventanas antiguas, sin recargar otras pestañas.
-
-Prueba de producción: `npm run build && npm run test:offline`, incluyendo subcarpeta de Pages, corte de conexión, reapertura, fecha fuera de cobertura y activación voluntaria de un nuevo service worker. Basado en la [documentación de service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
-
-Sin destino elegido, la llegada corresponde a la terminal real de cada tren. Con destino intermedio se muestra ese nombre y su hora; la terminal del tren se conserva en el título y nombre accesible. Una hora terminal ausente se muestra como —. No se deducen tiempos de viaje ni finales teóricos de línea.
-
-## Navegación rápida y accesibilidad
-Al consultar otra fecha aparece Ahora: vuelve al panel actual y conserva estaciones y líneas. Las horas de llegada se refieren al destino elegido o, sin filtro, a la terminal real de ese tren.
-
-La tipografía respeta el tamaño de texto del usuario; se comprobó al 200 % a 360 px. La tabla puede desplazarse dentro de su propia región al ampliar texto, sin desplazar toda la página. Los controles principales conservan 44 px, foco visible y nombres accesibles; Saltar a horarios permite omitir la cabecera. Los colores oficiales se conservan y el texto de cada línea se elige con contraste mínimo de 4.5:1.
-
-Validación automática con axe en asistente, selectores, panel y tabla, más pruebas de teclado, texto ampliado y contraste de todos los colores del catálogo. No constituye una certificación completa de WCAG; no se ha probado con un lector de pantalla físico Android/iOS.
-
-
-## Rutas integradas en origen y destino
-Al elegir destino en los selectores actuales, el panel y la tabla calculan la llegada
-final: Directo, 1 transbordo, 2 transbordos o 3 transbordos. El signo + despliega
-cada tren con salida/llegada, estación de cambio, espera y tramo a pie cuando existe.
-La selección de líneas se aplica al primer tren; el resto del itinerario puede usar
-otras líneas. Sin destino permanece el panel original de próximos trenes.
-
-Motor TypeScript adaptado de [renfe-cli](https://github.com/gerardcl/renfe-cli/blob/938db1536b7e148553c03b0322f2b49f4a21b7f3/src/router.rs), BSD-3-Clause
-(ver public/licenses/renfe-cli.txt). Búsqueda por rondas en Web Worker: cuatro trenes,
-margen estimado por defecto de 1 minuto en el mismo punto de embarque y penalización de 15 minutos por cambio al comparar
-alternativas con la misma salida. Esta penalización no altera los horarios mostrados.
-Los cambios explícitos de GTFS tienen prioridad, incluidas prohibiciones y reglas
-por ruta/viaje. Se respetan calendario, excepciones, >24h y subida/bajada permitida.
-
-scripts/routing_data.py genera routing-<núcleo>.json en la misma versión que los
-horarios. El refresco publica ambos conjuntamente. data/routing-corrections.json
-conserva enlaces oficiales revisados y la división de puntos de embarque; el motor
-no contiene nombres ni casos de estaciones. Las estimaciones de enlaces de mapas
-son de 600 segundos y se identifican en el detalle como margen estimado.
-Solo se habilitan los núcleos ya validados por el importador. Sevilla, Málaga,
-Murcia/Alicante y Cantabria continúan excluidos en este snapshot por secuencias de
-paradas incompletas. La regla de Los Rosales está preparada y probada con fixture,
-pero no se publica un horario de Sevilla incompleto. Asturias no forma parte del catálogo actual de la web. El pipeline de mapas no amplía por sí
-solo la cobertura de horarios.
-
-El grafo se descarga bajo demanda y se guarda para consulta sin conexión. Cambiar
-origen/destino cancela el cálculo anterior. El motor usa horarios programados; los
-avisos de incidencias siguen siendo informativos y no reescriben el itinerario.
-No se infieren caminatas por proximidad. La búsqueda admite caminata entre trenes;
-no calcula viajes exclusivamente a pie ni accesos/egresos peatonales del trayecto.
-
-
-### Rendimiento del cálculo
-El motor deja de explorar alternativas cuyo tiempo más penalización ya supera
-el mejor itinerario encontrado. Una caché LRU de 24 consultas diarias evita
-recalcular al volver a una selección o cambiar de vista. La clave incluye versión,
-núcleo, origen, destino, fecha y líneas; solo guarda resultados completados.
-Comparación reproducible contra e867f10, usando el mismo margen de 60 segundos:
-`node --experimental-strip-types scripts/benchmark-routing.mjs`.
-Requiere historia Git con ese commit y el snapshot local; resultados en work/.
-El minuto es una política estimada del producto, no un tiempo garantizado por Renfe.
-Las reglas GTFS aplicables mantienen prioridad y los enlaces peatonales conservan
-sus márgenes (10 minutos estimados en las conexiones de mapas revisadas).
-
-
-### Madrid y Rodalies
-Madrid (95 estaciones) y Rodalies de Catalunya (210) están incorporados en el
-snapshot de octubre de 2026. Se mantienen los identificadores de línea del GTFS:
-14 variantes en Madrid y 20 en Rodalies, incluyendo R2N/R2S, RG/RT/RL y regionales.
-No representa 14 o 20 líneas comerciales independientes. Rodalies usa un grafo
-conjunto para permitir enlaces entre esos servicios. Metro y FGC no se añaden.
-Los servicios con route_type=3 se identifican como Bus en panel/tabla y Autobús
-en el detalle; el algoritmo conserva el modo sin reglas particulares por ciudad.
-
-Admisión parcial explícita: 178 viajes de Madrid y 26 de Rodalies tienen menos de
-dos paradas. Se registran con tripId, motivo y número de paradas en excludedTrips
-por red y se omiten tanto en horarios como en rutas. La interfaz avisa de horarios
-incompletos. No se reconstruyen paradas ni tiempos. Secuencias duplicadas o tiempos
-no monótonos continúan rechazando la red. Las otras redes conservan su validación
-estricta. Esta política se aplica también al refresco automático del GTFS.
-
-Fuentes: [Renfe](https://www.renfe.com/es/es/cercanias/rodalies-catalunya) y
-[horarios oficiales de Rodalies](https://rodalies.gencat.cat/es/horaris/tots-els-horaris/).
-
-Vigencia del snapshot: Madrid 1–30 de octubre de 2026; Rodalies 1–4 de octubre.
-La renovación comprueba cobertura por red y no prolonga calendarios artificialmente.
+GTFS de Renfe Operadora, CC BY 4.0, transformado para esta aplicación independiente. El motor adapta lógica de renfe-cli bajo BSD-3-Clause; atribución en `public/licenses/renfe-cli.txt`. [Contrato y procedencia](docs/data-contract.md). No se ha definido una licencia general para todo el código de la aplicación.

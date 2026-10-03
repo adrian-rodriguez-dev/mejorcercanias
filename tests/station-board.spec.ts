@@ -1,4 +1,4 @@
-import {optionName} from './option-name';
+import { optionName } from "./option-name";
 import { expect, test } from "./configured-test";
 
 test("elegir estación, recordar y cambiar sin formularios adicionales", async ({
@@ -8,7 +8,9 @@ test("elegir estación, recordar y cambiar sin formularios adicionales", async (
   page.on("pageerror", (error) => errors.push(error.message));
   await page.clock.install({ time: new Date("2026-10-02T10:00:00+02:00") });
   await page.goto("/");
-  await expect(page.getByLabel("¿Desde dónde sales?")).toHaveValue(optionName("13400"));
+  await expect(page.getByLabel("¿Desde dónde sales?")).toHaveValue(
+    optionName("13400"),
+  );
   await expect(page.locator(".board .demo-notice")).toHaveCount(0);
   await expect(page.locator(".board .schedule-provenance")).toHaveCount(0);
   await expect(
@@ -21,7 +23,9 @@ test("elegir estación, recordar y cambiar sin formularios adicionales", async (
   await expect(page.getByRole("listitem")).toHaveCount(8);
   await expect(page.locator(".board-top, .clock")).toHaveCount(0);
   await page.reload();
-  await expect(page.getByLabel("¿Desde dónde sales?")).toHaveValue(optionName("13400"));
+  await expect(page.getByLabel("¿Desde dónde sales?")).toHaveValue(
+    optionName("13400"),
+  );
   await expect(page.getByRole("listitem")).toHaveCount(8);
   await page.getByLabel("¿Desde dónde sales?").fill(optionName("13101"));
   await expect(page.getByLabel("¿Desde dónde sales?")).toBeVisible();

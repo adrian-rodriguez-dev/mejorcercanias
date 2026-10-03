@@ -1,4 +1,4 @@
-import {optionName} from './option-name';
+import { optionName } from "./option-name";
 import { test, expect } from "./configured-test";
 const now = Date.parse("2026-10-02T10:00:00+02:00");
 test("indicador condicional, detalle accesible, retirada y fallo", async ({
@@ -50,7 +50,7 @@ test("indicador condicional, detalle accesible, retirada y fallo", async ({
   expect(noticeBox.height).toBeLessThanOrEqual(48);
   expect(Math.round(panelBox.y - noticeBox.y - noticeBox.height)).toBe(8);
   await expect(page.locator(".brand img")).toBeVisible();
-  await page.getByRole("button", {name:"Ahora no", exact:true}).click();
+  await page.getByRole("button", { name: "Ahora no", exact: true }).click();
   const compactBox = (await page.locator(".board").boundingBox())!;
   expect(Math.round(compactBox.y - headerBox.y - headerBox.height)).toBe(8);
   const first = (await page.getByRole("listitem").first().boundingBox())!;

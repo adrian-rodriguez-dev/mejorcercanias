@@ -1,5 +1,5 @@
-import { stations } from "./data/stations";
-import { networks } from "./data/networks";
+import { stations } from "../data/stations";
+import { networks } from "../data/networks";
 const optionName = (id: string) =>
   stations.find((s) => s.id === id)?.name ??
   networks().find((n) => n.id === id)?.name ??
@@ -17,8 +17,8 @@ import {
 import userEvent from "@testing-library/user-event";
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
-import { STORAGE_KEY } from "./preference";
-import type { ScheduleProvider, StationSchedule } from "./data/types";
+import { STORAGE_KEY } from "../platform/preference";
+import type { ScheduleProvider, StationSchedule } from "../data/types";
 
 const now = Date.parse("2026-10-02T10:00:00+02:00");
 const clock = () => now;

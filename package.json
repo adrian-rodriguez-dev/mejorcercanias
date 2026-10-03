@@ -14,8 +14,11 @@
     "test:e2e": "playwright test",
     "test:offline": "playwright test --config playwright.offline.config.ts",
     "spec": "openspec",
-    "check": "npm test && npm run build && openspec validate --all --strict",
-    "format": "prettier --write src tests docs *.json *.ts README.md .github/workflows/*.yml"
+    "check": "npm run format:check && npm run check:architecture && npm test && npm run build && openspec validate --all --strict",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"tests/**/*.ts\" \"build/*.{ts,js}\" \"worker/*.mjs\" \"scripts/*.mjs\" \"docs/**/*.md\" \"*.{json,ts,md}\" \".github/workflows/*.yml\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"tests/**/*.ts\" \"build/*.{ts,js}\" \"worker/*.mjs\" \"scripts/*.mjs\" \"docs/**/*.md\" \"*.{json,ts,md}\" \".github/workflows/*.yml\"",
+    "test:worker": "node --test worker/worker.test.mjs",
+    "check:architecture": "node scripts/check-architecture.mjs"
   },
   "dependencies": {
     "luxon": "^3.7.2",

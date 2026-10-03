@@ -1,26 +1,38 @@
 # Datos oficiales y regeneración
 
-La app usa un snapshot oficial de Renfe para Bilbao C1/C2/C3. Se transforma fuera del navegador mediante Python 3.12+ estándar, sin librerías adicionales:
+La entrada es el ZIP nacional de Renfe definido en SOURCE de `scripts/import_gtfs.py`. El pipeline usa Python 3.12+ estándar; el navegador nunca descarga ni procesa el ZIP. La selección de redes está en NETWORKS y el estado efectivo en el manifiesto generado.
+
+## Flujo normal
 
 ```sh
-python scripts/import_gtfs.py
-# O utilizar un ZIP oficial ya descargado:
-python scripts/import_gtfs.py --zip work/gtfs/renfe.zip
-python -m unittest discover -s scripts -p 'test_*.py'
-npm run check
-npm run test:e2e
+python scripts/refresh_gtfs.py --force
 ```
 
-Después, revisar el diff del manifiesto y los datos antes de hacer commit/build. No hay refresco periódico todavía: es necesario regenerar el snapshot para ampliar la vigencia. El build es reproducible y usa el snapshot versionado; no necesita conectarse a Renfe.
+`refresh_gtfs.py` comprueba cobertura de todas las redes en Europe/Madrid; sin force y con cobertura válida no descarga. Con candidato nuevo compila calendarios, horarios y grafos, valida referencias y evita perder redes antes publicadas. Si falla o el candidato no cubre hoy, conserva el snapshot previo. Ver [operación](operations.md) para pruebas, revisión y publicación.
 
-`src/data/renfe-manifest.json` guarda hash SHA256 del ZIP, versión, fecha de procesamiento, fuente, licencia, catálogo y calendarios efectivos. `public/data/renfe/<versión>/<estación>.json` contiene horarios compactos inmutables. El manifiesto se publica al final después de validar toda la entrada; una compilación no mezcla dos versiones. Mantener la versión anterior mientras pueda estar en uso por clientes del despliegue anterior.
+## Investigar un ZIP sin alterar producción
 
-Selección del núcleo: lista explícita de ocho route_id verificados por terminales Abando/Santurtzi/Muskiz/Orduña/Arrigorriaga. Si falta una ruta, el importador falla para exigir revisar esa selección. No se incluyen metro, Euskotren ni líneas de ancho métrico. IDs como cadenas y nombres originales, salvo abreviatura visible Bilbao-Abando para 13200.
+```sh
+python scripts/import_gtfs.py --zip work/gtfs/renfe.zip --output work/candidate
+```
 
-`calendar.txt` aporta los días semanales y rangos. `calendar_dates.txt`, si existe, añade o elimina servicios concretos con prioridad. El snapshot de octubre contiene servicios por fecha en calendar.txt y no tiene calendar_dates.txt. **No se aplica una lista externa de festivos ni se asume festivo = domingo**: prevalece la programación del operador. El 12 de octubre se consulta exactamente como cualquier otra fecha publicada, con sus servicios específicos.
+El ZIP debe ser oficial y su origen verificable. `--output` coloca los archivos bajo esa carpeta, incluyendo `src/data/renfe-manifest.json` y `public/data/renfe/<versión>/`. Sin --zip el importador descarga la fuente configurada. Con ZIP local no inventa la fecha de descarga.
 
-El preprocesado agrupa patrones idénticos y une fechas, conserva las paradas posteriores con bajada ordinaria y solo permite subir donde pickup_type=0 (o ausente). Servicios a demanda no se presentan como trenes de subida libre. Excluye terminales sin recorrido posterior y valida secuencias/horas. Se admite tiempo GTFS de 00:00 a 47:59:59; formatos superiores fallan explícitamente.
+El importador aislado **no genera current.json ni el manifiesto público de publicación**. Para el flujo operativo usar el renovador. `--bootstrap` del renovador solo reconstruye metadatos del snapshot ya presente; no sustituye importación, validación ni comprobación de cobertura.
 
-La UI convierte segundos GTFS desde mediodía local menos doce horas y agrupa por día civil de salida. Examina servicios anteriores para incorporar horas >24. No parsea CSV ni descarga el ZIP. Datos fuera de coverageDates se señalan como no publicados, nunca se clonan de otro día. Un cambio futuro debe ampliar el contrato si se necesitan horizontes más largos, servicios a demanda o patrones no soportados.
+## Transformación y contratos
 
-Fuente: [GTFS Cercanías de Renfe](https://data.renfe.com/dataset/horarios-cercanias), CC BY 4.0. Referencia de [calendarios y tiempos GTFS](https://gtfs.org/documentation/schedule/reference/). Horarios programados; sin retrasos ni cancelaciones en tiempo real.
+- `calendar.txt` y `calendar_dates.txt` producen fechas efectivas, con prioridad de excepciones. No se asume festivo = domingo.
+- Patrones de estación agrupan servicios idénticos, mantienen terminal real y llegadas posteriores. Subida/bajada ordinaria exige tipo 0; no se presentan servicios a demanda como libre acceso.
+- Tiempos admitidos: 00:00–47:59:59; secuencias y tiempos se validan. La UI usa mediodía local menos doce horas y segundos GTFS para respetar DST.
+- `routing_data.py` compila grafos de trips, calls, grupos y transfers, combinando transfers.txt con `data/routing-corrections.json`.
+- Correcciones incluyen evidencia y márgenes estimados. Los Rosales está preparado en configuración/pruebas; no implica que Sevilla esté publicado. El pipeline de extracción de mapas de la investigación no se ejecuta aquí.
+- Madrid y Rodalies admiten explícitamente viajes excluidos por menos de dos paradas, auditados y visibles en la UI. Las otras redes mantienen validación estricta. Ver [núcleos](networks.md).
+
+## Versionado y retención
+
+snapshot_version combina bytes del ZIP, TRANSFORM_VERSION y configuración de correcciones. Incrementar TRANSFORM_VERSION al cambiar semántica del transformador. El SHA256 de la fuente se conserva por separado. Las rutas de estaciones y grafos de una versión son inmutables; los metadatos de comprobación pueden actualizarse para la misma versión.
+
+El renovador prepara datos en staging, copia a la carpeta versionada y escribe metadatos al final. Main almacena el resultado validado; Pages solo cambia al desplegar el sitio completo. Conserva versión actual, predecesora inmediata y versiones con publicación conocida de los últimos siete días; no borra automáticamente carpetas sin metadatos fiables.
+
+Una compilación local Vite no consulta Renfe. Es repetible con el mismo código/lock/datos, pero no idéntica byte a byte: la versión de aplicación cambia en cada build.

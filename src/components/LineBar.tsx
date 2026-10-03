@@ -1,4 +1,4 @@
-import { networks, lineInk } from "./data/networks";
+import { networks, lineInk } from "../data/networks";
 import type { CSSProperties } from "react";
 export function LineBar({
   networkId,

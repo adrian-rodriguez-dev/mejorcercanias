@@ -18,8 +18,10 @@ describe("llegada a la parada elegida", () => {
     expect(arrivalAt(train, "13403")).toContain("00:08");
     expect(arrivalAt(train, "13405")).toContain("00:15");
     expect(arrivalAt(train, "")).toContain("00:15");
-    expect(arrivalAt({...train, terminalId:"13403"}, "")).toContain("00:08");
-    expect(arrivalAt({...train, arrivals:train.arrivals!.slice(0,1)}, "")).toBeUndefined();
+    expect(arrivalAt({ ...train, terminalId: "13403" }, "")).toContain("00:08");
+    expect(
+      arrivalAt({ ...train, arrivals: train.arrivals!.slice(0, 1) }, ""),
+    ).toBeUndefined();
     expect(arrivalAt(train, "13200")).toBeUndefined();
   });
   it("no inventa llegadas ausentes, inválidas o anteriores a la salida", () => {

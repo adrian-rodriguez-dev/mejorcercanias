@@ -6,7 +6,13 @@ export function appVersion(): Plugin {
   const version = randomUUID();
   return {
     name: "app-version",
-    transformIndexHtml: () => [{tag:'meta', attrs:{name:'app-version', content:version}, injectTo:'head'}],
+    transformIndexHtml: () => [
+      {
+        tag: "meta",
+        attrs: { name: "app-version", content: version },
+        injectTo: "head",
+      },
+    ],
     config: () => ({
       define: { "import.meta.env.VITE_APP_VERSION": JSON.stringify(version) },
     }),

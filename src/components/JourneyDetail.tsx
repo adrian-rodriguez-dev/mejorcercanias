@@ -1,5 +1,5 @@
-import type { Departure } from "./data/types";
-import { clockTime } from "./data/time";
+import type { Departure } from "../data/types";
+import { clockTime } from "../data/time";
 export function JourneyDetail({ departure }: { departure: Departure }) {
   const legs = departure.journey;
   if (!legs) return null;

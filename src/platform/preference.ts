@@ -1,6 +1,6 @@
-import { routingAvailable } from "./data/routing";
-import { networks } from "./data/networks";
-import { stations, demoStationIds } from "./data/stations";
+import { routingAvailable } from "../data/routing";
+import { networks } from "../data/networks";
+import { stations, demoStationIds } from "../data/stations";
 export const STORAGE_KEY = "mejorcercanias.station.v1";
 export function readStation(): string {
   try {

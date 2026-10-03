@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       revision: ${{ steps.commit.outputs.revision }}
+      changed: ${{ steps.changes.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,14 +39,29 @@ jobs:
           args=()
           if [ "$FORCE" = "true" ]; then args+=(--force); fi
           python scripts/refresh_gtfs.py "${args[@]}"
+      - name: Detect generated changes
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain -- src/data/renfe-manifest.json public/data/renfe)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Coverage valid and no generated changes; publication skipped." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - run: npm ci
+        if: steps.changes.outputs.changed == 'true'
       - run: python -m unittest discover -s scripts -p 'test_*.py'
+        if: steps.changes.outputs.changed == 'true'
       - run: npm run check
+        if: steps.changes.outputs.changed == 'true'
         env:
           OPENSPEC_TELEMETRY: "0"
       - run: npx playwright install --with-deps chromium
+        if: steps.changes.outputs.changed == 'true'
       - run: npm run test:e2e
+        if: steps.changes.outputs.changed == 'true'
       - name: Commit validated data without overwriting newer work
+        if: steps.changes.outputs.changed == 'true'
         id: commit
         run: |
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$(git rev-parse HEAD)"
@@ -57,7 +73,18 @@ jobs:
             git push origin HEAD:main
           fi
           echo "revision=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Keep refresh diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: refresh-diagnostics
+          path: |
+            playwright-report/e2e
+            test-results/e2e
+          retention-days: 7
+          if-no-files-found: ignore
   publish:
+    if: needs.refresh.outputs.changed == 'true'
     needs: refresh
     uses: ./.github/workflows/publish.yml
     with:

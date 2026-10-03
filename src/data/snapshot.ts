@@ -74,13 +74,23 @@ export function validManifest(value: unknown): value is Manifest {
     !Array.isArray(m.calendars) ||
     !m.calendars.every((c) => Array.isArray(c) && c.every(validDate)) ||
     !Array.isArray(m.stations) ||
-    !m.stations.length
+    !m.stations.length ||
+    !m.stations.every(
+      (s) =>
+        !!s &&
+        typeof s.id === "string" &&
+        typeof s.name === "string" &&
+        typeof s.network === "string" &&
+        Array.isArray(s.lines) &&
+        s.lines.every((l) => typeof l === "string"),
+    )
   )
     return false;
   if (
     m.networks &&
     (!Array.isArray(m.networks) ||
       !m.networks.length ||
+      !m.networks.every((n) => !!n && typeof n.id === "string") ||
       new Set(m.networks.map((n) => n.id)).size !== m.networks.length ||
       !m.networks.every(
         (n) =>

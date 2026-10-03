@@ -1,16 +1,16 @@
 import { JourneyDetail } from "./JourneyDetail";
-import { loadJourneys, routingAvailable } from "./data/routing";
+import { loadJourneys, routingAvailable } from "../data/routing";
 import { OfflineStatus, useOnline } from "./OfflineStatus";
-import { networkForStation, lineStyle } from "./data/networks";
-import { subscribeSnapshot, snapshotRevision } from "./data/snapshot";
-import { arrivalDayLabel } from "./data/arrival";
+import { networkForStation, lineStyle } from "../data/networks";
+import { subscribeSnapshot, snapshotRevision } from "../data/snapshot";
+import { arrivalDayLabel } from "../data/arrival";
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { addDays, dateTitle, loadDay, manifest } from "./data/renfe";
-import { stationName } from "./data/stations";
-import { emptyRouteFilter, type RouteFilter } from "./data/route-filters";
-import { clockTime, localDay } from "./data/time";
-import { filterTimetable } from "./data/timetable";
-import type { Departure, StationSchedule } from "./data/types";
+import { addDays, dateTitle, loadDay, manifest } from "../data/renfe";
+import { stationName } from "../data/stations";
+import { emptyRouteFilter, type RouteFilter } from "../data/route-filters";
+import { clockTime, localDay } from "../data/time";
+import { filterTimetable } from "../data/timetable";
+import type { Departure, StationSchedule } from "../data/types";
 export function Timetable({
   stationId,
   now,

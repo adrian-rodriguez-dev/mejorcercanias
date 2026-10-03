@@ -5,9 +5,9 @@ test("escribir, cancelar texto y borrar destino y origen", async ({
   await page.clock.install({ time: new Date("2026-10-03T10:00:00+02:00") });
   await page.goto("/");
   const origin = page.getByLabel("¿Desde dónde sales?"),
-    dest = page.getByLabel("Destino", {exact:true});
+    dest = page.getByLabel("Destino", { exact: true });
   await dest.click();
-  await expect(page.locator('.show-options')).toHaveCount(0);
+  await expect(page.locator(".show-options")).toHaveCount(0);
   await page
     .getByRole("option", { name: "Bilbao-Abando", exact: true })
     .click();
@@ -37,9 +37,9 @@ test("escribir, cancelar texto y borrar destino y origen", async ({
   await page
     .getByRole("button", { name: "Borrar destino", exact: true })
     .click();
-  await expect(page.getByRole("columnheader", { name: "Hora de llegada", exact:true })).toHaveCount(
-    1,
-  );
+  await expect(
+    page.getByRole("columnheader", { name: "Hora de llegada", exact: true }),
+  ).toHaveCount(1);
   await page
     .getByRole("button", { name: "Borrar origen", exact: true })
     .click();

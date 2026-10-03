@@ -1,7 +1,7 @@
 import { useRef, type ReactNode } from "react";
-import { stations, stationName } from "./data/stations";
-import { routeDestinations, type RouteFilter } from "./data/route-filters";
-import type { Departure } from "./data/types";
+import { stations, stationName } from "../data/stations";
+import { routeDestinations, type RouteFilter } from "../data/route-filters";
+import type { Departure } from "../data/types";
 
 export function RouteFilters({
   rows,

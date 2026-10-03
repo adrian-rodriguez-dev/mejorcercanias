@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { gtfsInstant, resolveDay, type StationFile } from "./renfe";
 import { clockTime } from "./time";
 import { filterTimetable } from "./timetable";
-import { readStation, STORAGE_KEY } from "../preference";
+import { readStation, STORAGE_KEY } from "../platform/preference";
 const file: StationFile = {
   version: "test",
   stationId: "13400",

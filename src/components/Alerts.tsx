@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { parseAlerts, alertScope, type Alert } from "./data/alerts";
+import { parseAlerts, alertScope, type Alert } from "../data/alerts";
 export function useAlerts() {
   const [state, setState] = useState<{
     status: "loading" | "available" | "unavailable";

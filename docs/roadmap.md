@@ -1,46 +1,21 @@
-# Propuestas futuras
+# Hoja de ruta
 
-Esto es un backlog, no ocho especificaciones aprobadas. Crear cada propuesta con OpenSpec cuando llegue su turno.
+Estado del código revisado el 3 de octubre de 2026. No equivale al estado de la web publicada.
 
-| Área / propuesta sugerida           | Resultado y límite                                                                                                                                            |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `refine-station-shell`              | Evolucionar el shell inicial, accesibilidad y legibilidad con uso real; evitar convertirlo en buscador de rutas.                                              |
-| `expand-favorite-station-selection` | Sustituir las cinco estaciones demo por catálogo real, búsqueda y gestión de favorita; persistencia simple ya existe.                                         |
-| `ingest-renfe-static-gtfs`          | Descargar GTFS oficial, validar calendario y excepciones, generar catálogo y JSON compacto por estación/núcleo con vigencia y atribución. Primera prioridad.  |
-| `scheduled-departure-board`         | Conectar horarios oficiales al panel, identificar dirección, gestionar agotamiento/vigencia y eliminar semántica demo. No afirmar puntualidad.                |
-| `full-day-timetable`                | Consultar todo el día conservando la estación favorita, con agrupación por dirección y días de servicio correctos.                                            |
-| `pwa-basic-offline`                 | Instalación y último horario válido en caché; indicar offline y antigüedad, sin prometer tiempo real.                                                         |
-| `refresh-gtfs-in-actions`           | Automatizar la ingestión validada, publicar de forma atómica y conservar el último dataset correcto ante fallos. La CI actual solo verifica código.           |
-| `renfe-realtime-adapter`            | Verificar correspondencia de trip_id/stop_id, CORS desde el origen final, cancelaciones, caducidad y fallback al horario. Worker mínimo solo si es necesario. |
+## Implementado
 
-Dependencias principales: ingestión → panel real → horario completo; datos vigentes → offline; ingestión validada → refresco automático; panel real e IDs comprobados → tiempo real. No se crea backend tradicional por anticipado.
+Horarios GTFS por fecha, diez redes con vigencia independiente, origen/destino, rutas hasta tres transbordos y detalle de etapas, caché de resultados, instalación, datos offline, renovación automática por caducidad, actualización voluntaria de app, tema claro/oscuro y controles de accesibilidad automatizados.
 
-## Actualización: horario por fecha (2026-10-02)
+## Pendiente
 
-La ingestión inicial de GTFS y el horario completo se han implementado en `date-aware-timetable`: 44 estaciones, fechas efectivas, filtros de salida/llegada y JSON compacto por estación. Las filas anteriores describen el backlog original; `ingest-renfe-static-gtfs`, `scheduled-departure-board` y `full-day-timetable` ya tienen una primera implementación. Próxima prioridad: refresco automático antes de que caduque el snapshot, luego PWA y tiempo real en propuestas independientes.
+| Área                | Trabajo y criterio de cierre                                                                                                                                                                                                     |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Incidencias en vivo | Desplegar pasarela, configurar ALERTS_URL y verificar CORS, frescura y retirada de avisos desde producción. Ampliar identificación de rutas más allá del mapeo actual de Bilbao. No cerrar compact-service-alerts antes de ello. |
+| Cobertura           | Incorporar Asturias y revisar redes excluidas cuando haya datos válidos. No relajar secuencias por conveniencia.                                                                                                                 |
+| Mapas               | Integrar como pipeline reproducible la investigación PDF/SVG con revisión de evidencia y salida de conexiones; actualmente se consume configuración revisada.                                                                    |
+| Rendimiento         | Medir descarga/clonado de grafos grandes en móviles; acotar caché de grafos en memoria.                                                                                                                                          |
+| Mantenimiento       | Dividir App y CSS cuando se aborden sus áreas; formato/lint Python y reglas de hooks, esquema de datos compartido.                                                                                                               |
+| Operación           | Definir responsables y avisos de fallos; revisar protección de main y bot; fijar acciones por SHA; decidir licencia general del código.                                                                                          |
+| Compatibilidad      | Pruebas reales de instalación, Safari/iOS y lectores de pantalla.                                                                                                                                                                |
 
-## Instalación solicitada (2026-10-02)
-
-Propuesta [pwa-install-prompt](../openspec/changes/archive/2026-10-02-pwa-install-prompt/proposal.md) preparada: instalación opcional, aviso discreto y ayuda iOS. Pendiente de implementar. Offline de horarios se mantiene separado.
-
-## Renovación solicitada (2026-10-02)
-
-[automatic-gtfs-refresh](../openspec/changes/archive/2026-10-03-automatic-gtfs-refresh/proposal.md) concreta refresh-gtfs-in-actions: comprobación central horaria, renovación al finalizar la vigencia oficial del snapshot y JSON ligeros para el móvil. Spec preparada, implementación pendiente.
-
-## Barra de líneas (2026-10-02)
-
-Spec [line-button-bar](../openspec/changes/archive/2026-10-02-line-button-bar/proposal.md): Todas, C1, C2 y C3 como botones visibles, identidad cromática oficial y selección accesible. Implementada y publicada.
-
-## Incidencias compactas (2026-10-02)
-
-[compact-service-alerts](../openspec/changes/compact-service-alerts/proposal.md): indicador en la barra del título solo con avisos relevantes, detalle a un toque y cero espacio reservado sin incidencias. Prioridades: espacio útil y facilidad de uso. Spec preparada, implementación pendiente.
-
-La barra evoluciona a [multiselección](../openspec/changes/archive/2026-10-02-multi-line-toggle-bar/proposal.md): sin Todas, ninguna selección muestra todas; recuadros de color completo oscuros/inactivos y luminosos/activos.
-
-
-## Estado 2026-10-03
-Instalación y renovación por caducidad implementadas, publicadas y archivadas. Incidencias: UI, adapter y pasarela preparados; tareas de integración en vivo pendientes de desplegar la pasarela por CORS de Renfe. Ver [evidencia y despliegue](service-alerts.md).
-
-## Nuevos núcleos y asistente (2026-10-03)
-Spec [multi-network-onboarding](../openspec/changes/archive/2026-10-03-multi-network-onboarding/proposal.md) implementada, publicada y archivada: núcleos con hasta seis líneas, asistente obligatorio siempre que falte núcleo válido guardado (sin inferir Bilbao), origen y destino opcional, y núcleo más grande/pulsable en la barra superior. No requiere nueva fila permanente de filtros.
-
+Cada nueva funcionalidad debe tener propuesta y pruebas de aceptación. Consultar [revisión de calidad](quality-review.md) y [gobierno](governance.md) antes de priorizar.

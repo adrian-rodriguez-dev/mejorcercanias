@@ -1,3 +1,4 @@
+import { validGraph } from "./graph-validation";
 import { JourneyCache, journeyKey } from "./journey-cache";
 import { stationName } from "./stations";
 import { manifest } from "./snapshot";
@@ -9,63 +10,6 @@ const results = new JourneyCache();
 export function routingAvailable(origin: string) {
   const network = manifest.stations.find((s) => s.id === origin)?.network;
   return !!network && !!manifest.routingNetworks?.includes(network);
-}
-export function validGraph(
-  value: unknown,
-  version: string,
-  network: string,
-): value is Graph {
-  const g = value as Graph;
-  return (
-    !!g &&
-    g.schemaVersion === 1 &&
-    g.version === version &&
-    g.network === network &&
-    !!g.nodes &&
-    !!g.groups &&
-    Array.isArray(g.calendars) &&
-    g.calendars.every(
-      (c) => Array.isArray(c) && c.every((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)),
-    ) &&
-    Object.values(g.groups).every(
-      (nodes) =>
-        Array.isArray(nodes) &&
-        nodes.length > 0 &&
-        nodes.every((n) => !!g.nodes[n]),
-    ) &&
-    Array.isArray(g.trips) &&
-    g.trips.every(
-      (t) =>
-        typeof t.id === "string" &&
-        typeof t.route === "string" &&
-        typeof t.line === "string" &&
-        (t.mode === undefined || t.mode === "train" || t.mode === "bus") &&
-        Number.isInteger(t.calendar) &&
-        !!g.calendars[t.calendar] &&
-        Array.isArray(t.calls) &&
-        t.calls.length > 1 &&
-        t.calls.every(
-          (c, i) =>
-            Array.isArray(c) &&
-            !!g.nodes[c[0]] &&
-            Number.isFinite(c[1]) &&
-            c[1] >= 0 &&
-            Number.isFinite(c[2]) &&
-            c[2] >= c[1] &&
-            c[2] < 172800 &&
-            [0, 1, 2, 3].includes(c[3]) &&
-            [0, 1, 2, 3].includes(c[4]) &&
-            (i === 0 || c[1] >= t.calls[i - 1][2]),
-        ),
-    ) &&
-    Array.isArray(g.transfers) &&
-    g.transfers.every(
-      (t) =>
-        !!g.nodes[t.from] &&
-        !!g.nodes[t.to] &&
-        (t.seconds === null || (Number.isInteger(t.seconds) && t.seconds >= 0)),
-    )
-  );
 }
 async function graphFor(origin: string, signal: AbortSignal) {
   const snapshot = manifest;

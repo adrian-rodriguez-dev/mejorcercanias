@@ -1,4 +1,4 @@
-import fixture from "./fixtures/manifest.json" with {type:"json"};
+import fixture from "./fixtures/manifest.json" with { type: "json" };
 export function optionName(id: string): string {
   if (id === "13200") return "Bilbao-Abando";
   return (

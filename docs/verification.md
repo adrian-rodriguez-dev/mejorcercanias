@@ -87,8 +87,8 @@ Llegadas terminales y retorno a ahora verificados en publicación bc36ed5 (Actio
 
 Accesibilidad publicada: Actions 37123652335 correcto (233eb4b). 43 pruebas de lógica, 40 de navegador y dos de producción offline correctas. Axe sin infracciones detectadas en asistente/panel/desplegable/tabla; contraste de todos los colores del catálogo comprobado. Web pública a 360 px auditada sin infracciones, texto al 200 % sin desbordamiento de página, horas dentro de la fila y reapertura offline con llegadas. Capturas normales y texto ampliado inspeccionadas. No se afirma certificación WCAG ni prueba física con lector de pantalla.
 
-
 ## Rutas integradas · 2026-10-03
+
 53 pruebas TypeScript (incluidas diez de motor), 12 pruebas Python, 42 pruebas de
 navegador escritorio/móvil y 3 de producción/offline correctas. Ruta real Santurtzi
 → Muskiz: cambio C1/C2, salida/llegada final, expansión de horarios y recálculo tras
@@ -102,21 +102,21 @@ Datos: Renfe b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043;
 snapshot con grafos 3b4c3c4b71c964f7. Los Rosales se comprueba en fixture del
 normalizador; Sevilla continúa excluida por el importador de horarios.
 
-
 ## Optimización y margen de cambio · 2026-10-03
+
 56 pruebas TypeScript, dos de navegador escritorio/móvil con caché real y tres
 de producción/offline correctas. Build y validación OpenSpec correctos.
 Seis comparaciones sobre datos reales y 150 grafos sintéticos coinciden exactamente
 con e867f10 ajustado a la misma política de 60 segundos. Tiempo de cálculo por día
 (milisegundos, misma máquina; excluye descarga, parseo y arranque del worker):
+
 - bilbao 13405 → 13509: 1083 → 73 ms; 35 itinerarios idénticos.
 - bilbao 13400 → 05451: 2814 → 301 ms; 21 itinerarios idénticos.
 - bilbao 13200 → 05451: 1990 → 201 ms; 21 itinerarios idénticos.
 - bilbao 13509 → 13405: 1429 → 37 ms; 35 itinerarios idénticos.
 - bilbao 13400 → 13200: 3018 → 82 ms; 71 itinerarios idénticos.
 - valencia valencia-65200 → valencia-65000: 706 → 43 ms; 22 itinerarios idénticos.
-Prueba de flujo real y recarga offline: 9,3 s antes, 1,2 s después (orientativo, no garantía de latencia). Margen implícito 60 s verificado en frontera 59/60; mínimos oficiales y prohibiciones prevalecen.
-
+  Prueba de flujo real y recarga offline: 9,3 s antes, 1,2 s después (orientativo, no garantía de latencia). Margen implícito 60 s verificado en frontera 59/60; mínimos oficiales y prohibiciones prevalecen.
 
 Madrid/Rodalies (local, 2026-10-03): 634 estaciones en diez redes. Snapshot
 227d8748274b9442; todos los archivos de estación pasan validate_snapshot.
@@ -130,13 +130,11 @@ paradas suficientes, excluidos de ambos formatos y advertidos en pantalla.
 Transferencias oficiales Madrid 1140/1080 segundos y Montcada 300 segundos
 conservadas. Madrid hasta 30/10; Rodalies hasta 04/10. No publicado remotamente.
 
-
 Paleta clara (local, 2026-10-03): fondo cálido, panel blanco, carbón y azul tinta.
 Colores oficiales conservados. Ocho pruebas específicas correctas: contraste axe
 en panel, tabla, desplegable y asistente, texto al 200 %, transbordos y probador ASE
 en escritorio y móvil. Capturas normales a 390 y 1280 px inspeccionadas. Iconos
 SVG/PNG y color de navegador/app instalada actualizados. Sin publicación remota.
-
 
 Tema oscuro y coral (local, 2026-10-03): luna antes de campana, sol en oscuro,
 preferencia guardada sin cambiar trayecto. Ocho pruebas específicas correctas

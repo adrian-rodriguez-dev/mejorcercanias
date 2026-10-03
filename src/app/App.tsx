@@ -1,46 +1,46 @@
-import { ThemeToggle } from "./ThemeToggle";
-import trainLogo from "./assets/train.svg";
-import { JourneyDetail } from "./JourneyDetail";
-import { routingAvailable, loadJourneys } from "./data/routing";
-import { addDays } from "./data/renfe";
-import { OfflineStatus, useOnline } from "./OfflineStatus";
-import { EditableSelect } from "./EditableSelect";
-import { Onboarding } from "./Onboarding";
-import { networks, lineStyle } from "./data/networks";
-import { readNetwork, saveNetwork } from "./preference";
-import { useAlerts, AlertIndicator } from "./Alerts";
-import { relevantAlerts, alertPriority } from "./data/alerts";
+import { ThemeToggle } from "../components/ThemeToggle";
+import trainLogo from "../assets/train.svg";
+import { JourneyDetail } from "../components/JourneyDetail";
+import { routingAvailable, loadJourneys } from "../data/routing";
+import { addDays } from "../data/renfe";
+import { OfflineStatus, useOnline } from "../components/OfflineStatus";
+import { EditableSelect } from "../components/EditableSelect";
+import { Onboarding } from "../components/Onboarding";
+import { networks, lineStyle } from "../data/networks";
+import { readNetwork, saveNetwork } from "../platform/preference";
+import { useAlerts, AlertIndicator } from "../components/Alerts";
+import { relevantAlerts, alertPriority } from "../data/alerts";
 import {
   checkSnapshot,
   subscribeSnapshot,
   snapshotRevision,
   refreshError,
-} from "./data/snapshot";
-import { InstallPrompt } from "./InstallPrompt";
-import { UpdateNotice } from "./UpdateNotice";
-import { arrivalAt, arrivalDayLabel } from "./data/arrival";
+} from "../data/snapshot";
+import { InstallPrompt } from "../components/InstallPrompt";
+import { UpdateNotice } from "../components/UpdateNotice";
+import { arrivalAt, arrivalDayLabel } from "../data/arrival";
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { renfeProvider, manifest } from "./data/renfe";
-import { Timetable } from "./Timetable";
-import { LineBar } from "./LineBar";
+import { renfeProvider, manifest } from "../data/renfe";
+import { Timetable } from "../components/Timetable";
+import { LineBar } from "../components/LineBar";
 import {
   emptyRouteFilter,
   filterRoutes,
   type RouteFilter,
-} from "./data/route-filters";
-import { stations, stationName } from "./data/stations";
-import { clockTime, dayLabel, localDay, upcoming } from "./data/time";
+} from "../data/route-filters";
+import { stations, stationName } from "../data/stations";
+import { clockTime, dayLabel, localDay, upcoming } from "../data/time";
 import type {
   Departure,
   ScheduleProvider,
   StationSchedule,
-} from "./data/types";
+} from "../data/types";
 import {
   readJourney,
   saveJourney,
   linesForStations,
   normalizeJourney,
-} from "./preference";
+} from "../platform/preference";
 
 type LoadState = {
   stationId: string;

@@ -1,5 +1,8 @@
 name: Validate
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
   pages: write
@@ -9,4 +12,4 @@ jobs:
     uses: ./.github/workflows/publish.yml
     with:
       revision: ${{ github.sha }}
-      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      publish: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+work/
+public/
+src/data/renfe-manifest.json
+package-lock.json
+tests/fixtures/
+openspec/

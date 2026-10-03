@@ -1,22 +1,53 @@
-import {test,expect} from './configured-test';
-import {optionName} from './option-name';
-test('volver a ahora mantiene trayecto y líneas y recupera el foco',async({page})=>{
-  await page.clock.install({time:new Date('2026-10-02T10:00:00+02:00')});
-  await page.goto('/');
-  await page.getByLabel('Destino', {exact:true}).fill(optionName('13200'));
-  await page.getByRole('button',{name:'C1',exact:true}).click();
-  await page.getByRole('button',{name:'Horario completo',exact:true}).click();
-  await expect(page.getByRole('button',{name:'Volver a ahora',exact:true})).toHaveCount(0);
-  await page.getByRole('button',{name:'Día siguiente',exact:true}).click();
-  const preferences=await page.evaluate(()=>localStorage.getItem('mejorcercanias.journey.v1'));
+import { test, expect } from "./configured-test";
+import { optionName } from "./option-name";
+test("volver a ahora mantiene trayecto y líneas y recupera el foco", async ({
+  page,
+}) => {
+  await page.clock.install({ time: new Date("2026-10-02T10:00:00+02:00") });
+  await page.goto("/");
+  await page.getByLabel("Destino", { exact: true }).fill(optionName("13200"));
+  await page.getByRole("button", { name: "C1", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Horario completo", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Volver a ahora", exact: true }),
+  ).toHaveCount(0);
+  await page
+    .getByRole("button", { name: "Día siguiente", exact: true })
+    .click();
+  const preferences = await page.evaluate(() =>
+    localStorage.getItem("mejorcercanias.journey.v1"),
+  );
   await page.clock.fastForward(120000);
-  await page.getByRole('button',{name:'Volver a ahora',exact:true}).click();
-  await expect(page.getByRole('button',{name:'Próximos trenes',exact:true})).toBeFocused();
-  await expect(page.locator('.departures li')).toHaveCount(8);
-  expect(await page.evaluate(()=>localStorage.getItem('mejorcercanias.journey.v1'))).toBe(preferences);
-  const departure=await page.locator('.train-departure time').first().getAttribute('datetime');
-  expect(Date.parse(departure!)).toBeGreaterThanOrEqual(Date.parse('2026-10-02T10:02:00+02:00'));
-  await page.getByRole('button',{name:'Horario completo',exact:true}).click();
-  await expect(page.getByLabel('Fecha',{exact:true})).toHaveValue('2026-10-02');
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page
+    .getByRole("button", { name: "Volver a ahora", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Próximos trenes", exact: true }),
+  ).toBeFocused();
+  await expect(page.locator(".departures li")).toHaveCount(8);
+  expect(
+    await page.evaluate(() =>
+      localStorage.getItem("mejorcercanias.journey.v1"),
+    ),
+  ).toBe(preferences);
+  const departure = await page
+    .locator(".train-departure time")
+    .first()
+    .getAttribute("datetime");
+  expect(Date.parse(departure!)).toBeGreaterThanOrEqual(
+    Date.parse("2026-10-02T10:02:00+02:00"),
+  );
+  await page
+    .getByRole("button", { name: "Horario completo", exact: true })
+    .click();
+  await expect(page.getByLabel("Fecha", { exact: true })).toHaveValue(
+    "2026-10-02",
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
 });

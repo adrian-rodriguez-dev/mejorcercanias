@@ -1,7 +1,7 @@
 import { EditableSelect } from "./EditableSelect";
 import { useEffect, useRef, useState } from "react";
-import { networks } from "./data/networks";
-import { stations } from "./data/stations";
+import { networks } from "../data/networks";
+import { stations } from "../data/stations";
 export function Onboarding({
   onComplete,
   onCancel,

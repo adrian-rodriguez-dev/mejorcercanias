@@ -144,3 +144,18 @@ it("acepta redes grandes y variantes Rodalies sin perder validación", async () 
     }),
   ).toBe(false);
 });
+
+it.each([
+  { ...fixture, stations: [null] },
+  {
+    ...fixture,
+    stations: [{ id: "a", name: "A", network: "test", lines: null }],
+  },
+  { ...fixture, networks: [null] },
+])(
+  "rejects malformed catalogue entries without throwing (%#)",
+  async (value) => {
+    const { validManifest } = await import("./snapshot");
+    expect(validManifest(value)).toBe(false);
+  },
+);

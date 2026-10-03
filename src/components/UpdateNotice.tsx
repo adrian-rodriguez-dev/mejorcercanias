@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { updateApplication } from "./offline";
+import { updateApplication } from "../platform/offline";
 
 export function UpdateNotice() {
   const [version, setVersion] = useState("");
@@ -65,7 +65,15 @@ export function UpdateNotice() {
   return version ? (
     <div className="update-notice" role="status">
       <span>Nueva versión disponible</span>
-      <button disabled={updating} onClick={() => { setUpdating(true); void updateApplication(); }}>{updating ? "Actualizando…" : "Actualizar"}</button>
+      <button
+        disabled={updating}
+        onClick={() => {
+          setUpdating(true);
+          void updateApplication();
+        }}
+      >
+        {updating ? "Actualizando…" : "Actualizar"}
+      </button>
     </div>
   ) : null;
 }
