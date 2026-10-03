@@ -1,7 +1,7 @@
 # map-evidence-pipeline Specification
 
 ## Purpose
-TBD - created by archiving change map-extraction-pipeline. Update Purpose after archive.
+Preserve reproducible evidence from official Renfe maps, detect source changes and produce reviewed transfer proposals without losing physical boarding-point distinctions.
 
 ## Requirements
 
