@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { updateApplication } from "./offline";
 
 export function UpdateNotice() {
   const [version, setVersion] = useState("");
+  const [updating, setUpdating] = useState(false);
   useEffect(() => {
     if (!import.meta.env.PROD && import.meta.env.MODE !== "e2e") return;
     let next = 0,
@@ -63,7 +65,7 @@ export function UpdateNotice() {
   return version ? (
     <div className="update-notice" role="status">
       <span>Nueva versión disponible</span>
-      <button onClick={() => window.location.reload()}>Actualizar</button>
+      <button disabled={updating} onClick={() => { setUpdating(true); void updateApplication(); }}>{updating ? "Actualizando…" : "Actualizar"}</button>
     </div>
   ) : null;
 }

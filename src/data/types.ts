@@ -12,6 +12,7 @@ export interface Departure {
   arrivals?: { stationId: string; at: string }[];
 }
 export interface StationSchedule {
+  offline?: boolean;
   stationId: string;
   source: "demo" | "renfe-gtfs";
   departures: Departure[];

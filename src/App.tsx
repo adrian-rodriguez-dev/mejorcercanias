@@ -1,3 +1,4 @@
+import { OfflineStatus, useOnline } from "./OfflineStatus";
 import { EditableSelect } from "./EditableSelect";
 import { Onboarding } from "./Onboarding";
 import { networks, lineStyle } from "./data/networks";
@@ -53,7 +54,10 @@ export function App({
 }) {
   useSyncExternalStore(subscribeSnapshot, snapshotRevision);
   const version = manifest.version;
-  const [installTarget, setInstallTarget] = useState<HTMLDivElement | null>(null);
+  const online = useOnline();
+  const [installTarget, setInstallTarget] = useState<HTMLDivElement | null>(
+    null,
+  );
   const [networkId, setNetworkId] = useState(readNetwork);
   const [editingNetwork, setEditingNetwork] = useState(false);
 
@@ -147,7 +151,7 @@ export function App({
           setLoad({ version, stationId, status: "error" });
       });
     return () => controller.abort();
-  }, [stationId, day, retry, provider, clock, version, needsSetup]);
+  }, [stationId, day, retry, provider, clock, version, needsSetup, online]);
 
   const current =
     load.stationId === stationId && load.version === version ? load : undefined;
@@ -320,6 +324,12 @@ export function App({
                   Horario caducado · Actualización pendiente
                 </p>
               )}
+              {station && view === "next" && (
+                <OfflineStatus
+                  validTo={selectedNetwork?.validTo ?? manifest.validTo}
+                  fallback={current?.schedule?.offline}
+                />
+              )}
               {!station ? (
                 <div className="empty">
                   <span className="empty-icon" aria-hidden="true">
@@ -355,9 +365,15 @@ export function App({
                 </div>
               ) : current.status === "error" ? (
                 <div className="empty" role="alert">
-                  <h3>No hemos podido cargar las salidas.</h3>
+                  <h3>
+                    {online
+                      ? "No hemos podido cargar las salidas."
+                      : "Esta estación no está guardada."}
+                  </h3>
                   <p>
-                    Tu estación sigue seleccionada. Puedes intentarlo otra vez.
+                    {online
+                      ? "Tu estación sigue seleccionada. Puedes intentarlo otra vez."
+                      : "Conéctate para descargar su horario y consultarlo después sin conexión."}
                   </p>
                   <button
                     className="light-button"
@@ -507,9 +523,7 @@ export function App({
             </section>
           )}
         </div>
-        <InstallPrompt
-          headerTarget={installTarget}
-        />
+        <InstallPrompt headerTarget={installTarget} />
         <div className="below-board">
           <span className="schedule-provenance">
             {current?.schedule?.source === "demo"

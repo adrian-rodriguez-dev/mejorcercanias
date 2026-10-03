@@ -92,7 +92,7 @@ Seguir el orden de dependencias que devuelve OpenSpec y obtener `instructions` p
 
 [Datos oficiales de Renfe](https://data.renfe.com/dataset/horarios-cercanias), **Renfe Operadora · CC BY 4.0**. Se han filtrado y transformado para esta aplicación independiente, sin afiliación con Renfe.
 
-Pendientes: refresco periódico de GTFS, PWA/offline y adaptador de tiempo real. Ver [roadmap](docs/roadmap.md) y [estudio de CORS](docs/renfe-data.md).
+Pendiente: activación del adaptador de tiempo real. Ver [roadmap](docs/roadmap.md) y [estudio de CORS](docs/renfe-data.md).
 
 Cambio de UX: [cabecera compacta e intercambio](openspec/changes/archive/2026-10-02-compact-station-header/proposal.md).
 
@@ -105,7 +105,7 @@ La barra de líneas muestra solo las que pasan por origen y destino; con cero o 
 Se recuerdan origen, destino y líneas en localStorage (`mejorcercanias.journey.v1`), incluidas selecciones vacías. Al abrir se valida el catálogo y se migra la antigua preferencia de estación. Si no se puede guardar, la selección funciona durante la visita.
 
 ## Instalación
-Manifiesto e iconos permiten instalación en navegadores compatibles. La invitación aparece bajo los trenes cuando hay mecanismo nativo o guía iOS. «Ahora no» y descartar el diálogo silencian 30 días; la ayuda del pie sigue accesible. Sin almacenamiento, el cierre dura la sesión. No se añade service worker ni se promete acceso offline. Referencia: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable
+Manifiesto e iconos permiten instalación en navegadores compatibles. La invitación verde aparece bajo la cabecera y se oculta en modo instalado. «Ahora no» y descartar el diálogo silencian 30 días; la ayuda del pie sigue accesible. Sin almacenamiento, el cierre dura la sesión. Un service worker guarda los recursos de la app tras una visita online; los horarios consultados se guardan por estación y versión. Referencia: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable
 
 Validación: eventos nativos simulados, guía iOS, rechazo, teclado, modo instalado y recursos en HTTPS. No hay dispositivo Android/iOS físico conectado: instalación real y relanzamiento en esos sistemas no verificados.
 
@@ -124,3 +124,10 @@ Horario completo muestra siempre todos los trenes de la fecha elegida: selector 
 
 ## Actualizaciones de la aplicación
 Cada build publica app-version.json. Se comprueba al abrir, volver a primer plano, recuperar conexión y cada cinco minutos visible, con límite de una solicitud por minuto. Si cambia, se ofrece Actualizar sin recargas automáticas ni pérdida de preferencias. Los fallos de comprobación no bloquean los horarios.
+
+## Consulta sin conexión
+Tras una primera carga online completada, el service worker permite reabrir la app. Se guardan hasta doce archivos de estación de las dos últimas versiones consultadas, con catálogo y calendario coherentes. Solo se guardan JSON validados; nunca el GTFS bruto. Se pueden consultar otros días incluidos en el calendario guardado, sin extrapolar horarios caducados. Una estación no guardada requiere conexión. El aviso offline muestra la fecha de vigencia; no hay información de retrasos en tiempo real.
+
+El navegador puede borrar el almacenamiento local; no es una garantía de disponibilidad permanente. Si Cache Storage falla, la consulta online sigue funcionando. El shell conserva como máximo dos versiones. Los metadatos de app y de datos siempre se consultan por red. Las actualizaciones del service worker esperan a Actualizar o al cierre de las ventanas antiguas, sin recargar otras pestañas.
+
+Prueba de producción: `npm run build && npm run test:offline`, incluyendo subcarpeta de Pages, corte de conexión, reapertura, fecha fuera de cobertura y activación voluntaria de un nuevo service worker. Basado en la [documentación de service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).

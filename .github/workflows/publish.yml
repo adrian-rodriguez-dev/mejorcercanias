@@ -33,6 +33,7 @@ jobs:
           VITE_ALERTS_URL: ${{ vars.ALERTS_URL }}
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - run: npm run test:offline
       - uses: actions/upload-pages-artifact@v4
         if: inputs.publish
         with:

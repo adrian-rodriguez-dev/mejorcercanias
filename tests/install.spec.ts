@@ -12,7 +12,7 @@ test("instalación nativa a petición, descarte y ayuda",async({page})=>{
  await expect(page.locator(".install-invitation")).toHaveCount(0);
  await page.reload();await expect(page.locator(".install-invitation")).toHaveCount(0);
  await page.getByRole("button",{name:"Cómo instalar la app"}).click();
- await expect(page.getByText("Necesitas conexión para consultar horarios.")).toBeVisible();
+ await expect(page.getByText("Puedes consultar sin conexión las estaciones que hayas guardado al abrirlas.")).toBeVisible();
  await page.getByRole("button",{name:"Cerrar ayuda"}).focus();await page.keyboard.press("Escape");
  await expect(page.getByRole("button",{name:"Cómo instalar la app"})).toBeFocused();
  await page.evaluate(()=>window.dispatchEvent(new Event("appinstalled")));
@@ -35,6 +35,6 @@ test("rechazo vencido, error nativo y standalone",async({page})=>{
  await page.goto("/");await page.getByLabel("¿Desde dónde sales?").fill(optionName("13400"));
  await page.evaluate(()=>{const e=new Event("beforeinstallprompt",{cancelable:true});Object.assign(e,{prompt:async()=>{throw Error("unavailable")},userChoice:Promise.resolve({outcome:"dismissed"})});window.dispatchEvent(e);});
  const install=page.getByRole("button",{name:"Instalar",exact:true});await expect(install).toBeVisible();expect((await install.boundingBox())!.height).toBeGreaterThanOrEqual(44);await install.click();
- await expect(page.getByText("Necesitas conexión para consultar horarios.")).toBeVisible();
+ await expect(page.getByText("Puedes consultar sin conexión las estaciones que hayas guardado al abrirlas.")).toBeVisible();
  await page.addInitScript(()=>Object.defineProperty(navigator,"standalone",{value:true}));await page.reload();await expect(page.locator(".install-area")).toHaveCount(0);await expect(page.getByRole("button",{name:"Instalar",exact:true})).toHaveCount(0);
 });

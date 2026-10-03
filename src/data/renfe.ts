@@ -1,3 +1,4 @@
+import { readStored, storeData } from "./offline-store";
 import { coverageFor } from "./networks";
 import { DateTime } from "luxon";
 import {
@@ -6,7 +7,7 @@ import {
   checkSnapshot,
   type Manifest,
 } from "./snapshot";
-import { stations, stationName } from "./stations";
+import { stationName } from "./stations";
 import { localDay, ZONE } from "./time";
 import type { Departure, ScheduleProvider, StationSchedule } from "./types";
 export { manifest };
@@ -87,31 +88,73 @@ export function resolveDay(
     ),
   };
 }
+export function validStationFile(
+  value: unknown,
+  stationId: string,
+  snapshot: Manifest,
+): value is StationFile {
+  const f = value as StationFile;
+  return Boolean(
+    f &&
+    f.version === snapshot.version &&
+    f.stationId === stationId &&
+    Array.isArray(f.patterns) &&
+    f.patterns.every(
+      (p) =>
+        Array.isArray(p) &&
+        p.length === 6 &&
+        typeof p[0] === "string" &&
+        typeof p[1] === "string" &&
+        typeof p[2] === "string" &&
+        Number.isFinite(p[3]) &&
+        p[3] >= 0 &&
+        Number.isInteger(p[4]) &&
+        !!snapshot.calendars[p[4]] &&
+        Array.isArray(p[5]) &&
+        p[5].every(
+          (c) =>
+            Array.isArray(c) &&
+            typeof c[0] === "string" &&
+            Number.isFinite(c[1]) &&
+            c[1] >= p[3],
+        ),
+    ),
+  );
+}
 async function loadFile(
   stationId: string,
   signal: AbortSignal,
   snapshot: Manifest = manifest,
-): Promise<StationFile> {
-  const cached = preparedFiles.get(`${snapshot.version}/${stationId}`);
-  if (cached) return cached as StationFile;
-  if (!stations.some((s) => s.id === stationId))
+): Promise<{ file: StationFile; offline: boolean }> {
+  const key = `${snapshot.version}/${stationId}`;
+  if (!snapshot.stations.some((s) => s.id === stationId))
     throw new Error("Unknown station");
+  const prepared = preparedFiles.get(key);
+  if (validStationFile(prepared, stationId, snapshot)) {
+    await storeData(key, prepared);
+    if (manifest.version === snapshot.version) await storeData("manifest", snapshot);
+    return { file: prepared, offline: !navigator.onLine };
+  }
+  const saved = await readStored(key);
+  if (validStationFile(saved, stationId, snapshot))
+    return { file: saved, offline: !navigator.onLine };
+  if (!navigator.onLine) throw new Error("Station not saved");
   const response = await fetch(
-    `${import.meta.env.BASE_URL}data/renfe/${snapshot.version}/${stationId}.json`,
-    { signal },
+    `${import.meta.env.BASE_URL}data/renfe/${key}.json`,
+    {
+      signal: AbortSignal.any([signal, AbortSignal.timeout(15000)]),
+    },
   );
   if (!response.ok) {
     if (response.status === 404) void checkSnapshot(stationId);
     throw new Error("Unable to load station");
   }
-  const file = (await response.json()) as StationFile;
-  if (
-    file.version !== snapshot.version ||
-    file.stationId !== stationId ||
-    !Array.isArray(file.patterns)
-  )
+  const file: unknown = await response.json();
+  if (!validStationFile(file, stationId, snapshot))
     throw new Error("Invalid dataset");
-  return file;
+  await storeData(key, file);
+  if (manifest.version === snapshot.version) await storeData("manifest", snapshot);
+  return { file, offline: false };
 }
 export async function loadDay(
   stationId: string,
@@ -127,12 +170,8 @@ export async function loadDay(
       departures: [],
       availability: "unpublished",
     };
-  return resolveDay(
-    await loadFile(stationId, signal, snapshot),
-    day,
-    snapshot.calendars,
-    coverage,
-  );
+  const { file, offline } = await loadFile(stationId, signal, snapshot);
+  return { ...resolveDay(file, day, snapshot.calendars, coverage), offline };
 }
 export const renfeProvider: ScheduleProvider = {
   async load(stationId, now, signal) {
@@ -146,7 +185,7 @@ export const renfeProvider: ScheduleProvider = {
         departures: [],
         availability: "unpublished",
       };
-    const file = await loadFile(stationId, signal, snapshot);
+    const { file, offline } = await loadFile(stationId, signal, snapshot);
     const today = resolveDay(file, day, snapshot.calendars, coverage);
     const tomorrow = resolveDay(
       file,
@@ -156,6 +195,7 @@ export const renfeProvider: ScheduleProvider = {
     );
     return {
       ...today,
+      offline,
       departures: [...today.departures, ...tomorrow.departures],
     };
   },

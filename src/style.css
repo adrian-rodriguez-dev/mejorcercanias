@@ -1599,3 +1599,5 @@ time {
 .onboarding {
   overflow: visible;
 }
+
+.offline-status { margin:8px 0; padding:8px 12px; border-radius:8px; background:#f3e5b2; color:#493900; font-size:13px; }

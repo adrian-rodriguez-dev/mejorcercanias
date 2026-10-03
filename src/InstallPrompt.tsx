@@ -164,7 +164,7 @@ export function InstallPrompt({
               ? "En iPhone o iPad, abre Compartir y elige Añadir a pantalla de inicio. Si no aparece, abre esta página en Safari."
               : "En el menú de tu navegador busca Instalar aplicación o Añadir a pantalla de inicio. Si estás dentro de otra app, abre esta página en Chrome, Edge o Safari."}
           </p>
-          <p>Necesitas conexión para consultar horarios.</p>
+          <p>Puedes consultar sin conexión las estaciones que hayas guardado al abrirlas.</p>
           {available && (
             <button className="light-button" disabled={busy} onClick={install}>
               Instalar

@@ -1,6 +1,7 @@
 import { stationLabel } from "./text";
 import initial from "./renfe-manifest.json";
 import type { Station } from "./types";
+import { readStored, storeData } from "./offline-store";
 export interface Network {
   id: string;
   name: string;
@@ -122,6 +123,19 @@ export function validManifest(value: unknown): value is Manifest {
     )
   );
 }
+export async function restoreSnapshot(): Promise<void> {
+  const saved = await readStored("manifest");
+  if (!validManifest(saved)) return;
+  const published = (m: Manifest) =>
+    Date.parse(m.publishedAt || m.downloadedAt || "1970-01-01");
+  if (
+    saved.version === manifest.version ||
+    published(saved) > published(manifest)
+  ) {
+    manifest = saved;
+    stations = catalog(saved);
+  }
+}
 export async function checkSnapshot(
   stationId: string,
   now = Date.now(),
@@ -185,6 +199,13 @@ export async function checkSnapshot(
       stations = catalog(candidate);
     }
     refreshError = false;
+    if (preparedFiles.has(`${manifest.version}/${stationId}`)) {
+      await storeData(
+        `${manifest.version}/${stationId}`,
+        preparedFiles.get(`${manifest.version}/${stationId}`),
+      );
+    }
+    await storeData("manifest", manifest);
     nextCheck = now + 3600000;
     emit();
   } catch {

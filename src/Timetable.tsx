@@ -1,3 +1,4 @@
+import { OfflineStatus, useOnline } from "./OfflineStatus";
 import { networkForStation, lineStyle } from "./data/networks";
 import { subscribeSnapshot, snapshotRevision } from "./data/snapshot";
 import { arrivalDayLabel } from "./data/arrival";
@@ -27,6 +28,7 @@ export function Timetable({
 }) {
   useSyncExternalStore(subscribeSnapshot, snapshotRevision);
   const version = manifest.version;
+  const online = useOnline();
   const today = localDay(now);
   const [date, setDate] = useState(today);
   const localFilter = emptyRouteFilter;
@@ -51,7 +53,7 @@ export function Timetable({
         if (!controller.signal.aborted) setLoaded({ key, error: true });
       });
     return () => controller.abort();
-  }, [stationId, date, key, retry, loader]);
+  }, [stationId, date, key, retry, loader, online]);
   useEffect(() => {
     onScheduleChange?.({ date, departures: current?.data?.departures ?? [] });
   }, [date, current?.data, onScheduleChange]);
@@ -88,13 +90,19 @@ export function Timetable({
           →
         </button>
       </div>
+      <OfflineStatus
+        validTo={networkForStation(stationId)?.validTo ?? manifest.validTo}
+        fallback={current?.data?.offline}
+      />
       {!current ? (
         <p role="status" className="schedule-message">
           Cargando horario…
         </p>
       ) : current.error ? (
         <div role="alert" className="schedule-message">
-          No se pudo cargar el horario.{" "}
+          {online
+            ? "No se pudo cargar el horario."
+            : "Esta estación no está guardada. Conéctate para descargar su horario."}{" "}
           <button onClick={() => setRetry((n) => n + 1)}>
             Reintentar horario
           </button>
