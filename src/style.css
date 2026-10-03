@@ -1513,6 +1513,10 @@ time {
 .timetable .date-picker input {
   min-height: 44px;
 }
+.timetable .date-picker { gap:6px; flex-wrap:wrap; }
+.timetable .date-picker label { flex:1 1 120px; }
+.timetable .date-picker button { min-width:44px; padding:6px; }
+.timetable .return-now { color:#e4f2c8; text-decoration:underline; }
 
 .editable-select {
   position: relative;

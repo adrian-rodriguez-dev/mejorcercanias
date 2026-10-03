@@ -15,12 +15,14 @@ export function Timetable({
   loader = loadDay,
   routeFilter,
   onScheduleChange,
+  onReturnNow,
 }: {
   stationId: string;
   now: number;
   loader?: typeof loadDay;
   routeFilter?: RouteFilter;
   onRouteFilterChange?: (filter: RouteFilter) => void;
+  onReturnNow?: () => void;
   onScheduleChange?: (context: {
     date: string;
     departures: Departure[];
@@ -89,6 +91,7 @@ export function Timetable({
         >
           →
         </button>
+        {date !== today && onReturnNow && <button className="return-now" aria-label="Volver a ahora" onClick={onReturnNow}>Ahora</button>}
       </div>
       <OfflineStatus
         validTo={networkForStation(stationId)?.validTo ?? manifest.validTo}

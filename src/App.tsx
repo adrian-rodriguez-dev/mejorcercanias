@@ -287,8 +287,9 @@ export function App({
               {station && (
                 <nav className="board-tabs" aria-label="Vista de horarios">
                   <button
+                    id="next-trains-tab"
                     aria-pressed={view === "next"}
-                    onClick={() => setView("next")}
+                    onClick={() => { setNow(clock()); setView("next"); }}
                   >
                     Próximos trenes
                   </button>
@@ -357,6 +358,11 @@ export function App({
                   routeFilter={routeFilter}
                   onRouteFilterChange={setRouteFilter}
                   onScheduleChange={setDayContext}
+                  onReturnNow={() => {
+                    setNow(clock());
+                    setView("next");
+                    document.getElementById("next-trains-tab")?.focus();
+                  }}
                 />
               ) : !current || current.status === "loading" ? (
                 <div className="empty" role="status">
