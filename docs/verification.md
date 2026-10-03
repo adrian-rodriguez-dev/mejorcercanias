@@ -79,3 +79,5 @@ Selectores editables: Actions 37111377386 correcto (f61d74a); 40 pruebas de apli
 Flechas de selectores retiradas: build, OpenSpec estricto y dos pruebas específicas correctos. Actions 37111729020 correcto (c85f142). Web pública a 360 px verificada sin flecha: lista al tocar, selección, borrado persistente, búsqueda con acentos y teclado; sin desbordamiento.
 
 Instalar en cabecera: 40 pruebas unitarias y seis específicas de navegador correctas; Actions 37113371640 completo (04da806), incluida batería completa. Web pública a 360 px: botón de 44 px, ayuda modal, Escape y retorno de foco, ocultación tras appinstalled y sin desbordamiento. Captura móvil inspeccionada. Instalación nativa simulada e instrucciones iOS comprobadas; no se afirma instalación real en el dispositivo.
+
+Aviso verde de instalación: Actions 37113835747 correcto (636d84e), batería completa. Web pública a 360 px verificada: logo visible, sin botón en cabecera, aviso de 46 px, sin desbordamiento y cierre persistente al recargar. Prueba de separación actualizada para comprobar aviso y recuperación de espacio al cerrar.
