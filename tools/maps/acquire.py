@@ -16,10 +16,19 @@ def fetch(url, expected=None):
         'User-Agent': 'MejorCercanias/1.0 (+https://github.com/adrian-rodriguez-dev/mejorcercanias)',
         'Accept': 'application/pdf,image/svg+xml,text/html,application/zip,*/*;q=0.8',
         'Accept-Language': 'es-ES,es;q=0.9',
+        'Cache-Control': 'no-cache',
     }
     for attempt in range(3):
         try:
-            request = urllib.request.Request(url, headers=headers)
+            request_url = url
+            if attempt and expected:
+                # Some CDN responses are 200 application/pdf with only whitespace.
+                # Revalidate a public source through a fresh cache key; never accept it as a map.
+                parts = urllib.parse.urlsplit(url)
+                query = urllib.parse.parse_qsl(parts.query, keep_blank_values=True)
+                query.append(('mc_refresh', str(time.time_ns())))
+                request_url = urllib.parse.urlunsplit(parts._replace(query=urllib.parse.urlencode(query)))
+            request = urllib.request.Request(request_url, headers=headers)
             with urllib.request.urlopen(request, timeout=90) as response:
                 data, final = response.read(), response.geturl()
                 if expected == '.pdf' and not data.startswith(b'%PDF'):

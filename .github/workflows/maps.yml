@@ -32,7 +32,10 @@ jobs:
           cache-dependency-path: tools/maps/requirements.txt
       - run: python -m pip install -r tools/maps/requirements.txt
       - run: python -m unittest discover -s tools/maps -p 'test_*.py'
+      - name: Reproduce the committed map evidence
+        run: python tools/maps/run.py --output work/maps-reviewed
       - name: Extract and validate evidence
+        if: always()
         env:
           REFRESH: ${{ github.event_name == 'schedule' || github.event_name == 'push' || inputs.refresh }}
         run: |
@@ -44,10 +47,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: map-evidence-${{ github.run_id }}
-          path: work/maps
+          path: |
+            work/maps-reviewed
+            work/maps
           retention-days: 30
           if-no-files-found: warn
       - name: Publish execution summary
         if: always()
         run: |
-          if [ -f work/maps/SUMMARY.md ]; then cat work/maps/SUMMARY.md >> "$GITHUB_STEP_SUMMARY"; fi
+          for report in work/maps-reviewed/SUMMARY.md work/maps/SUMMARY.md; do
+            if [ -f "$report" ]; then cat "$report" >> "$GITHUB_STEP_SUMMARY"; fi
+          done

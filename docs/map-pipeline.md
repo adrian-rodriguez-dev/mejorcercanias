@@ -106,3 +106,9 @@ Las pruebas impiden borrar silenciosamente esta división o asignar una ruta des
 Además de las pruebas pequeñas de CI, tras generar la captura revisada se pueden ejecutar nueve comprobaciones del inventario original y su determinismo. Seleccionar la salida con la variable `MEJORCERCANIAS_MAP_WORKDIR` y ejecutar `python tools/maps/integration_checks.py`. En PowerShell: `$env:MEJORCERCANIAS_MAP_WORKDIR=(Resolve-Path work/maps-baseline).Path`.
 
 Estas comprobaciones contienen cantidades y casos de la captura original; actualizar sus expectativas solo después de revisar los cambios del corpus. Los tests pequeños no dependen de la fuente en vivo.
+
+## Fallos de descarga desde GitHub
+
+El workflow primero reproduce los mapas conservados (`maps-reviewed/`) y después comprueba las fuentes actuales (`maps/`). El artefacto contiene ambas carpetas. Así se conserva una extracción útil aunque falle la red. Ambas fases usan el GTFS descargado durante su ejecución; una correspondencia con un ZIP cambiado seguirá necesitando revisión.
+
+Se han observado respuestas de Renfe con HTTP 200 y Content-Type PDF cuyo cuerpo solo contiene seis bytes de espacios. Se comprueba la firma real del PDF; los reintentos solicitan revalidación de caché y usan una clave de consulta nueva. Si persiste, se informa como error de fuente y se conserva el último conjunto aprobado. Nunca se interpreta un archivo vacío como desaparición de las conexiones.
