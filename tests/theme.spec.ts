@@ -8,9 +8,8 @@ test("luna y sol alternan, conservan preferencia y contraste", async ({
   await expect(page.locator(".departures > li")).toHaveCount(8);
   const moon = page.getByRole("button", { name: "Activar modo oscuro" });
   await expect(moon).toBeVisible();
-  const themeBox = await moon.boundingBox(),
-    bellBox = await page.locator(".alert-indicator").boundingBox();
-  expect(themeBox!.x + themeBox!.width).toBeLessThanOrEqual(bellBox!.x);
+  const themeBox = await moon.boundingBox();
+  await expect(page.locator(".alert-indicator")).toHaveCount(0);
   expect(themeBox!.width).toBeGreaterThanOrEqual(44);
   await moon.click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");

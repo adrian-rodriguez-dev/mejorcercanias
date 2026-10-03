@@ -30,7 +30,7 @@ The system SHALL presentar fondo claro neutro, paneles blancos, texto grafito y 
 - **THEN** textos, controles y foco conservan contraste y las líneas sus colores oficiales.
 
 ### Requirement: Tema oscuro seleccionable
-The system SHALL ofrecer un botón de luna inmediatamente antes de la campana que activa un tema oscuro y cambia a sol para volver al claro. SHALL recordar la elección y permitir alternar aunque no esté disponible el almacenamiento.
+The system SHALL ofrecer un botón de luna junto al selector de núcleo que activa un tema oscuro y cambia a sol para volver al claro. SHALL recordar la elección y permitir alternar aunque no esté disponible el almacenamiento.
 #### Scenario: Alternancia y recarga
 - **WHEN** se pulsa la luna y se recarga
 - **THEN** se conserva el tema oscuro con el botón de sol, sin alterar el trayecto.

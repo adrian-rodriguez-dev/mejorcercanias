@@ -1165,9 +1165,9 @@ time {
   font-variant-numeric: tabular-nums;
 }
 .train-times > div {
-  display: inline-flex;
+  display: inline-grid;
+  grid-template-columns: auto auto;
   align-items: baseline;
-  flex-wrap: wrap;
   gap: 3px 5px;
 }
 .train-times small {
@@ -1186,9 +1186,20 @@ time {
 }
 .train-times .arrival-day,
 .train-times .departure-day {
-  font-size: 0.625rem;
-  color: var(--panel-text);
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #854600;
+  background: #fff0ce;
   white-space: nowrap;
+}
+:root[data-theme="dark"] .train-times .arrival-day,
+:root[data-theme="dark"] .train-times .departure-day {
+  color: #ffd89b;
+  background: #593715;
 }
 
 .install-area {
@@ -1357,6 +1368,12 @@ time {
 @media (max-width: 640px) {
   .masthead-actions {
     gap: 6px;
+    flex: 1 1 8rem;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+  .masthead-actions .network-switch {
+    min-width: 0;
   }
   .masthead-actions .region {
     font-size: 0.5625rem;

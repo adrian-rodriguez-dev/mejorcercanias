@@ -125,14 +125,20 @@ The system SHALL mostrar salida y llegada debajo del nombre del destino en próx
 - **WHEN** no hay destino elegido o el tren cruza medianoche
 - **THEN** no se reserva espacio de llegada ausente y se conserva la indicación de día necesaria.
 
-### Requirement: Campana de incidencias en cabecera compacta
-The system SHALL mostrar una campana en la barra superior fuera del panel de estaciones, marcada con contador solo si hay avisos verificables. Sin avisos verificables SHALL estar neutra y deshabilitada, con estado accesible que distinga fuente no disponible de consulta vacía, sin texto visible de error. El panel SHALL comenzar a 8 px de la cabecera y conservar controles de 44 px sin desbordar móvil.
-#### Scenario: Fuente pendiente
-- **WHEN** la fuente no está disponible
-- **THEN** no aparece Avisos no disponibles en el contenido y la campana no indica falsamente ausencia de incidencias.
-#### Scenario: Avisos verificados
-- **WHEN** hay incidencias relevantes
-- **THEN** la campana se marca y abre el detalle existente, con Escape y retorno del foco.
+### Requirement: Cabecera sin campana de incidencias
+The system SHALL omitir la campana de incidencias y sus consultas periódicas mientras la futura notificación independiente no esté implementada. SHALL conservar el selector de núcleo y el botón de tema, dando espacio a nombres largos sin desbordamiento móvil.
+#### Scenario: Núcleo largo
+- **WHEN** se muestra Rodalies de Catalunya a 360 px
+- **THEN** la cabecera no contiene campana y los controles permanecen junto a la marca.
+
+### Requirement: Día destacado en próximas salidas y llegadas
+The system SHALL mostrar Mañana debajo del bloque de salida y del bloque de llegada cuando la hora respectiva pertenezca al día siguiente al actual en Europe/Madrid. SHALL destacar la etiqueta en ambos temas; fechas posteriores SHALL mostrar su fecha en lugar de Mañana.
+#### Scenario: Viaje de mañana
+- **WHEN** tanto la salida como la llegada ocurren mañana
+- **THEN** ambos bloques muestran Mañana debajo de sus horas.
+#### Scenario: Viaje que cruza medianoche
+- **WHEN** el tren sale hoy y llega mañana
+- **THEN** solo la llegada muestra Mañana; el horario completo conserva sus indicadores relativos de cambio de día.
 
 ### Requirement: Horarios sin franja informativa superior
 The system SHALL eliminar la franja Renfe/horario programado encima de los horarios. SHALL conservar atribución y limitación de información de tiempo real fuera del panel, en el pie, sin sustituir la franja por otra.
@@ -162,10 +168,10 @@ The system SHALL mostrar correctamente acentos y eñes en la interfaz y nombres 
 - **THEN** se mantienen idénticos y el documento se sirve como UTF-8.
 
 ### Requirement: Lema de cabecera
-The system SHALL mostrar «Tu tren en segundos» con el mismo ancho visual que la marca y tamaño legible proporcional al nombre.
+The system SHALL mostrar «Tu tren en segundos» más pequeño y centrado respecto al texto mejorcercanías, sin extenderlo bajo el icono.
 #### Scenario: Inicio
 - **WHEN** se abre a 360 px o se amplía texto
-- **THEN** marca y lema mantienen ancho alineado sin desbordamiento de página.
+- **THEN** marca y lema mantienen sus centros alineados sin desbordamiento de página.
 
 ### Requirement: Selectores editables y borrables
 The system SHALL permitir escribir y elegir opciones desplegables en núcleo, origen y destino, con botón × accesible para borrar. SHALL confirmar solo opciones existentes y conservar selección ante texto inválido al abandonar el campo.

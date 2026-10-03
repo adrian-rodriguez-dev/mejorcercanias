@@ -38,4 +38,4 @@ The system SHALL mostrar el núcleo con letra mayor que la etiqueta actual en la
 - **AND** cancelar conserva el trayecto previo y confirmar elimina selecciones incompatibles.
 #### Scenario: Pantalla móvil
 - **WHEN** la app se usa a 360 px con un nombre de núcleo largo
-- **THEN** el nombre es legible, el control admite teclado y tiene área táctil de al menos 44 px, sin solapar la campana ni desbordar horizontalmente.
+- **THEN** el nombre es legible, el control admite teclado y tiene área táctil de al menos 44 px, sin solapar el botón de tema ni desbordar horizontalmente.

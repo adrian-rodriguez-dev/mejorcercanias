@@ -5,8 +5,14 @@ export const localDay = (now: number) =>
   DateTime.fromMillis(now, { zone: ZONE }).toISODate()!;
 export const clockTime = (now: number) =>
   DateTime.fromMillis(now, { zone: ZONE }).toFormat("HH:mm");
-export const dayLabel = (at: number, now: number) =>
-  localDay(at) === localDay(now) ? "Hoy" : "Mañana";
+export const dayLabel = (at: number, now: number) => {
+  const date = DateTime.fromMillis(at, { zone: ZONE });
+  const today = DateTime.fromMillis(now, { zone: ZONE });
+  if (date.hasSame(today, "day")) return "Hoy";
+  return date.hasSame(today.plus({ days: 1 }), "day")
+    ? "Mañana"
+    : date.toFormat("dd/LL");
+};
 export function upcoming(departures: Departure[], now: number, limit = 8) {
   return departures
     .filter((d) => Date.parse(d.scheduledAt) >= now)

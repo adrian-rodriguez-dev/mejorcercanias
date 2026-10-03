@@ -8,8 +8,6 @@ import { EditableSelect } from "../components/EditableSelect";
 import { Onboarding } from "../components/Onboarding";
 import { networks, lineStyle } from "../data/networks";
 import { readNetwork, saveNetwork } from "../platform/preference";
-import { useAlerts, AlertIndicator } from "../components/Alerts";
-import { relevantAlerts, alertPriority } from "../data/alerts";
 import {
   checkSnapshot,
   subscribeSnapshot,
@@ -18,7 +16,7 @@ import {
 } from "../data/snapshot";
 import { InstallPrompt } from "../components/InstallPrompt";
 import { UpdateNotice } from "../components/UpdateNotice";
-import { arrivalAt, arrivalDayLabel } from "../data/arrival";
+import { arrivalAt } from "../data/arrival";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { renfeProvider, manifest } from "../data/renfe";
 import { Timetable } from "../components/Timetable";
@@ -30,11 +28,7 @@ import {
 } from "../data/route-filters";
 import { stations, stationName } from "../data/stations";
 import { clockTime, dayLabel, localDay, upcoming } from "../data/time";
-import type {
-  Departure,
-  ScheduleProvider,
-  StationSchedule,
-} from "../data/types";
+import type { ScheduleProvider, StationSchedule } from "../data/types";
 import {
   readJourney,
   saveJourney,
@@ -83,11 +77,6 @@ export function App({
   const [saved, setSaved] = useState(true);
   const [now, setNow] = useState(clock);
   const [retry, setRetry] = useState(0);
-  const alertState = useAlerts();
-  const [dayContext, setDayContext] = useState<{
-    date: string;
-    departures: Departure[];
-  }>({ date: localDay(clock()), departures: [] });
   const [view, setView] = useState<"next" | "day">("next");
   const [routeFilter, storeRouteFilter] = useState<RouteFilter>(() => ({
     destination: initialJourney.destination,
@@ -213,16 +202,6 @@ export function App({
     current?.status === "ready"
       ? upcoming(filterRoutes(current.schedule!.departures, routeFilter), now)
       : [];
-  const alerts = relevantAlerts(
-    alertState.alerts,
-    stationId,
-    routeFilter,
-    view === "day" ? dayContext.date : day,
-    view === "day"
-      ? dayContext.departures
-      : (current?.schedule?.departures ?? []),
-    now,
-  );
   const choose = (id: string) => {
     setRouteFilter(emptyRouteFilter);
     setStationId(id);
@@ -257,12 +236,6 @@ export function App({
             <span aria-hidden="true">⌄</span>
           </button>
           <ThemeToggle />
-          <AlertIndicator
-            alerts={[...alerts].sort(
-              (a, b) => alertPriority(a) - alertPriority(b),
-            )}
-            status={alertState.status}
-          />
         </div>
       </header>
       <UpdateNotice />
@@ -429,7 +402,6 @@ export function App({
                   now={now}
                   routeFilter={routeFilter}
                   onRouteFilterChange={setRouteFilter}
-                  onScheduleChange={setDayContext}
                   onReturnNow={() => {
                     setNow(clock());
                     setView("next");
@@ -555,16 +527,9 @@ export function App({
                                       </span>
                                     )}
                                     {arrival &&
-                                      arrivalDayLabel(
-                                        d.scheduledAt,
-                                        arrival,
-                                      ) && (
+                                      localDay(Date.parse(arrival)) !== day && (
                                         <small className="arrival-day">
-                                          {arrival &&
-                                            arrivalDayLabel(
-                                              d.scheduledAt,
-                                              arrival,
-                                            )}
+                                          {dayLabel(Date.parse(arrival), now)}
                                         </small>
                                       )}
                                   </div>

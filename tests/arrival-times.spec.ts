@@ -15,6 +15,17 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
         stationId: "13400",
         patterns: [
           [
+            "tomorrow",
+            "C1",
+            "13405",
+            90000,
+            calendar,
+            [
+              ["13403", 90600],
+              ["13405", 91200],
+            ],
+          ],
+          [
             "night",
             "C1",
             "13405",
@@ -60,8 +71,24 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   const first = page.getByRole("listitem").first();
   await expect(first.locator(".destination strong")).toHaveText("Portugalete");
   await expect(first.locator(".train-arrival time")).toHaveText("00:08");
-  await expect(first.locator(".arrival-day")).toHaveText("+1 día");
+  await expect(first.locator(".arrival-day")).toHaveText("Mañana");
+  await expect(first.locator(".departure-day")).toHaveCount(0);
+  const arrivalTime = (await first
+    .locator(".train-arrival time")
+    .boundingBox())!;
+  const arrivalDay = (await first.locator(".arrival-day").boundingBox())!;
+  expect(arrivalDay.y).toBeGreaterThanOrEqual(
+    arrivalTime.y + arrivalTime.height,
+  );
   await expect(first.locator(".train-departure time")).toHaveText("23:58");
+  const tomorrow = page.getByRole("listitem").nth(1);
+  await expect(tomorrow.locator(".departure-day")).toHaveText("Mañana");
+  await expect(tomorrow.locator(".arrival-day")).toHaveText("Mañana");
+  for (const kind of ["departure", "arrival"]) {
+    const time = (await tomorrow.locator(`.train-${kind} time`).boundingBox())!;
+    const label = (await tomorrow.locator(`.${kind}-day`).boundingBox())!;
+    expect(label.y).toBeGreaterThanOrEqual(time.y + time.height);
+  }
   await expect(first.locator(".countdown strong")).toHaveText("8");
   await destination.fill(optionName("13405"));
   await expect(first.locator(".train-arrival time")).toHaveText("00:15");
@@ -84,10 +111,9 @@ test("llegada intermedia, medianoche, cambio, inversión y eliminación", async 
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();
-  await expect(
-    page.locator("tbody tr").first().locator("td:last-child time"),
-  ).toHaveText("00:15");
-  await expect(page.locator("tbody tr").first()).toContainText("+1 día");
+  const nightRow = page.locator("tbody tr").filter({ hasText: "23:58" });
+  await expect(nightRow.locator("td:last-child time")).toHaveText("00:15");
+  await expect(nightRow).toContainText("+1 día");
   await page
     .getByRole("button", { name: "Próximos trenes", exact: true })
     .click();

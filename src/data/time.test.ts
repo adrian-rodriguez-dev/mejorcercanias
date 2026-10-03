@@ -10,6 +10,15 @@ const departure = (id: string, scheduledAt: string): Departure => ({
 });
 
 describe("próximas salidas", () => {
+  it("distingue mañana de fechas posteriores según el calendario de Madrid", () => {
+    const now = Date.parse("2026-10-24T23:50:00+02:00");
+    expect(dayLabel(Date.parse("2026-10-25T23:55:00+01:00"), now)).toBe(
+      "Mañana",
+    );
+    expect(dayLabel(Date.parse("2026-10-26T00:05:00+01:00"), now)).toBe(
+      "26/10",
+    );
+  });
   it("excluye pasadas, ordena, limita y redondea hacia arriba", () => {
     const now = Date.parse("2026-10-02T10:00:00+02:00");
     const result = upcoming(

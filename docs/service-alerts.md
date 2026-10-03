@@ -1,5 +1,7 @@
 # Incidencias: fuente y despliegue pendiente
 
+La cabecera ya no muestra campana ni inicia consultas de incidencias. Por decisión de producto, los futuros avisos se presentarán en una notificación independiente. El componente anterior y la pasarela se conservan como base técnica; la descripción de su comportamiento siguiente es histórica, no una función activa.
+
 Recurso oficial: https://data.renfe.com/dataset/f28e345f-e9a3-4d08-ab56-15c9418c2737/resource/3634402c-4972-4007-8bf0-42d33aeb1b68 → https://gtfsrt.renfe.com/alerts.json
 
 Comprobación real 2026-10-03 (Europe/Madrid): GET 200, application/json, sin Access-Control-Allow-Origin. Desde la web publicada, fetch falla por CORS. Feed observado: GTFS-RT 2.0, timestamp original 1790979114 (2026-10-02T22:11:54Z), sin incrementality (FULL_DATASET por defecto). Hay routeId oficiales 60T0001C1, 60T0003C2, etc., y stopId. No se mezcla C1 de otros núcleos. Las retiradas se procesan al reemplazar un feed completo; un diferencial no soportado se declara no verificable, nunca se interpreta como vacío completo. Referencia: https://gtfs.org/documentation/realtime/reference/
@@ -19,6 +21,6 @@ npx wrangler login
 npx wrangler deploy --config worker/wrangler.toml
 ```
 
-Guardar la URL HTTPS resultante con sufijo `/alerts` en la variable de repositorio GitHub **ALERTS_URL** (no es un secreto) y volver a ejecutar Validate/publicación. La build toma `VITE_ALERTS_URL` desde esa variable. En desarrollo, definirla en `.env.local`. Sin variable se prueba la fuente directa y su indisponibilidad se refleja solo en el estado accesible de la campana.
+Para la futura notificación, guardar la URL HTTPS resultante con sufijo `/alerts` en la variable de repositorio GitHub **ALERTS_URL** (no es un secreto). La build toma `VITE_ALERTS_URL` desde esa variable; en desarrollo puede definirse en `.env.local`. Configurar esta variable por sí solo no activa los avisos: también habrá que integrar la notificación independiente.
 
 Comprobar desde la web publicada: respuesta CORS legible, timestamp fresco, contenido de avisos y retirada de indicadores con feed completo vacío. Solo entonces cerrar 1.1 y 3.1 de la spec. Actualmente no hay cuenta/sesión Cloudflare disponible; la conexión en vivo permanece pendiente.
