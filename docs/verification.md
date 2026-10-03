@@ -136,3 +136,15 @@ Colores oficiales conservados. Ocho pruebas específicas correctas: contraste ax
 en panel, tabla, desplegable y asistente, texto al 200 %, transbordos y probador ASE
 en escritorio y móvil. Capturas normales a 390 y 1280 px inspeccionadas. Iconos
 SVG/PNG y color de navegador/app instalada actualizados. Sin publicación remota.
+
+
+Tema oscuro y coral (local, 2026-10-03): luna antes de campana, sol en oscuro,
+preferencia guardada sin cambiar trayecto. Ocho pruebas específicas correctas
+(móvil/escritorio): recarga, almacenamiento bloqueado, axe en ambos temas y
+selectores/tabla. Probador ASE retirado por petición del usuario. Icono de cabecera
+integrado en el bundle para evitar la versión lima almacenada. SVG/PNG coral.
+
+Revisión final solicitada: recuperado panel verde original, lima sustituido por
+naranja vivo #ff850a; tren centrado por límites visibles del SVG, incluidos raíles.
+Ambos temas revisados; corregido contraste del campo Fecha en oscuro.
+Cuatro pruebas de tema correctas tras el ajuste y cuatro de accesibilidad en claro.

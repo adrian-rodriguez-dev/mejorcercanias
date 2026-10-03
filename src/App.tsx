@@ -1,3 +1,5 @@
+import { ThemeToggle } from "./ThemeToggle";
+import trainLogo from "./assets/train.svg";
 import { JourneyDetail } from "./JourneyDetail";
 import { routingAvailable, loadJourneys } from "./data/routing";
 import { addDays } from "./data/renfe";
@@ -236,7 +238,7 @@ export function App({
       </a>
       <header className="masthead">
         <a href="./" className="brand" aria-label="mejorcercanías, inicio">
-          <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" />
+          <img src={trainLogo} alt="" />
           <span>
             mejor<span className="brand-light">cercanías</span>
             <small>Tu tren en segundos</small>
@@ -252,6 +254,7 @@ export function App({
             {selectedNetwork?.name ?? "Núcleo"}{" "}
             <span aria-hidden="true">⌄</span>
           </button>
+          <ThemeToggle />
           <AlertIndicator
             alerts={[...alerts].sort(
               (a, b) => alertPriority(a) - alertPriority(b),
