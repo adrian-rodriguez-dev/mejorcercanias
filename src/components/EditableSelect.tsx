@@ -22,10 +22,40 @@ export function EditableSelect({
     input = useRef<HTMLInputElement>(null);
   const selected = options.find((o) => o.id === value)?.name ?? "";
   const [text, setText] = useState(selected),
+    [focused, setFocused] = useState(false),
     [open, setOpen] = useState(false),
     [filtering, setFiltering] = useState(false),
     [active, setActive] = useState(0);
   useEffect(() => setText(selected), [selected, value]);
+  useEffect(() => {
+    if (!focused || !window.matchMedia("(max-width: 700px)").matches) return;
+    const field = input.current;
+    if (!field) return;
+    const viewport = window.visualViewport;
+    let frame = 0;
+    const align = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (document.activeElement !== field) return;
+        const rect = field.getBoundingClientRect();
+        const top = (viewport?.offsetTop ?? 0) + 12;
+        window.scrollBy({ top: rect.top - top, behavior: "instant" });
+        field.parentElement?.style.setProperty(
+          "--options-height",
+          `${Math.max(0, (viewport?.height ?? window.innerHeight) - rect.height - 32)}px`,
+        );
+      });
+    };
+    align();
+    viewport?.addEventListener("resize", align);
+    window.addEventListener("resize", align);
+    return () => {
+      cancelAnimationFrame(frame);
+      viewport?.removeEventListener("resize", align);
+      window.removeEventListener("resize", align);
+      field.parentElement?.style.removeProperty("--options-height");
+    };
+  }, [focused]);
   const fold = (s: string) =>
     s
       .normalize("NFD")
@@ -35,10 +65,16 @@ export function EditableSelect({
     ? options.filter((o) => fold(o.name).includes(fold(text)))
     : options;
   useEffect(() => {
-    if (open)
-      document
-        .getElementById(`${list}-${active}`)
-        ?.scrollIntoView?.({ block: "nearest" });
+    if (!open) return;
+    const option = document.getElementById(`${list}-${active}`);
+    const menu = option?.parentElement;
+    if (!option || !menu) return;
+    const item = option.getBoundingClientRect();
+    const bounds = menu.getBoundingClientRect();
+    // Scroll only the list: scrollIntoView also moves the page and focused field.
+    if (item.top < bounds.top) menu.scrollTop += item.top - bounds.top;
+    else if (item.bottom > bounds.bottom)
+      menu.scrollTop += item.bottom - bounds.bottom;
   }, [open, active, list]);
   function commit(option: { id: string; name: string }) {
     setText(option.name);
@@ -66,6 +102,7 @@ export function EditableSelect({
         placeholder={placeholder}
         value={text}
         onFocus={(e) => {
+          setFocused(true);
           e.target.select();
         }}
         onClick={() => {
@@ -91,6 +128,7 @@ export function EditableSelect({
           }
         }}
         onBlur={() => {
+          setFocused(false);
           setText(selected);
           setOpen(false);
           setFiltering(false);

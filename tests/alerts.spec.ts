@@ -52,7 +52,11 @@ test("indicador condicional, detalle accesible, retirada y fallo", async ({
   await expect(page.locator(".brand img")).toBeVisible();
   await page.getByRole("button", { name: "Ahora no", exact: true }).click();
   const compactBox = (await page.locator(".board").boundingBox())!;
-  expect(Math.round(compactBox.y - headerBox.y - headerBox.height)).toBe(8);
+  // Focusing a mobile search scrolls the page; measure both boxes after the tap.
+  const compactHeader = (await page.locator(".masthead").boundingBox())!;
+  expect(
+    Math.round(compactBox.y - compactHeader.y - compactHeader.height),
+  ).toBe(8);
   const first = (await page.getByRole("listitem").first().boundingBox())!;
   expect(first.y + first.height).toBeLessThan(page.viewportSize()!.height);
   await page.screenshot({
