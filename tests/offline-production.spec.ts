@@ -1,6 +1,9 @@
 import {test,expect} from '@playwright/test';
+import manifest from '../src/data/renfe-manifest.json' with {type:'json'};
+const coverage = manifest.networks.find(n=>n.id==='bilbao')!.coverageDates;
+const serviceDay = coverage[Math.min(2, coverage.length - 1)];
 test.beforeEach(async({page})=>{
-  await page.clock.install({time:new Date('2026-10-03T10:00:00+02:00')});
+  await page.clock.install({time:new Date(serviceDay+'T06:00:00+02:00')});
   await page.addInitScript(()=>{
     if(!localStorage.getItem('test.offline')) {
       localStorage.setItem('mejorcercanias.network.v1','bilbao');
