@@ -151,7 +151,7 @@ otras líneas. Sin destino permanece el panel original de próximos trenes.
 
 Motor TypeScript adaptado de [renfe-cli](https://github.com/gerardcl/renfe-cli/blob/938db1536b7e148553c03b0322f2b49f4a21b7f3/src/router.rs), BSD-3-Clause
 (ver public/licenses/renfe-cli.txt). Búsqueda por rondas en Web Worker: cuatro trenes,
-margen por defecto 5 minutos y penalización de 15 minutos por cambio al comparar
+margen estimado por defecto de 1 minuto en el mismo punto de embarque y penalización de 15 minutos por cambio al comparar
 alternativas con la misma salida. Esta penalización no altera los horarios mostrados.
 Los cambios explícitos de GTFS tienen prioridad, incluidas prohibiciones y reglas
 por ruta/viaje. Se respetan calendario, excepciones, >24h y subida/bajada permitida.
@@ -173,3 +173,16 @@ origen/destino cancela el cálculo anterior. El motor usa horarios programados; 
 avisos de incidencias siguen siendo informativos y no reescriben el itinerario.
 No se infieren caminatas por proximidad. La búsqueda admite caminata entre trenes;
 no calcula viajes exclusivamente a pie ni accesos/egresos peatonales del trayecto.
+
+
+### Rendimiento del cálculo
+El motor deja de explorar alternativas cuyo tiempo más penalización ya supera
+el mejor itinerario encontrado. Una caché LRU de 24 consultas diarias evita
+recalcular al volver a una selección o cambiar de vista. La clave incluye versión,
+núcleo, origen, destino, fecha y líneas; solo guarda resultados completados.
+Comparación reproducible contra e867f10, usando el mismo margen de 60 segundos:
+`node --experimental-strip-types scripts/benchmark-routing.mjs`.
+Requiere historia Git con ese commit y el snapshot local; resultados en work/.
+El minuto es una política estimada del producto, no un tiempo garantizado por Renfe.
+Las reglas GTFS aplicables mantienen prioridad y los enlaces peatonales conservan
+sus márgenes (10 minutos estimados en las conexiones de mapas revisadas).

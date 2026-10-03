@@ -45,7 +45,7 @@ export interface Journey {
 type Label = { arrival: number; legs: Leg[] };
 type ActiveTrip = RoutingTrip & { serviceId: string };
 const MAX_LEGS = 4,
-  DEFAULT_TRANSFER = 300,
+  DEFAULT_TRANSFER = 60,
   PENALTY = 900,
   MAX_DURATION = 86400;
 const last = (label: Label) => label.legs.at(-1)!;
@@ -77,7 +77,7 @@ export function changeRule(
     Number(!!r.to_route_id);
   if (!matches.length)
     return node === previous.to
-      ? { from: node, to: node, seconds: DEFAULT_TRANSFER }
+      ? { from: node, to: node, seconds: DEFAULT_TRANSFER, estimated: true }
       : undefined;
   const max = Math.max(...matches.map(rank));
   const best = matches.filter((r) => rank(r) === max);
@@ -117,6 +117,7 @@ function findOne(
     ]),
   );
   const candidates: Journey[] = [];
+  let bestCost = Infinity;
   for (let round = 0; round < MAX_LEGS; round++) {
     const current = new Map<string, Map<string, Label>>();
     const inbound = new Map<string, Label[]>();
@@ -134,20 +135,32 @@ function findOne(
         ]);
     }
     for (const trip of trips) {
+      if (
+        trip.calls.at(-1)![2] < departure ||
+        trip.calls[0][1] - departure + round * PENALTY > bestCost
+      )
+        continue;
       if (round === 0 && lines.length && !lines.includes(trip.line)) continue;
       let boarded: Label | undefined;
       for (const call of trip.calls) {
         const [node, arrival, dep, pickup, dropoff] = call;
+        if (arrival - departure + round * PENALTY > bestCost) break;
+        if (dep < departure) continue;
         if (boarded && arrival - departure <= MAX_DURATION) {
           const leg = { ...last(boarded), to: node, arrival };
           const label = { arrival, legs: [...boarded.legs.slice(0, -1), leg] };
           if (dropoff === 0) {
             keep(current, node, label);
-            if (destination.has(node)) candidates.push({ legs: label.legs });
+            if (destination.has(node)) {
+              const journey = { legs: label.legs };
+              candidates.push(journey);
+              bestCost = Math.min(bestCost, score(journey));
+            }
           }
         }
         if (boarded || pickup !== 0 || dep - departure > MAX_DURATION) continue;
         for (const label of inbound.get(node) ?? []) {
+          if (label.arrival > dep) continue;
           if (round === 0) {
             if (!origin.includes(node) || dep !== departure) continue;
           } else if (last(label).tripId === trip.serviceId) continue;

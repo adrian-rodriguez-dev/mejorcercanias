@@ -11,9 +11,10 @@ self.onmessage = (
   try {
     const { graph, origin, destination, days, lines } = event.data;
     self.postMessage({
-      journeys: days.flatMap((day) =>
-        findJourneys(graph, origin, destination, day, lines),
-      ),
+      results: days.map((day) => ({
+        day,
+        journeys: findJourneys(graph, origin, destination, day, lines),
+      })),
     });
   } catch {
     self.postMessage({ error: "No se pudo calcular el trayecto." });

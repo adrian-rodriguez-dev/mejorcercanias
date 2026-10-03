@@ -6,6 +6,8 @@ const version = "bbbbbbbbbbbbbbbb";
 test("destino calcula, despliega horarios y respeta el cambio peatonal", async ({
   page,
 }) => {
+  let workers=0;
+  page.on("worker",()=>{ workers++; });
   await page.clock.install({ time: new Date("2026-10-03T07:00:00+02:00") });
   const nodes = {
     "13400": { stationId: "13400", name: "Barakaldo" },
@@ -91,10 +93,13 @@ test("destino calcula, despliega horarios y respeta el cambio peatonal", async (
       await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()
     ).violations.map((v) => v.id),
   ).toEqual([]);
+  const initialWorkers=workers;
+  expect(initialWorkers).toBeGreaterThan(0);
   await page
     .getByRole("button", { name: "Horario completo", exact: true })
     .click();
   await expect(page.locator(".schedule-table")).toContainText("1 transbordo");
+  expect(workers).toBe(initialWorkers);
   await page.getByLabel("Fecha", { exact: true }).fill("2027-01-01");
   await expect(
     page.getByText("Horario aún no publicado para esta fecha.", {

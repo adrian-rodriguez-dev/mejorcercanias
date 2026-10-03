@@ -1,9 +1,11 @@
+import { JourneyCache, journeyKey } from "./journey-cache";
 import { stationName } from "./stations";
 import { manifest } from "./snapshot";
 import { readStored, storeData } from "./offline-store";
 import type { Graph, Journey } from "./router";
 import type { StationSchedule } from "./types";
 const memory = new Map<string, Graph>();
+const results = new JourneyCache();
 export function routingAvailable(origin: string) {
   const network = manifest.stations.find((s) => s.id === origin)?.network;
   return !!network && !!manifest.routingNetworks?.includes(network);
@@ -108,37 +110,67 @@ export async function loadJourneys(
     };
   const graph = await graphFor(origin, signal);
   signal.throwIfAborted();
-  const journeys = await new Promise<Journey[]>((resolve, reject) => {
-    const worker = new Worker(new URL("./routing.worker.ts", import.meta.url), {
-      type: "module",
-    });
-    const cleanup = () => {
-      worker.terminate();
-      signal.removeEventListener("abort", abort);
-    };
-    const abort = () => {
-      cleanup();
-      reject(new DOMException("Aborted", "AbortError"));
-    };
-    signal.addEventListener("abort", abort, { once: true });
-    worker.onerror = () => {
-      cleanup();
-      reject(Error("No se pudo calcular la ruta"));
-    };
-    worker.onmessage = (e) => {
-      cleanup();
-      e.data.error ? reject(Error(e.data.error)) : resolve(e.data.journeys);
-    };
-    worker.postMessage({
-      graph,
+  const activeDays = days.filter((d) => coverage.includes(d));
+  const keyFor = (day: string) =>
+    journeyKey(
+      snapshot.version,
+      graph.network,
       origin,
       destination,
-      days: days.filter((d) => coverage.includes(d)),
+      day,
       lines,
-    });
-  });
+    );
+  const cached = new Map(
+    activeDays.map((day) => [day, results.get(keyFor(day))]),
+  );
+  const missing = activeDays.filter((day) => cached.get(day) === undefined);
+  if (missing.length) {
+    const computed = await new Promise<{ day: string; journeys: Journey[] }[]>(
+      (resolve, reject) => {
+        const worker = new Worker(
+          new URL("./routing.worker.ts", import.meta.url),
+          {
+            type: "module",
+          },
+        );
+        const cleanup = () => {
+          worker.terminate();
+          signal.removeEventListener("abort", abort);
+        };
+        const abort = () => {
+          cleanup();
+          reject(new DOMException("Aborted", "AbortError"));
+        };
+        signal.addEventListener("abort", abort, { once: true });
+        worker.onerror = () => {
+          cleanup();
+          reject(Error("No se pudo calcular la ruta"));
+        };
+        worker.onmessage = (e) => {
+          cleanup();
+          e.data.error ? reject(Error(e.data.error)) : resolve(e.data.results);
+        };
+        worker.postMessage({
+          graph,
+          origin,
+          destination,
+          days: missing,
+          lines,
+        });
+      },
+    );
+    signal.throwIfAborted();
+    for (const result of computed) {
+      results.set(keyFor(result.day), result.journeys);
+      cached.set(result.day, result.journeys);
+    }
+  }
   signal.throwIfAborted();
-  const nodeName = (node: string) => graph.nodes[node].stationId === node ? stationName(node) : graph.nodes[node].name;
+  const journeys = activeDays.flatMap((day) => cached.get(day)!);
+  const nodeName = (node: string) =>
+    graph.nodes[node].stationId === node
+      ? stationName(node)
+      : graph.nodes[node].name;
   const iso = (seconds: number) => new Date(seconds * 1000).toISOString();
   return {
     stationId: origin,

@@ -101,3 +101,18 @@ exhaustiva ni de incidencias en vivo. Los ocho núcleos publicados se conservan.
 Datos: Renfe b7464457aea1acfa052aeff7255040b1b377d582ea1675617cfe7841338ad043;
 snapshot con grafos 3b4c3c4b71c964f7. Los Rosales se comprueba en fixture del
 normalizador; Sevilla continúa excluida por el importador de horarios.
+
+
+## Optimización y margen de cambio · 2026-10-03
+56 pruebas TypeScript, dos de navegador escritorio/móvil con caché real y tres
+de producción/offline correctas. Build y validación OpenSpec correctos.
+Seis comparaciones sobre datos reales y 150 grafos sintéticos coinciden exactamente
+con e867f10 ajustado a la misma política de 60 segundos. Tiempo de cálculo por día
+(milisegundos, misma máquina; excluye descarga, parseo y arranque del worker):
+- bilbao 13405 → 13509: 1083 → 73 ms; 35 itinerarios idénticos.
+- bilbao 13400 → 05451: 2814 → 301 ms; 21 itinerarios idénticos.
+- bilbao 13200 → 05451: 1990 → 201 ms; 21 itinerarios idénticos.
+- bilbao 13509 → 13405: 1429 → 37 ms; 35 itinerarios idénticos.
+- bilbao 13400 → 13200: 3018 → 82 ms; 71 itinerarios idénticos.
+- valencia valencia-65200 → valencia-65000: 706 → 43 ms; 22 itinerarios idénticos.
+Prueba de flujo real y recarga offline: 9,3 s antes, 1,2 s después (orientativo, no garantía de latencia). Margen implícito 60 s verificado en frontera 59/60; mínimos oficiales y prohibiciones prevalecen.

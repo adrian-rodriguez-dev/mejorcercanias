@@ -31,6 +31,17 @@ function graph(trips: RoutingTrip[], transfers: Transfer[] = []): Graph {
 }
 const run = (g: Graph, a = "A", b = "D", lines: string[] = []) =>
   findJourneys(g, a, b, "2026-10-03", lines);
+it('uses one estimated minute only for implicit same-point transfers', () => {
+  const incoming=trip('a', [['A',1000],['B',1600]]);
+  const missed=trip('short', [['B',1659],['D',1800]]);
+  const valid=trip('valid', [['B',1660],['D',1900]]);
+  const result=run(graph([incoming,missed,valid]))[0];
+  expect(result.legs[1].tripId).toContain('valid');
+  expect(result.legs[1].change).toMatchObject({seconds:60,estimated:true});
+  expect(run(graph([incoming,valid],[{from:'B',to:'B',seconds:480}]))).toEqual([]);
+  expect(run(graph([incoming,valid],[{from:'B',to:'B',seconds:null}]))).toEqual([]);
+});
+
 describe("renfe-cli round-based routing adaptation", () => {
   it("finds up to three changes and refuses a fourth", () => {
     const trips = [
@@ -65,7 +76,7 @@ describe("renfe-cli round-based routing adaptation", () => {
         ["B", 1600],
       ]),
       trip("fast", [
-        ["B", 1700],
+        ["B", 1630],
         ["D", 2000],
       ]),
       trip("later", [
