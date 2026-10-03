@@ -160,3 +160,9 @@ The system SHALL mostrar correctamente acentos y eñes en la interfaz y nombres 
 #### Scenario: Texto válido
 - **WHEN** el catálogo contiene Autonomía, Iñarratxu, Málaga o València correctamente codificados
 - **THEN** se mantienen idénticos y el documento se sirve como UTF-8.
+
+### Requirement: Lema de cabecera
+The system SHALL mostrar «Tu tren en menos de 5 segundos» como lema de cabecera.
+#### Scenario: Inicio
+- **WHEN** se abre la aplicación
+- **THEN** se muestra el nuevo lema sin desbordamiento horizontal móvil.
