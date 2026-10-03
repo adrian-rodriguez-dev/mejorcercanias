@@ -6,6 +6,9 @@ it("repara acentos de catálogos anteriores sin cambiar texto válido", () => {
     ["OrduÃ±a", "Orduña"],
     ["AutonomÃ\u00ada", "Autonomía"],
     ["TrÃ¡paga", "Trápaga"],
+    ["San MamÃƒÂ©s", "San Mamés"],
+    ["Málaga – San MamÃ©s", "Málaga – San Mamés"],
+    ["Ã‘ora", "Ñora"],
   ])
     expect(stationLabel(bad)).toBe(good);
   for (const name of [

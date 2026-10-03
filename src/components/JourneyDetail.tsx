@@ -12,6 +12,8 @@ export function JourneyDetail({ departure }: { departure: Departure }) {
           +
         </span>{" "}
         {count} {count === 1 ? "transbordo" : "transbordos"}
+        {departure.directSavingMinutes !== undefined &&
+          ` · llega ${departure.directSavingMinutes} min antes que el directo`}
       </summary>
       <ol>
         {legs.map((leg, i) => (

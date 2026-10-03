@@ -46,9 +46,6 @@ export function LineBar({
             }
           >
             {line}
-            <span className="line-selected" aria-hidden="true">
-              {active ? "✓" : ""}
-            </span>
           </button>
         );
       })}

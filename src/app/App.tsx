@@ -239,9 +239,16 @@ export function App({
       <header className="masthead">
         <a href="./" className="brand" aria-label="mejorcercanías, inicio">
           <img src={trainLogo} alt="" />
-          <span>
-            mejor<span className="brand-light">cercanías</span>
-            <small>Tu tren en segundos</small>
+          <span className="brand-copy">
+            <span className="brand-name">
+              mejor<span className="brand-light">cercanías</span>
+            </span>
+            <small className="brand-tagline" aria-label="Tu tren en segundos">
+              <span aria-hidden="true">Tu</span>{" "}
+              <span aria-hidden="true">tren</span>{" "}
+              <span aria-hidden="true">en</span>{" "}
+              <span aria-hidden="true">segundos</span>
+            </small>
           </span>
         </a>
         <div className="masthead-actions">

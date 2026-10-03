@@ -1155,10 +1155,6 @@ time {
   cursor: not-allowed;
   border-style: dashed;
 }
-.line-selected {
-  width: 12px;
-  font-size: 0.875rem;
-}
 
 .train-times {
   display: flex;
@@ -1749,9 +1745,6 @@ summary:focus-visible,
 .editable-select .clear-selection {
   font-size: 25px;
 }
-.line-selected {
-  width: 0.8em;
-}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1931,4 +1924,24 @@ summary:focus-visible,
   background: var(--panel-inset);
   color: var(--theme-ink);
   border-color: var(--theme-outer-border);
+}
+
+/* The name sets the width; distribute a larger tagline across that width. */
+.brand-copy {
+  display: grid;
+  grid-template-columns: minmax(0, max-content);
+}
+.brand-name {
+  white-space: nowrap;
+}
+.brand .brand-tagline {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+  font-size: 0.64em;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.25;
+  white-space: nowrap;
 }

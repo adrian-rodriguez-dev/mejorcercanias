@@ -162,10 +162,10 @@ The system SHALL mostrar correctamente acentos y eñes en la interfaz y nombres 
 - **THEN** se mantienen idénticos y el documento se sirve como UTF-8.
 
 ### Requirement: Lema de cabecera
-The system SHALL mostrar «Tu tren en segundos» como lema de cabecera.
+The system SHALL mostrar «Tu tren en segundos» con el mismo ancho visual que la marca y tamaño legible proporcional al nombre.
 #### Scenario: Inicio
-- **WHEN** se abre la aplicación
-- **THEN** se muestra el nuevo lema sin desbordamiento horizontal móvil.
+- **WHEN** se abre a 360 px o se amplía texto
+- **THEN** marca y lema mantienen ancho alineado sin desbordamiento de página.
 
 ### Requirement: Selectores editables y borrables
 The system SHALL permitir escribir y elegir opciones desplegables en núcleo, origen y destino, con botón × accesible para borrar. SHALL confirmar solo opciones existentes y conservar selección ante texto inválido al abandonar el campo.
@@ -184,3 +184,9 @@ The system SHALL mostrar los campos editables sin botón de flecha, conservando 
 #### Scenario: Abrir opciones
 - **WHEN** se toca el campo
 - **THEN** se abre la lista sin necesitar un botón de flecha ni reservarle espacio.
+
+### Requirement: Selección de línea sin check
+The system SHALL indicar selección mediante estilo y aria-pressed sin check junto al nombre.
+#### Scenario: Seleccionar C2
+- **WHEN** se activa C2
+- **THEN** cambia el estilo y aria-pressed sin añadir un símbolo.

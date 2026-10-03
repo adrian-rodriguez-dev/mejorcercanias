@@ -42,6 +42,7 @@ export interface Leg {
   change?: { from: string; to: string; seconds: number; estimated: boolean };
 }
 export interface Journey {
+  directSavingMinutes?: number;
   legs: Leg[];
 }
 type Label = { arrival: number; legs: Leg[] };
@@ -144,10 +145,14 @@ function findOne(
         continue;
       if (round === 0 && lines.length && !lines.includes(trip.line)) continue;
       let boarded: Label | undefined;
+      let availableAtOrigin = false;
       for (const call of trip.calls) {
         const [node, arrival, dep, pickup, dropoff] = call;
         if (arrival - departure + round * PENALTY > bestCost) break;
         if (dep < departure) continue;
+        // Staying aboard must not bring the passenger back to any origin platform.
+        if (boarded && origin.includes(node)) break;
+        if (origin.includes(node) && pickup === 0) availableAtOrigin = true;
         if (boarded && arrival - departure <= MAX_DURATION) {
           const leg = { ...last(boarded), to: node, arrival };
           const label = { arrival, legs: [...boarded.legs.slice(0, -1), leg] };
@@ -160,7 +165,13 @@ function findOne(
             }
           }
         }
-        if (boarded || pickup !== 0 || dep - departure > MAX_DURATION) continue;
+        if (
+          boarded ||
+          pickup !== 0 ||
+          dep - departure > MAX_DURATION ||
+          (round > 0 && availableAtOrigin)
+        )
+          continue;
         for (const label of inbound.get(node) ?? []) {
           if (label.arrival > dep) continue;
           if (round === 0) {
@@ -267,10 +278,65 @@ export function findJourneys(
         ),
     ),
   ].sort((a, b) => a - b);
-  const journeys = departures.flatMap((d) => {
+  const direct: Journey[] = [];
+  for (const trip of trips) {
+    if (lines.length && !lines.includes(trip.line)) continue;
+    let from: Call | undefined;
+    for (const call of trip.calls) {
+      if (origins.includes(call[0])) {
+        // A repeated origin starts a new boarding opportunity, not a loop.
+        from =
+          call[3] === 0 && call[2] >= lower && call[2] < upper
+            ? call
+            : undefined;
+        continue;
+      }
+      if (
+        from &&
+        targets.has(call[0]) &&
+        call[4] === 0 &&
+        call[1] - from[2] <= MAX_DURATION
+      ) {
+        direct.push({
+          legs: [
+            {
+              tripId: trip.serviceId,
+              route: trip.route,
+              line: trip.line,
+              ...(trip.mode ? { mode: trip.mode } : {}),
+              from: from[0],
+              to: call[0],
+              departure: from[2],
+              arrival: call[1],
+            },
+          ],
+        });
+        break;
+      }
+    }
+  }
+  const computed = departures.flatMap((d) => {
     const j = findOne(trips, graph.transfers, origins, targets, d, lines);
     return j ? [j] : [];
   });
+  const unique = new Map<string, Journey>();
+  for (const j of [...direct, ...computed]) {
+    const key = j.legs
+      .map((l) => `${l.tripId}:${l.from}:${l.to}:${l.departure}`)
+      .join("/");
+    unique.set(key, j);
+  }
+  const journeys = [...unique.values()]
+    .filter((j) => {
+      if (j.legs.length === 1) return true;
+      const available = direct.filter((d) => start(d) >= start(j));
+      if (!available.length) return true;
+      const saving = Math.min(...available.map(end)) - end(j);
+      if (saving < PENALTY) return false;
+      j.directSavingMinutes = Math.floor(saving / 60);
+      return true;
+    })
+    .sort((a, b) => start(a) - start(b) || a.legs.length - b.legs.length);
   return journeys.filter(
     (j, i) =>
       !journeys.some(

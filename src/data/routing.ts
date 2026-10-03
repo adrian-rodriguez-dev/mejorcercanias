@@ -1,3 +1,4 @@
+import { stationLabel } from "./text";
 import { validGraph } from "./graph-validation";
 import { JourneyCache, journeyKey } from "./journey-cache";
 import { stationName } from "./stations";
@@ -115,7 +116,7 @@ export async function loadJourneys(
   const nodeName = (node: string) =>
     graph.nodes[node].stationId === node
       ? stationName(node)
-      : graph.nodes[node].name;
+      : stationLabel(graph.nodes[node].name);
   const iso = (seconds: number) => new Date(seconds * 1000).toISOString();
   return {
     stationId: origin,
@@ -129,9 +130,8 @@ export async function loadJourneys(
         id: j.legs.map((l) => `${l.tripId}:${l.from}:${l.to}`).join("/"),
         line: first.line,
         mode: first.mode,
-        destination:
-          snapshot.stations.find((s) => s.id === destination)?.name ??
-          destination,
+        destination: stationName(destination),
+        directSavingMinutes: j.directSavingMinutes,
         terminalId: destination,
         scheduledAt: iso(first.departure),
         arrivals: [{ stationId: destination, at: iso(last.arrival) }],
