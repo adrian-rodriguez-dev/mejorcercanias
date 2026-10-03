@@ -182,7 +182,10 @@ export function Timetable({
                       }
                     >
                       {destination ? stationName(destination) : row.destination}
-                      <JourneyDetail departure={row} />
+                      <JourneyDetail
+                        departure={row}
+                        networkId={networkForStation(stationId)?.id}
+                      />
                     </td>
                     <td>
                       <time dateTime={row.scheduledAt}>

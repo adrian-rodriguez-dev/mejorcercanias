@@ -5,7 +5,7 @@ import AxeBuilder from "@axe-core/playwright";
 const version = "bbbbbbbbbbbbbbbb";
 test("destino calcula, despliega horarios y respeta el cambio peatonal", async ({
   page,
-}) => {
+}, info) => {
   let workers = 0;
   page.on("worker", () => {
     workers++;
@@ -87,6 +87,24 @@ test("destino calcula, despliega horarios y respeta el cambio peatonal", async (
   await expect(first.locator(".journey-detail")).toContainText("08:20");
   await expect(first.locator(".journey-detail")).toContainText("A pie");
   await expect(first.locator(".journey-detail")).toContainText("Autobús");
+  await expect(first.locator(".journey-stop time")).toHaveText([
+    "08:00",
+    "08:10",
+    "08:20",
+    "08:30",
+  ]);
+  await expect(first.locator(".journey-change")).toContainText("10 min");
+  await expect(first.locator(".journey-segment").first()).toHaveCSS(
+    "border-left-color",
+    "rgb(229, 35, 44)",
+  );
+  await expect(first.locator(".journey-segment").nth(1)).toHaveCSS(
+    "border-left-color",
+    "rgb(15, 157, 75)",
+  );
+  await first.screenshot({
+    path: `work/journey-timeline-${info.project.name}.png`,
+  });
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

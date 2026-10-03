@@ -548,7 +548,6 @@ export function App({
                                   </div>
                                 )}
                               </div>
-                              <JourneyDetail departure={d} />
                             </div>
                           </div>
                           <div className="countdown">
@@ -568,6 +567,7 @@ export function App({
                               Date.parse(d.scheduledAt) - now <
                                 60 * 60 * 1000 && <span> min</span>}
                           </div>
+                          <JourneyDetail departure={d} networkId={networkId} />
                         </li>
                       );
                     })}

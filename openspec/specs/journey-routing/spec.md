@@ -41,6 +41,12 @@ The system SHALL cargar solo el grafo del núcleo consultado, procesarlo fuera d
 - **WHEN** la fecha no está cubierta
 - **THEN** se informa de datos no publicados sin reutilizar otro día.
 
+### Requirement: Recorrido visual de transbordos
+The system SHALL presentar el detalle desplegado como un recorrido vertical compacto, con cada tramo en el color oficial de su línea, estación y hora de salida y llegada, y minutos disponibles entre trenes. SHALL distinguir enlaces a pie de esperas en la misma estación, conservar los márgenes estimados y señalar cambios de día.
+#### Scenario: Recorrido con cambio
+- **WHEN** se despliega una ruta con dos trenes
+- **THEN** se muestran origen y salida, estación y llegada del primer tramo, intervalo de transbordo, salida del segundo tren y destino final con llegada, con sus colores de línea.
+
 ### Requirement: Preferencia por directos disponibles
 The system SHALL conservar trenes directos y mostrar alternativas con cambios solo si llegan al menos 15 minutos antes que un directo que salga a la misma hora o después, indicando el ahorro cuando exista comparación. Sin directo disponible SHALL conservar conexiones válidas.
 #### Scenario: Cambio que ahorra poco

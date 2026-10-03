@@ -1803,14 +1803,93 @@ summary:focus-visible,
   padding: 6px 0;
 }
 .journey-detail ol {
-  padding-left: 1rem;
+  padding: 0;
   margin: 0;
+  list-style: none;
 }
+.journey-detail .journey-leg,
 .departures .journey-detail li {
   display: block;
-  padding: 0.4rem 0;
+  padding: 0;
+  min-height: 0;
   border: 0;
   background: none;
+}
+.departures > li > .journey-detail {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+.departures > li:has(> .journey-detail) {
+  row-gap: 0;
+}
+.journey-timeline {
+  color: var(--panel-text);
+  font-size: 0.8125rem;
+  text-align: left;
+}
+.journey-segment {
+  margin: 5px 0 8px 6px;
+  padding-left: 14px;
+  border-left: 3px solid var(--journey-color);
+}
+.journey-stop {
+  display: grid;
+  grid-template-columns: 3.2rem minmax(0, 1fr);
+  gap: 8px;
+  position: relative;
+  align-items: baseline;
+  line-height: 1.35;
+}
+.journey-stop::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--journey-color);
+  border-radius: 50%;
+  background: var(--theme-panel);
+  left: -21.5px;
+  top: 3px;
+}
+.journey-stop b {
+  overflow-wrap: anywhere;
+}
+.journey-clock {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.journey-clock small {
+  display: block;
+  font-size: 0.625rem;
+  color: var(--panel-muted);
+}
+.journey-detail .journey-clock time {
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+.journey-service {
+  padding: 5px 0 5px calc(3.2rem + 8px);
+}
+.journey-line {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+.journey-change {
+  margin: 0 0 6px 6px;
+  padding: 5px 0 5px 14px;
+  border-left: 3px dotted var(--panel-border);
+  color: var(--panel-muted);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.journey-change small {
+  display: block;
+  font-size: 0.6875rem;
+  margin-top: 2px;
 }
 .journey-detail p {
   margin: 0.2rem 0;
