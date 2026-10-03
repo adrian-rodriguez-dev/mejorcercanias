@@ -40,3 +40,6 @@ La barra evoluciona a [multiselección](../openspec/changes/archive/2026-10-02-m
 
 ## Estado 2026-10-03
 Instalación y renovación por caducidad implementadas, publicadas y archivadas. Incidencias: UI, adapter y pasarela preparados; tareas de integración en vivo pendientes de desplegar la pasarela por CORS de Renfe. Ver [evidencia y despliegue](service-alerts.md).
+
+## Nuevos núcleos y asistente (2026-10-03)
+Spec [multi-network-onboarding](../openspec/changes/multi-network-onboarding/proposal.md) preparada, pendiente de implementación: núcleos con hasta seis líneas, asistente obligatorio siempre que falte núcleo válido guardado (sin inferir Bilbao), origen y destino opcional, y núcleo más grande/pulsable en la barra superior. No requiere nueva fila permanente de filtros.
